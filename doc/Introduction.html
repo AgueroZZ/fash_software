@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Introduction to FASH</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to FASH</h1>
+
+
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>The package considers the following functional adaptive shrinkage
+(FASH) scenarios. Given <span class="math inline">\(N\)</span> sets of
+series data: <span class="math inline">\(\boldsymbol{y} = \{y_i(t_j):
+j\in[n_i]\}_{i=1}^{N}\)</span>, where <span class="math inline">\(n_i\)</span> is the length of the <span class="math inline">\(i\)</span>-th series, we assume that each series
+<span class="math inline">\(y_i\)</span> represents <span class="math inline">\(n_i\)</span> measurements over the continuous
+treatment <span class="math inline">\(t\)</span> at levels <span class="math inline">\(\{t_j\}_{j=1}^{n_i}\)</span>.</p>
+<p>Different from traditional smoothing methods that assumes each <span class="math inline">\(f_i(t)\)</span> has a separate prior <span class="math inline">\(g_i\)</span>, FASH assumes that all <span class="math inline">\(f_i(t)\)</span> are <span class="math inline">\(iid\)</span> with a common prior <span class="math inline">\(g_f\)</span>. Generalizing the idea from <a href="https://academic.oup.com/biostatistics/article/18/2/275/2557030?login=true">Stephens,
+2017</a> and <a href="https://www.nature.com/articles/s41588-018-0268-8">Urbut et al,
+2018</a>, the prior <span class="math inline">\(g_f\)</span> takes the
+following form of a finite mixture of Gaussian processes (GP): <span class="math display">\[g_f|\boldsymbol{\pi} =  \sum_{k=0}^{K}
+\pi_k\text{GP}(m_k,C_k),\]</span> where <span class="math inline">\(\boldsymbol{\pi} = [\pi_1,...,\pi_K]^T\)</span> is
+the prior mixing weight vector, <span class="math inline">\(m_k\)</span>
+is the mean function, and <span class="math inline">\(C_k\)</span> is
+the covariance function of the <span class="math inline">\(k\)</span>-th
+GP.</p>
+<p>Rather than integrating out the prior mixing weights <span class="math inline">\(\boldsymbol{\pi}\)</span> with a given prior <span class="math inline">\(p(\boldsymbol{\pi})\)</span> as <span class="math display">\[g_f =
+\int(g_f|\boldsymbol{\pi})p(\boldsymbol{\pi})d\boldsymbol{\pi},\]</span>
+FASH optimizes <span class="math inline">\(\hat{\boldsymbol{\pi}}\)</span> by maximizing the
+marginal likelihood of the data <span class="math inline">\(\boldsymbol{y}\)</span>: <span class="math display">\[\hat{\boldsymbol{\pi}} =
+\arg\max_{\boldsymbol{\pi}} \sum_{i=1}^{N} \log\left(\sum_{k=0}^{K}
+\pi_k \mathbf{L}_{ik}\right),\]</span> where <span class="math inline">\(\mathbf{L}_{ik}\)</span> denotes the marginal
+likelihood of the <span class="math inline">\(i\)</span>-th series data
+under the <span class="math inline">\(k\)</span>-th GP component.</p>
+<p>Then the prior <span class="math inline">\(g_f\)</span> is determined
+as: <span class="math display">\[\hat{g}_f =
+\int(g_f|\boldsymbol{\pi})\delta_{\hat{\boldsymbol{\pi}}}(\boldsymbol{\pi})d\boldsymbol{\pi}
+= g_f|\hat{\boldsymbol{\pi}}.\]</span></p>
+<p>Based on the estimated prior <span class="math inline">\(\hat{g}\)</span>, FASH then obtains the posterior
+<span class="math inline">\(p(f_i(t)|\boldsymbol{y})\)</span> for by:
+<span class="math display">\[p(f_i(t)|\boldsymbol{y},
+\hat{\boldsymbol{\pi}}) = \sum_{k=0}^{K} \tilde{\pi}_k
+p_k(f_i(t)|\boldsymbol{y}_i),\]</span></p>
+<p>where <span class="math inline">\(p_k(f_i(t)|\boldsymbol{y}_i)\)</span> is the
+posterior of the <span class="math inline">\(i\)</span>-th series data
+under the <span class="math inline">\(k\)</span>-th GP component.</p>
+<p>With the posterior, FASH aim to simultaneously answer any subset of
+the following questions:</p>
+<ul>
+<li>What is the estimated function <span class="math inline">\(f_i(t)\)</span> for each series <span class="math inline">\(y_i\)</span>? (Smoothing)</li>
+<li>With a false discovery rate (FDR) control, which <span class="math inline">\(f_i(t) \in S_0 \subset S\)</span>? (Hypothesis
+testing)</li>
+<li>Is there any clustering structure in the estimated functions <span class="math inline">\(f_i(t)\)</span> in terms of their behaviors?
+(Clustering)</li>
+</ul>
+</div>
+<div id="lgp-prior" class="section level2">
+<h2>LGP Prior</h2>
+<p>For now, let’s assume the mean function <span class="math inline">\(m_k\)</span> is zero, and each GP component is
+defined through the following ordinary differential equation (ODE):
+<span class="math display">\[Lf(t) = \sigma_k W(t),\]</span> where <span class="math inline">\(W(t)\)</span> is a Gaussian white noise process
+and <span class="math inline">\(L\)</span> is a known <span class="math inline">\(p\)</span>th order linear differential operator.
+Given the <span class="math inline">\(L\)</span> operator, the
+covariance function <span class="math inline">\(C_k\)</span> is
+completely specified by the single standard deviation parameter <span class="math inline">\(\sigma_k\)</span>.</p>
+<p>This prior <strong>shrinks</strong> the function <span class="math inline">\(f\)</span> toward the <strong>base model</strong>
+<span class="math inline">\(S_0 = \text{Null}\{L\}\)</span>, which is
+the set of functions that satisfy <span class="math inline">\(Lf =
+0\)</span>. The smaller <span class="math inline">\(\sigma_k\)</span>
+is, the stronger the shrinkage is. By choosing different <span class="math inline">\(L\)</span> operator, this one-parameter GP family
+can produce prior that encodes different kinds of shapes. Some examples
+are discussed in <a href="https://www.tandfonline.com/doi/full/10.1080/10618600.2023.2289532">Zhang
+et.al 2023</a> and <a href="https://arxiv.org/abs/2305.09914">Zhang
+et.al 2024</a>.</p>
+<p>The above one-parameter family of GP priors is flexible and
+interpretable. By choosing the <span class="math inline">\(L\)</span>
+operator, we can choose different types of base model to shrink the
+function toward. In order words, it specifies the center of the
+shrinkage (like the null hypothesis).</p>
+<div id="example-integrated-wiener-process" class="section level3">
+<h3><em>Example: Integrated Wiener Process</em></h3>
+<p>For example, when <span class="math inline">\(L =
+\frac{d^2}{dt^2}\)</span>, the prior is called a second-order Integrated
+Wiener Process (IWP) prior, which shrinks the function toward the base
+model <span class="math inline">\(S_0 = \text{Null}\{L\} =
+\text{span}\{1,t\}\)</span>.</p>
+<p>When all the observations are Gaussian, the posterior mean <span class="math inline">\(\mathbb{E}(f|\boldsymbol{y}_i)\)</span> using the
+second order IWP is exactly the cubic smoothing spline estimate in <a href="https://www.jstor.org/stable/2239347">Kimeldorf and Wahba,
+1970</a>.</p>
+</div>
+<div id="computation-issue" class="section level3">
+<h3><em>Computation Issue</em></h3>
+<p>To simplify the posterior computation with each GP component, we
+apply the following two tricks:</p>
+<ul>
+<li><strong>Finite Element Method</strong>: The finite element method
+approximates each GP <span class="math inline">\(f(t)\)</span> as a
+linear combination of basis functions: <span class="math inline">\(f(t)
+= \sum_{l=1}^{m} w_l \psi_l(t)\)</span>, where the <span class="math inline">\(m\)</span> basis functions <span class="math inline">\(\psi_l(t)\)</span> are fixed and the weights <span class="math inline">\(\boldsymbol{w}\)</span> follow Gaussian
+distribution. This simplifies the computation of each <span class="math inline">\(p(f_i(t)|\boldsymbol{y}_i,\sigma_k)\)</span> to
+<span class="math inline">\(p(\boldsymbol{w}|\boldsymbol{y}_i,\sigma_k)\)</span>.
+The weights not only have smaller dimension than the function <span class="math inline">\(f(t)\)</span>, but also have a sparse precision
+matrix. See <a href="https://www.tandfonline.com/doi/full/10.1080/10618600.2023.2289532">Zhang
+et al, 2023</a> and <a href="https://academic.oup.com/jrsssb/article/73/4/423/7034732?login=true">Lindgren
+et.al, 2011</a> for more details.</li>
+<li><strong>Laplace Approximation</strong>: An efficient way to compute
+the posterior of the weights <span class="math inline">\(\boldsymbol{w}\)</span> is to use the Laplace
+approximation, as discussed in <a href="https://rss.onlinelibrary.wiley.com/doi/full/10.1111/j.1467-9868.2008.00700.x">Rue
+et al, 2009</a>. The Laplace approximation approximates the posterior
+distribution as a Gaussian distribution with the mode at the posterior
+mean and the covariance matrix as the inverse of the Hessian matrix at
+the mode: <span class="math inline">\(p_G(\boldsymbol{w}|\boldsymbol{y},
+\sigma_k) = \mathcal{N}(\hat{\boldsymbol{w}}, \hat{V})\)</span>.</li>
+</ul>
+<p>In this way, the complicated integration required in the posterior
+computation is replaced by a simpler optimization task with sparse
+matrices. When the observations are Gaussian, the Laplace approximation
+is exact. When the observations are not Gaussian, the Laplace
+approximation provides reasonable approximation with very small amount
+of computation cost.</p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

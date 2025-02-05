@@ -1,0 +1,91 @@
+---
+title: 'Simulation: Pollution (Package)'
+output: html_document
+date: "2024-12-28"
+---
+
+```{r}
+library(BayesGP)
+library(TMB)
+library(Matrix)
+library(splines)
+library(parallel)
+library(ggplot2)
+library(reshape2)
+library(mixsqp)
+library(tidyverse)
+library(fashr)
+function_dir <- paste0("/Users/ziangzhang/Desktop/FASH/FASHresultsummary", "/code/function")
+data_dir <- paste0("/Users/ziangzhang/Desktop/FASH/FASHresultsummary", "/data/expression_data")
+result_dir <- paste0("/Users/ziangzhang/Desktop/FASH/FASHresultsummary", "/output/expression")
+source(paste0(function_dir, "/functions_fitting_Poisson_expression.R"))
+num_cores <- 4
+betaprec <- 1e-6
+```
+
+```{r}
+all_data_names <- list.files(data_dir)
+#### let's consider one cell-line for simplicity
+load(paste0(data_dir, "/", all_data_names[1]))
+str(expression_data_one_cell_line) 
+```
+
+```{r echo=FALSE}
+num_knots <- 16
+p <- 2
+datasets <- list()
+all_gene <- unique(expression_data_one_cell_line$Gene_id)
+load(paste0(result_dir, "/datasets.rda"))
+```
+
+Compute the library sizes:
+```{r}
+size_vec <- numeric(length = nrow(datasets[[1]]))
+for (i in 1:length(size_vec)) {
+  Day <- datasets[[1]]$Day[i]
+  all_counts <-
+    unlist(lapply(datasets, function(x) {
+      x$y[x$Day == Day]
+    }))
+  size_vec[i] <- sum(all_counts)
+}
+log_size_vec <- log(size_vec)
+```
+
+```{r}
+# add log_size_vec as offset to each of the datasets
+for (i in 1:length(datasets)) {
+  datasets[[i]]$offset <- log_size_vec
+}
+```
+
+```{r}
+psd_vec <- sort(unique(c(0, seq(0,3, length.out = 31))))
+
+fashr_result1 <- fashr(data_list = datasets, Y = "y", smooth_var = "x", offset = "offset", 
+                      likelihood = "poisson", order = 2, num_basis = num_knots,
+                      grid = psd_vec, pred_step = 1, betaprec = betaprec,
+                      num_cores = num_cores, verbose = TRUE)
+```
+
+
+```{r}
+# add log_size_vec as offset to each of the datasets
+for (i in 1:length(datasets)) {
+  datasets[[i]]$offset <- log_size_vec/length(datasets)
+}
+
+fashr_result2 <- fashr(data_list = datasets, Y = "y", smooth_var = "x", offset = "offset", 
+                      likelihood = "poisson", order = 2, num_basis = num_knots,
+                      grid = psd_vec, pred_step = 1, betaprec = betaprec,
+                      num_cores = num_cores, verbose = TRUE)
+
+fashr_result3 <- fashr(data_list = datasets, Y = "y", smooth_var = "x", offset = 0, 
+                      likelihood = "poisson", order = 2, num_basis = num_knots,
+                      grid = psd_vec, pred_step = 1, betaprec = betaprec,
+                      num_cores = num_cores, verbose = TRUE)
+```
+
+
+
+
