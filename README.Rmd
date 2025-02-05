@@ -1,0 +1,100 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# fashr
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of fashr is to implement the functional adaptive shrinkage through empirical Bayes.
+
+## Installation
+
+You can install the development version of fashr from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("AgueroZZ/fash_software")
+```
+
+## Example
+
+This is a basic example, which tries to identify non-linear functions in a set of datasets.
+We use `order = 2` to apply the second order IWP, which has a base model $S_0$ being the space of linear functions.
+
+```{r example}
+library(fashr)
+
+# Simulate five datasets
+set.seed(123)
+datasets <- list()
+for (i in 1:20) {
+  n <- 50
+  t <- seq(0, 5, length.out = n)
+  sd <- sample(c(2, 1), size = n, replace = TRUE)
+  u <- runif(1); if (u < 0.5) {f <- function(t) 3*cos(t)} else {f <- function(t) (t)}
+  y <- f(t) + rnorm(n, sd = 0.5)
+  datasets[[i]] <- data.frame(t = t, y = y, sd = sd)
+}
+
+# Fit the model
+fashr_fit <- fashr(Y = "y", smooth_var = "t", S = "sd", data = datasets, 
+                  order = 2, likelihood = "gaussian", verbose = TRUE)
+```
+
+```{r}
+fashr_fit
+```
+
+Take a look at the structure plot ordered by local false discovery rate:
+
+```{r}
+plot(fashr_fit, ordering = "lfdr")
+```
+
+Obtain the posterior summary of the function for the first dataset:
+
+```{r}
+fitted <- predict(fashr_fit, index = 1)
+str(fitted)
+```
+
+Obtain the posterior samples of the function:
+
+```{r}
+fitted_samps <- predict(fashr_fit, index = 1, only.samples = TRUE, M = 30)
+str(fitted_samps)
+```
+
+```{r}
+plot(datasets[[1]]$t, datasets[[1]]$y, type = "p", col = "black", ylab = "y", xlab = "t")
+lines(fitted$x, fitted$mean, col = "red")
+polygon(c(fitted$x, rev(fitted$x)), c(fitted$lower, rev(fitted$upper)), col = rgb(1, 0, 0, 0.2), border = NA)
+matlines(fitted$x, fitted_samps[, 1:5], col = "blue", lty = 2, lwd = 0.5)
+```
+
+
+Compute the FDR, and highlight the datasets with FDR < 0.1:
+
+```{r}
+fdr_result <- fdr_control(fashr_fit, alpha = 0.1, plot = TRUE)
+```
+
+```{r}
+str(fdr_result)
+```
+
+
+

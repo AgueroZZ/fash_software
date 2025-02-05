@@ -188,11 +188,11 @@ plot(fash_fit)
 ```
 
 The `plot` function automatically plots the posterior weights of the GP components, with darker colors indicating larger PSD (e.g. larger $\sigma_k$). 
-The observations are ordered based on posterior mean of the PSD (i.e. $\sigma_k$) in descending order from top to bottom. 
-We could also customize the plot in various different ways using `fash_structure_plot`:
+By default, the structure plot is ordered by the original order of the datasets. 
+We could also customize the plot in various different ways:
 
 ```{r}
-fash_structure_plot(fash_fit, discrete = TRUE, ordering = "lfdr")
+plot(fash_fit, discrete = TRUE, ordering = "lfdr")
 ```
 
 The above structure plot ignores the continuous structure of the PSD (`discrete = TRUE`) and orders the observations based on the local false discovery rate (LFDR) of $p(\beta_i(t)\in S_0|\boldsymbol{Y}, \hat{g})$.
