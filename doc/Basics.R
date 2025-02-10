@@ -139,7 +139,7 @@ fash_fit
 plot(fash_fit)
 
 ## -----------------------------------------------------------------------------
-fash_structure_plot(fash_fit, discrete = TRUE, ordering = "lfdr")
+plot(fash_fit, discrete = TRUE, ordering = "lfdr")
 
 ## -----------------------------------------------------------------------------
 fdr_result <- fdr_control(fash_fit, alpha = 0.1, plot = TRUE)
