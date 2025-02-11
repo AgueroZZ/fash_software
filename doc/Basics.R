@@ -8,12 +8,12 @@ simulate_data <- function(g, sd=0.1){
   x <- 1:16
   # simulate sd from sampling from sd with replacement
   sd <- sample(x = sd, size = length(x), replace = TRUE)
-  y <- g(x) + rnorm(n = length(x), sd = sd)
-  return(data.frame(x=x, y=y,truef = g(x), sd = sd))
+  y <- g(x) + rnorm(n = length(x), sd = sd, mean = 0)
+  return(data.frame(x = x, y = y, truef = g(x), sd = sd))
 }
 
-### Write a function, to simulate a random function as g using cubic B-spline basis representation with random basis weights:
-simulate_nonlinear_function <- function(n_basis = 20, sd_function = 1, sd_poly = 0.1) {
+### Write a function, to simulate a random function from IWP
+simulate_nonlinear_function <- function(n_basis = 20, sd_function = 1, sd_poly = 0.1, p = 1, pred_step = 16) {
   if(n_basis < 3) stop("n_basis must be greater than 3")
   # Define the range and knots for the B-spline basis
   x_min <- 0
@@ -23,8 +23,6 @@ simulate_nonlinear_function <- function(n_basis = 20, sd_function = 1, sd_poly =
   knots <- seq(x_min, x_max, length.out = n_basis - 3)
 
   # Generate random weights for the basis functions
-  pred_step = 1
-  p = 1
   sd_function <- sd_function/sqrt((pred_step^((2 * p) - 1)) / (((2 * p) - 1) * (factorial(p - 1)^2)))
   prec_mat <- (1/sd_function^2) * BayesGP:::compute_weights_precision_helper(knots)
   weights <- as.vector(LaplacesDemon::rmvnp(n = 1, mu = rep(0, ncol(prec_mat)), Omega = prec_mat))
@@ -43,10 +41,9 @@ simulate_nonlinear_function <- function(n_basis = 20, sd_function = 1, sd_poly =
 }
 
 ### Write a function, to simulate a random function as g using constant and linear function
-simulate_linear_function <- function(sd_poly = 1){
+simulate_linear_function <- function(sd_poly = 1, pred_step = 16){
   beta0 <- rnorm(1, mean = 0, sd = sd_poly)
-  # beta1 <- rnorm(1, mean = 0, sd = sd_poly)
-  beta1 <- sample(c(-0.5,0.5),1)
+  beta1 <- rnorm(1, mean = 0, sd = sd_poly/pred_step)
   function(x_new) {
     return(beta0 + beta1 * x_new)
   }
@@ -71,16 +68,15 @@ simulate_nondynamic_function <- function(sd_poly = 1){
 }
 
 ### simulate process: first draw a random function g, then draw a dataset from g
-simulate_process <- function(n_basis = 50, sd_fun = 1, sd = 0.1, sd_poly = 0.1, type = "nonlinear"){
+simulate_process <- function(n_basis = 50, sd_fun = 1, sd = 0.1, sd_poly = 0.1, type = "nonlinear", p = 1, pred_step = 16, normalize = FALSE){
   if(type == "linear"){
     g <- simulate_linear_function(sd_poly = sd_poly)
-
   }
   else if(type == "quadratic"){
     g <- simulate_quadratic_function(sd_poly = sd_poly)
   }
   else if(type == "nonlinear") {
-    g <- simulate_nonlinear_function(n_basis = n_basis, sd_function = sd_fun, sd_poly = sd_poly)
+    g <- simulate_nonlinear_function(n_basis = n_basis, sd_function = sd_fun, sd_poly = sd_poly, p = p, pred_step = pred_step)
   }
   else if(type == "nondynamic") {
     g <- simulate_nondynamic_function(sd_poly = sd_poly)
@@ -89,35 +85,96 @@ simulate_process <- function(n_basis = 50, sd_fun = 1, sd = 0.1, sd_poly = 0.1, 
     stop("type must be one of 'linear', 'nonlinear', 'nondynamic'")
   }
   
-  return(simulate_data(g = g, sd = sd))
+  if(normalize){
+    x_vec <- seq(0, 16, length.out = 100)
+    if(diff(range(g(x_vec))) > 2){
+      gScale <- function(x) ((g(x) - min(g(x_vec)))/diff(range(g(x_vec))))
+      gFinal <- function(x) gScale(x) - mean(gScale(x_vec))
+    }
+    else{
+      gFinal <- function(x) g(x) - mean(g(x_vec))
+    }
+  }
+  else{
+    gFinal <- g
+  }
+  
+  return(simulate_data(g = gFinal, sd = sd))
 }
 
+# Plot power against FDR
+power_versus_fdr <- function(fdr_result, true_indices, fdr_vec = seq(0.01,0.99,by = 0.01), plot = TRUE){
+  power <- numeric(length(fdr_vec))
+  for (i in 1:length(fdr_vec)){
+    significant_indices <- fdr_result$index[fdr_result$FDR < fdr_vec[i]]
+    power[i] <- length(intersect(significant_indices, true_indices))/length(true_indices)
+  }
+  result <- data.frame(fdr = fdr_vec, power = power)
+  if (plot){
+    plot(fdr_vec, power, type = "l", xlab = "FDR", ylab = "Power")
+  }
+  return(result)
+}
+
+# Plot calibration of FDR
+calibration_fdr <- function(fdr_result, true_indices, fdr_vec = seq(0.01,0.99,by = 0.01), plot = TRUE){
+  true_discovery_rate <- numeric(length(fdr_vec))
+  for (i in 1:length(fdr_vec)){
+    significant_indices <- fdr_result$index[fdr_result$FDR < fdr_vec[i]]
+    true_discovery_rate[i] <- length(intersect(significant_indices, true_indices))/length(significant_indices)
+  }
+  result <- data.frame(fdr = fdr_vec, Tfdr = (1 - true_discovery_rate))
+  if (plot){
+    plot(Tfdr ~ fdr_vec, type = "l", xlab = "nominal FDR", ylab = "observed FDR", data = result)
+    # add 45 degree line
+    lines(c(0,1), c(0,1), col = "red", lty = 2)
+  }
+  return(result)
+}
 
 ## ----echo=FALSE---------------------------------------------------------------
-num_cores <- 4
 set.seed(1234)
 N <- 100
 propA <- 0.5; propB <- 0.3; propC <- 0.2
-sigma_vec <- c(0.1, 0.3, 0.5, 1)
+sigma_vec <- c(0.05, 0.1, 0.2)
 
 sizeA <- N * propA
-data_sim_list_A <- lapply(1:sizeA, function(i) simulate_process(sd_poly = 1, type = "nondynamic", sd = sigma_vec))
+data_sim_list_A <- lapply(1:sizeA, function(i) simulate_process(sd_poly = 0.2, type = "nondynamic", sd = sigma_vec, normalize = TRUE))
 
 sizeB <- N * propB
 if(sizeB > 0){
-data_sim_list_B <- lapply(1:sizeB, function(i) simulate_process(sd_poly = 0.5, type = "linear", sd = sigma_vec))
+data_sim_list_B <- lapply(1:sizeB, function(i) simulate_process(sd_poly = 1, type = "linear", sd = sigma_vec, normalize = TRUE))
 
 }else{
   data_sim_list_B <- list()
 }
 
 sizeC <- N * propC
-data_sim_list_C <- lapply(1:sizeC, function(i) simulate_process(sd_poly = 0.1, type = "nonlinear", sd = sigma_vec, sd_fun = 1))
+data_sim_list_C <- lapply(1:sizeC, function(i) simulate_process(sd_poly = 0, type = "nonlinear", sd = sigma_vec, sd_fun = 1, p = 1, normalize = TRUE))
 
 datasets <- c(data_sim_list_A, data_sim_list_B, data_sim_list_C)
-sigma <- unlist(lapply(datasets, function(x) unique(x$sd)))
-
 labels <- c(rep("A", sizeA), rep("B", sizeB), rep("C", sizeC))
+indices_A <- 1:sizeA
+indices_B <- (sizeA + 1):(sizeA + sizeB)
+indices_C <- (sizeA + sizeB + 1):(sizeA + sizeB + sizeC)
+
+par(mfrow = c(3, 3))
+for(i in indices_A[1:3]){
+  plot(datasets[[i]]$x, datasets[[i]]$y, type = "p", col = "black", lwd = 2, xlab = "Time", ylab = "Effect Size", ylim = c(-1.5, 1.5), main = paste("Category A: ", i))
+  lines(datasets[[i]]$x, datasets[[i]]$truef, col = "red", lwd = 1)
+}
+
+for(i in indices_B[1:3]){
+  plot(datasets[[i]]$x, datasets[[i]]$y, type = "p", col = "black", lwd = 2, xlab = "Time", ylab = "Effect Size", ylim = c(-1.5, 1.5), main = paste("Category B: ", i))
+  lines(datasets[[i]]$x, datasets[[i]]$truef, col = "red", lwd = 1)
+}
+
+for(i in indices_C[1:3]){
+  plot(datasets[[i]]$x, datasets[[i]]$y, type = "p", col = "black", lwd = 2, xlab = "Time", ylab = "Effect Size", ylim = c(-1.5, 1.5), main = paste("Category C: ", i))
+  lines(datasets[[i]]$x, datasets[[i]]$truef, col = "red", lwd = 1)
+}
+
+par(mfrow = c(1, 1))
 
 ## -----------------------------------------------------------------------------
 length(datasets)
@@ -128,12 +185,13 @@ table(labels)
 
 ## -----------------------------------------------------------------------------
 fash_fit <- fashr(Y = "y", smooth_var = "x", S = "sd", data_list = datasets, 
-                  likelihood = "gaussian", order = 2,
-                  num_cores = 2, num_basis = 20, grid = seq(0, 2, length.out = 20),
+                  likelihood = "gaussian", order = 2, pred_step = 1,
+                  num_cores = 2, num_basis = 20, grid = seq(0, 1, by = 0.025),
                   verbose = TRUE)
+fash_fit
 
 ## -----------------------------------------------------------------------------
-fash_fit
+fash_fit$prior_weights
 
 ## -----------------------------------------------------------------------------
 plot(fash_fit)
@@ -145,13 +203,13 @@ plot(fash_fit, discrete = TRUE, ordering = "lfdr")
 fdr_result <- fdr_control(fash_fit, alpha = 0.1, plot = TRUE)
 
 ## -----------------------------------------------------------------------------
-detected_indices <- fdr_result$fdr_results$index[1:22]
+detected_indices <- fdr_result$fdr_results$index[fdr_result$fdr_results$FDR < 0.1]
 
 ## -----------------------------------------------------------------------------
-sum(labels[detected_indices] == "C")/20
+sum(labels[detected_indices] == "C")/sizeC
 
 ## -----------------------------------------------------------------------------
-sum(labels[detected_indices] != "C")/22
+sum(labels[detected_indices] != "C")/length(detected_indices)
 
 ## -----------------------------------------------------------------------------
 fitted_beta <- predict(fash_fit, index = detected_indices[1])
@@ -170,24 +228,26 @@ str(fitted_beta_samples)
 ## -----------------------------------------------------------------------------
 plot(datasets[[detected_indices[1]]]$x, datasets[[detected_indices[1]]]$y, type = "p", col = "black", lwd = 2, xlab = "Time", ylab = "Effect Size")
 lines(fitted_beta_new$x, fitted_beta_new$mean, col = "red", lwd = 2)
+lines(datasets[[detected_indices[1]]]$x, datasets[[detected_indices[1]]]$truef, col = "black", lwd = 1, lty = 2)
 polygon(c(fitted_beta_new$x, rev(fitted_beta_new$x)), c(fitted_beta_new$lower, rev(fitted_beta_new$upper)), col = rgb(1, 0, 0, 0.2), border = NA)
 
 ## -----------------------------------------------------------------------------
 fash_fit_2 <- fashr(Y = "y", smooth_var = "x", S = "sd", data_list = datasets, 
-                  likelihood = "gaussian", order = 1,
-                  num_cores = 2, num_basis = 20, grid = seq(0, 2, length.out = 20),
+                  likelihood = "gaussian", order = 1, pred_step = 1,
+                  num_cores = 2, num_basis = 20, grid = seq(0, 1, by = 0.025),
                   verbose = TRUE)
+fash_fit_2
 
 ## -----------------------------------------------------------------------------
-fash_structure_plot(fash_fit_2, discrete = TRUE, ordering = "lfdr")
+plot(fash_fit_2, discrete = TRUE, ordering = "mean")
 
 ## -----------------------------------------------------------------------------
 fdr_result_2 <- fdr_control(fash_fit_2, alpha = 0.1, plot = TRUE)
-detected_indices_2 <- fdr_result_2$fdr_results$index[1:55]
+detected_indices_2 <- fdr_result_2$fdr_results$index[fdr_result_2$fdr_results$FDR < 0.1]
 
 ## -----------------------------------------------------------------------------
-sum(labels[detected_indices_2] != "A")/50
+sum(labels[detected_indices_2] != "A")/(sizeB + sizeC)
 
 ## -----------------------------------------------------------------------------
-sum(labels[detected_indices_2] == "A")/55
+sum(labels[detected_indices_2] == "A")/length(detected_indices_2)
 
