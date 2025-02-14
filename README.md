@@ -42,21 +42,21 @@ for (i in 1:20) {
 }
 
 # Fit the model
-fashr_fit <- fashr(Y = "y", smooth_var = "t", S = "sd", data = datasets, 
+fash_fit <- fash(Y = "y", smooth_var = "t", S = "sd", data = datasets, 
                   order = 2, likelihood = "gaussian", verbose = TRUE)
 #> Starting data setup...
 #> Completed data setup in 0.02 seconds.
 #> Starting likelihood computation...
 #>   |                                                                              |                                                                      |   0%  |                                                                              |====                                                                  |   5%  |                                                                              |=======                                                               |  10%  |                                                                              |==========                                                            |  15%  |                                                                              |==============                                                        |  20%  |                                                                              |==================                                                    |  25%  |                                                                              |=====================                                                 |  30%  |                                                                              |========================                                              |  35%  |                                                                              |============================                                          |  40%  |                                                                              |================================                                      |  45%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  55%  |                                                                              |==========================================                            |  60%  |                                                                              |==============================================                        |  65%  |                                                                              |=================================================                     |  70%  |                                                                              |====================================================                  |  75%  |                                                                              |========================================================              |  80%  |                                                                              |============================================================          |  85%  |                                                                              |===============================================================       |  90%  |                                                                              |==================================================================    |  95%  |                                                                              |======================================================================| 100%
-#> Completed likelihood computation in 3.36 seconds.
+#> Completed likelihood computation in 3.39 seconds.
 #> Starting empirical Bayes estimation...
 #> Completed empirical Bayes estimation in 0.05 seconds.
-#> FASHR object created successfully.
+#> fash object created successfully.
 ```
 
 ``` r
-fashr_fit
-#> Fitted FASHR Object
+fash_fit
+#> Fitted fash Object
 #> -------------------
 #> Number of datasets: 20
 #> Likelihood: gaussian
@@ -67,7 +67,7 @@ fashr_fit
 Take a look at the structure plot ordered by local false discovery rate:
 
 ``` r
-plot(fashr_fit, ordering = "lfdr")
+plot(fash_fit, ordering = "lfdr")
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
@@ -75,7 +75,7 @@ plot(fashr_fit, ordering = "lfdr")
 Obtain the posterior summary of the function for the first dataset:
 
 ``` r
-fitted <- predict(fashr_fit, index = 1)
+fitted <- predict(fash_fit, index = 1)
 str(fitted)
 #> 'data.frame':    50 obs. of  5 variables:
 #>  $ x     : num  0 0.102 0.204 0.306 0.408 ...
@@ -88,7 +88,7 @@ str(fitted)
 Obtain the posterior samples of the function:
 
 ``` r
-fitted_samps <- predict(fashr_fit, index = 1, only.samples = TRUE, M = 30)
+fitted_samps <- predict(fash_fit, index = 1, only.samples = TRUE, M = 30)
 str(fitted_samps)
 #>  num [1:50, 1:30] 3.35 3.12 2.96 2.78 2.56 ...
 ```
@@ -105,7 +105,7 @@ matlines(fitted$x, fitted_samps[, 1:5], col = "blue", lty = 2, lwd = 0.5)
 Compute the FDR, and highlight the datasets with FDR \< 0.1:
 
 ``` r
-fdr_result <- fdr_control(fashr_fit, alpha = 0.1, plot = TRUE)
+fdr_result <- fdr_control(fash_fit, alpha = 0.1, plot = TRUE)
 #> 5 datasets are significant at alpha level 0.10. Total datasets tested: 20.
 ```
 
@@ -115,6 +115,6 @@ fdr_result <- fdr_control(fashr_fit, alpha = 0.1, plot = TRUE)
 str(fdr_result)
 #> List of 1
 #>  $ fdr_results:'data.frame': 20 obs. of  2 variables:
-#>   ..$ index: int [1:20] 20 19 18 17 16 15 14 13 12 11 ...
-#>   ..$ FDR  : num [1:20] 3.33e-16 3.89e-16 6.96e-12 2.86e-11 4.14e-09 ...
+#>   ..$ index: int [1:20] 4 13 17 12 1 15 9 3 20 14 ...
+#>   ..$ FDR  : num [1:20] 3.18e-16 3.88e-16 6.96e-12 2.86e-11 4.14e-09 ...
 ```

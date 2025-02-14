@@ -50,31 +50,31 @@ for (i in 1:20) {
 }
 
 # Fit the model
-fashr_fit <- fashr(Y = "y", smooth_var = "t", S = "sd", data = datasets, 
+fash_fit <- fash(Y = "y", smooth_var = "t", S = "sd", data = datasets, 
                   order = 2, likelihood = "gaussian", verbose = TRUE)
 ```
 
 ```{r}
-fashr_fit
+fash_fit
 ```
 
 Take a look at the structure plot ordered by local false discovery rate:
 
 ```{r}
-plot(fashr_fit, ordering = "lfdr")
+plot(fash_fit, ordering = "lfdr")
 ```
 
 Obtain the posterior summary of the function for the first dataset:
 
 ```{r}
-fitted <- predict(fashr_fit, index = 1)
+fitted <- predict(fash_fit, index = 1)
 str(fitted)
 ```
 
 Obtain the posterior samples of the function:
 
 ```{r}
-fitted_samps <- predict(fashr_fit, index = 1, only.samples = TRUE, M = 30)
+fitted_samps <- predict(fash_fit, index = 1, only.samples = TRUE, M = 30)
 str(fitted_samps)
 ```
 
@@ -89,7 +89,7 @@ matlines(fitted$x, fitted_samps[, 1:5], col = "blue", lty = 2, lwd = 0.5)
 Compute the FDR, and highlight the datasets with FDR < 0.1:
 
 ```{r}
-fdr_result <- fdr_control(fashr_fit, alpha = 0.1, plot = TRUE)
+fdr_result <- fdr_control(fash_fit, alpha = 0.1, plot = TRUE)
 ```
 
 ```{r}

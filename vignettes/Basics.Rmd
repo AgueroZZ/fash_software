@@ -223,7 +223,7 @@ The computation could be paralleled by specifying the number of cores (`num_core
 Let's first use the IWP2 model (`order = 2`), and try to detect the dynamic eQTLs with non-linear dynamics (Category C).
 
 ```{r}
-fash_fit <- fashr(Y = "y", smooth_var = "x", S = "sd", data_list = datasets, 
+fash_fit <- fash(Y = "y", smooth_var = "x", S = "sd", data_list = datasets, 
                   likelihood = "gaussian", order = 2, pred_step = 1,
                   num_cores = 2, num_basis = 20, grid = seq(0, 1, by = 0.025),
                   verbose = TRUE)
@@ -322,7 +322,7 @@ What if we are interested in detecting any dynamic eQTLs, not just the non-linea
 We can specify the order of the IWP model to be 1, which will setup a base model $S_0$ as the space of constant functions.
 
 ```{r}
-fash_fit_2 <- fashr(Y = "y", smooth_var = "x", S = "sd", data_list = datasets, 
+fash_fit_2 <- fash(Y = "y", smooth_var = "x", S = "sd", data_list = datasets, 
                   likelihood = "gaussian", order = 1, pred_step = 1,
                   num_cores = 2, num_basis = 20, grid = seq(0, 1, by = 0.025),
                   verbose = TRUE)

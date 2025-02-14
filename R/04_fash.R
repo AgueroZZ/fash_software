@@ -1,7 +1,7 @@
 #' Perform Full FASH Analysis
 #'
 #' This function performs the full FASH pipeline, including data setup, likelihood computation,
-#' empirical Bayes estimation, and outputs a structured `fashr` object.
+#' empirical Bayes estimation, and outputs a structured `fash` object.
 #'
 #' @param Y Either a numeric matrix of response variables or a character string specifying the column name in `data_list` for response variables.
 #' @param smooth_var A numeric matrix, vector, or a character string specifying the column name in `data_list` for smoothing variables.
@@ -19,7 +19,7 @@
 #' @param num_cores An integer specifying the number of cores to use for parallel processing. Default is 1.
 #' @param verbose A logical value. If `TRUE`, shows progress messages and timing for each step. Default is `FALSE`.
 #'
-#' @return A `fashr` object containing:
+#' @return A `fash` object containing:
 #'   \describe{
 #'     \item{\code{prior_weights}}{Estimated prior weights for PSD values.}
 #'     \item{\code{posterior_weights}}{Posterior weight matrix of PSD values.}
@@ -27,6 +27,8 @@
 #'     \item{\code{lfdr}}{Local false discovery rate for each dataset.}
 #'     \item{\code{settings}}{A list of settings used in the FASH pipeline.}
 #'     \item{\code{fash_data}}{A structured list of data components.}
+#'     \item{\code{L_matrix}}{Likelihood matrix used in the FASH pipeline.}
+#'     \item{\code{eb_result}}{Empirical Bayes estimation results.}
 #'   }
 #'
 #' @examples
@@ -35,11 +37,11 @@
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
 #' )
 #' grid <- seq(0, 2, length.out = 10)
-#' result <- fashr(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", grid = grid, likelihood = "poisson", verbose = TRUE)
+#' result <- fash(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", grid = grid, likelihood = "poisson", verbose = TRUE)
 #' print(result)
 #'
 #' @export
-fashr <- function(Y = NULL, smooth_var = NULL, offset = 0, S = NULL, Omega = NULL, data_list = NULL, grid = seq(0, 2, length.out = 10),
+fash <- function(Y = NULL, smooth_var = NULL, offset = 0, S = NULL, Omega = NULL, data_list = NULL, grid = seq(0, 2, length.out = 10),
                   likelihood = "gaussian", num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1, penalty = 1,
                   num_cores = 1, verbose = FALSE) {
   # Helper function for timing and verbose output
@@ -80,16 +82,20 @@ fashr <- function(Y = NULL, smooth_var = NULL, offset = 0, S = NULL, Omega = NUL
   })
 
   # Step 4: Compute additional metrics
-  # suppressWarnings is used to avoid warnings from fash_post_ordering
-  ordering_lfdr <- suppressWarnings(fash_post_ordering(eb_result, ordering = "lfdr"))
+  # if psd_value zero is included:
+  if(0 %in% eb_result$prior_weight$psd){
+    lfdr <- eb_result$posterior_weight[, which(eb_result$prior_weight$psd == 0)]
+  }else{
+    lfdr <- rep(0, nrow(eb_result$posterior_weight))
+  }
 
-  # Step 5: Create and return the fashr object
+  # Step 5: Create and return the fash object
   result <- structure(
     list(
       prior_weights = eb_result$prior_weight,
       posterior_weights = eb_result$posterior_weight,
       psd_grid = grid,
-      lfdr = (1 - ordering_lfdr$ordered_metrics),
+      lfdr = lfdr,
       settings = list(
         num_basis = num_basis,
         betaprec = betaprec,
@@ -98,12 +104,14 @@ fashr <- function(Y = NULL, smooth_var = NULL, offset = 0, S = NULL, Omega = NUL
         likelihood = likelihood,
         penalty = penalty
       ),
-      fash_data = fash_data
+      fash_data = fash_data,
+      L_matrix = L_matrix,
+      eb_result = eb_result
     ),
-    class = "fashr"
+    class = "fash"
   )
 
-  if (verbose) cat("FASHR object created successfully.\n")
+  if (verbose) cat("fash object created successfully.\n")
 
   return(result)
 }
@@ -117,9 +125,9 @@ fashr <- function(Y = NULL, smooth_var = NULL, offset = 0, S = NULL, Omega = NUL
 #' Perform False Discovery Rate (FDR) Control
 #'
 #' This function performs hypothesis testing by controlling the False Discovery Rate (FDR) based on the
-#' local false discovery rate (lfdr) stored in the `fashr` object.
+#' local false discovery rate (lfdr) stored in the `fash` object.
 #'
-#' @param fashr_obj A `fashr` object containing the results of the FASH pipeline, including `lfdr`.
+#' @param fash_obj A `fash` object containing the results of the FASH pipeline, including `lfdr`.
 #' @param alpha A numeric value specifying the significance level for hypothesis testing. Default is `0.05`.
 #' @param plot A logical value. If `TRUE`, plots the sorted FDR values with a horizontal line at the `alpha` level. Default is `FALSE`.
 #'
@@ -142,15 +150,15 @@ fashr <- function(Y = NULL, smooth_var = NULL, offset = 0, S = NULL, Omega = NUL
 #' S <- list(rep(0.5, 5), rep(0.8, 5), rep(0.6, 5), rep(0.7, 5))
 #' Omega <- list(diag(1/0.5^2), diag(1/0.8^2), diag(1/0.6^2), diag(1/0.7^2))
 #' grid <- seq(0, 2, length.out = 10)
-#' fashr_obj <- fashr(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", S = S, Omega = Omega, grid = grid, likelihood = "gaussian", verbose = TRUE)
-#' fdr_control(fashr_obj, alpha = 0.05, plot = TRUE)
+#' fash_obj <- fash(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", S = S, Omega = Omega, grid = grid, likelihood = "gaussian", verbose = TRUE)
+#' fdr_control(fash_obj, alpha = 0.05, plot = TRUE)
 #'
 #' @export
-fdr_control <- function(fashr_obj, alpha = 0.05, plot = FALSE) {
+fdr_control <- function(fash_obj, alpha = 0.05, plot = FALSE) {
   # Extract the local false discovery rates (lfdr)
-  lfdr <- fashr_obj$lfdr
+  lfdr <- fash_obj$lfdr
   if (is.null(lfdr)) {
-    stop("The `fashr` object does not contain local false discovery rates (lfdr).")
+    stop("The `fash` object does not contain local false discovery rates (lfdr).")
   }
 
   # Sort lfdr and compute the FDR for each dataset
@@ -195,12 +203,12 @@ fdr_control <- function(fashr_obj, alpha = 0.05, plot = FALSE) {
 
 
 
-#' Plot Method for FASHR Objects
+#' Plot Method for fash Objects
 #'
-#' Generates a structure plot of the posterior weights stored in the `fashr` object,
+#' Generates a structure plot of the posterior weights stored in the `fash` object,
 #' visualizing the distribution of posterior weights across datasets and PSD values.
 #'
-#' @param x A `fashr` object containing the results of the FASH pipeline.
+#' @param x A `fash` object containing the results of the FASH pipeline.
 #' @param ordering A character string specifying the method for reordering datasets (e.g., "mean" or "lfdr").
 #'
 #'   - `"mean"`: Reorder by the mean of the posterior PSD.
@@ -221,14 +229,14 @@ fdr_control <- function(fashr_obj, alpha = 0.05, plot = FALSE) {
 #' S <- NULL
 #' Omega <- NULL
 #' grid <- seq(0, 2, length.out = 10)
-#' fashr_obj <- fashr(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", S = S, Omega = Omega, grid = grid, likelihood = "poisson", verbose = TRUE)
-#' plot(fashr_obj, ordering = "mean", discrete = TRUE)
+#' fash_obj <- fash(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", S = S, Omega = Omega, grid = grid, likelihood = "poisson", verbose = TRUE)
+#' plot(fash_obj, ordering = "mean", discrete = TRUE)
 #'
 #' @export
-plot.fashr <- function(x, ordering = NULL, discrete = FALSE, ...) {
+plot.fash <- function(x, ordering = NULL, discrete = FALSE, ...) {
   # Validate input
-  if (!inherits(x, "fashr")) {
-    stop("Input must be a `fashr` object.")
+  if (!inherits(x, "fash")) {
+    stop("Input must be a `fash` object.")
   }
 
   # Generate the structure plot
@@ -248,11 +256,11 @@ plot.fashr <- function(x, ordering = NULL, discrete = FALSE, ...) {
 
 
 
-#' Predict Method for FASHR Objects
+#' Predict Method for fash Objects
 #'
-#' Generates posterior predictions for a specific dataset from a `fashr` object using Bayesian Model Averaging.
+#' Generates posterior predictions for a specific dataset from a `fash` object using Bayesian Model Averaging.
 #'
-#' @param object A `fashr` object containing the results of the FASH pipeline.
+#' @param object A `fash` object containing the results of the FASH pipeline.
 #' @param index An integer specifying the dataset index to predict. Default is `1`.
 #' @param smooth_var A numeric vector specifying refined x values for prediction. If `NULL`, uses the x values from the model fit. Default is `NULL`.
 #' @param only.samples A logical value. If `TRUE`, returns posterior samples. If `FALSE`, summarizes the samples into mean and 95 percent confidence intervals. Default is `FALSE`.
@@ -281,29 +289,29 @@ plot.fashr <- function(x, ordering = NULL, discrete = FALSE, ...) {
 #' S <- list(rep(0.5, 5), rep(0.8, 5))
 #' Omega <- list(diag(5), diag(5))
 #' grid <- seq(0, 2, length.out = 10)
-#' fashr_obj <- fashr(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", S = S, Omega = Omega, grid = grid, likelihood = "poisson", verbose = TRUE)
-#' predict(fashr_obj, index = 1, smooth_var = seq(1, 5, length.out = 50), only.samples = FALSE)
+#' fash_obj <- fash(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", S = S, Omega = Omega, grid = grid, likelihood = "poisson", verbose = TRUE)
+#' predict(fash_obj, index = 1, smooth_var = seq(1, 5, length.out = 50), only.samples = FALSE)
 #'
 #' # Example 2: Generate posterior samples
-#' samples <- predict(fashr_obj, index = 1, smooth_var = seq(1, 5, length.out = 50), only.samples = TRUE)
+#' samples <- predict(fash_obj, index = 1, smooth_var = seq(1, 5, length.out = 50), only.samples = TRUE)
 #' dim(samples)  # Rows: refined_x, Columns: posterior samples
 #'
 #' # Example 3: Use original x values for prediction
-#' summary <- predict(fashr_obj, index = 1, smooth_var = NULL, only.samples = FALSE)
+#' summary <- predict(fash_obj, index = 1, smooth_var = NULL, only.samples = FALSE)
 #' head(summary)
 #'
 #' # Example 4: Increase number of posterior samples
-#' samples <- predict(fashr_obj, index = 1, smooth_var = seq(1, 5, length.out = 50), only.samples = TRUE, M = 5000)
-#' summary <- predict(fashr_obj, index = 1, smooth_var = seq(1, 5, length.out = 50), only.samples = FALSE, M = 5000)
+#' samples <- predict(fash_obj, index = 1, smooth_var = seq(1, 5, length.out = 50), only.samples = TRUE, M = 5000)
+#' summary <- predict(fash_obj, index = 1, smooth_var = seq(1, 5, length.out = 50), only.samples = FALSE, M = 5000)
 #'
 #' @export
-predict.fashr <- function(object, index = 1, smooth_var = NULL, only.samples = FALSE, M = 3000, ...) {
+predict.fash <- function(object, index = 1, smooth_var = NULL, only.samples = FALSE, M = 3000, ...) {
   # Validate input
-  if (!inherits(object, "fashr")) {
-    stop("Input must be a `fashr` object.")
+  if (!inherits(object, "fash")) {
+    stop("Input must be a `fash` object.")
   }
   if (index < 1 || index > length(object$posterior_weights)) {
-    stop("Index is out of range for the datasets in the `fashr` object.")
+    stop("Index is out of range for the datasets in the `fash` object.")
   }
 
   # Extract dataset-specific components
@@ -316,7 +324,7 @@ predict.fashr <- function(object, index = 1, smooth_var = NULL, only.samples = F
   # Use smooth_var if provided; otherwise, default to the dataset's x values
   refined_x <- if (!is.null(smooth_var)) smooth_var else data_i$x
 
-  # Retrieve settings from fashr object
+  # Retrieve settings from fash object
   settings <- object$settings
 
   # Generate posterior samples using BMA
@@ -356,12 +364,12 @@ predict.fashr <- function(object, index = 1, smooth_var = NULL, only.samples = F
 
 
 
-#' Print Method for FASHR Objects
+#' Print Method for fash Objects
 #'
-#' Displays a summary of the fitted `fashr` object, including the number of datasets,
+#' Displays a summary of the fitted `fash` object, including the number of datasets,
 #' type of likelihood used, the number of PSD grid values, and the order of the Integrated Wiener Process (IWP).
 #'
-#' @param x A `fashr` object.
+#' @param x A `fash` object.
 #' @param ... Additional arguments (not used).
 #'
 #' @examples
@@ -370,14 +378,14 @@ predict.fashr <- function(object, index = 1, smooth_var = NULL, only.samples = F
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
 #' )
 #' grid <- seq(0, 2, length.out = 10)
-#' fashr_obj <- fashr(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", grid = grid, likelihood = "poisson", verbose = TRUE)
-#' print(fashr_obj)
+#' fash_obj <- fash(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", grid = grid, likelihood = "poisson", verbose = TRUE)
+#' print(fash_obj)
 #'
 #' @export
-print.fashr <- function(x, ...) {
+print.fash <- function(x, ...) {
   # Validate input
-  if (!inherits(x, "fashr")) {
-    stop("Input must be a `fashr` object.")
+  if (!inherits(x, "fash")) {
+    stop("Input must be a `fash` object.")
   }
 
   # Extract relevant information
@@ -388,7 +396,7 @@ print.fashr <- function(x, ...) {
   iwp_order <- x$settings$order
 
   # Display summary
-  cat("Fitted FASHR Object\n")
+  cat("Fitted fash Object\n")
   cat("-------------------\n")
   cat(sprintf("Number of datasets: %d\n", n_datasets))
   cat(sprintf("Likelihood: %s\n", likelihood))
