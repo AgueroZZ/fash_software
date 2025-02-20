@@ -4,7 +4,12 @@
 \alias{fash_structure_plot}
 \title{Structure Plot for Posterior Weights}
 \usage{
-fash_structure_plot(eb_output, discrete = FALSE, ordering = NULL)
+fash_structure_plot(
+  eb_output,
+  discrete = FALSE,
+  ordering = NULL,
+  selected_indices = NULL
+)
 }
 \arguments{
 \item{eb_output}{A list output from `fash_eb_est`, containing:
@@ -23,6 +28,8 @@ If `FALSE`, treats PSD values as a continuous variable with a gradient. Default 
   \item{`"median"`}{Reorder by the median of the posterior PSD.}
   \item{`"lfdr"`}{Reorder by the local false discovery rate (posterior probability of PSD = 0).}
 }}
+
+\item{selected_indices}{A numeric vector specifying the indices of datasets to display. If `NULL`, displays all datasets.}
 }
 \value{
 A ggplot object representing the structure plot.

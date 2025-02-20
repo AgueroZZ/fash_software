@@ -89,6 +89,7 @@ fash_eb_est <- function(L_matrix, penalty = 1, grid) {
 #'     \item{`"median"`}{Reorder by the median of the posterior PSD.}
 #'     \item{`"lfdr"`}{Reorder by the local false discovery rate (posterior probability of PSD = 0).}
 #'   }
+#' @param selected_indices A numeric vector specifying the indices of datasets to display. If `NULL`, displays all datasets.
 #' @return A ggplot object representing the structure plot.
 #'
 #' @examples
@@ -102,13 +103,22 @@ fash_eb_est <- function(L_matrix, penalty = 1, grid) {
 #' print(plot_disc)
 #'
 #' @export
-fash_structure_plot <- function(eb_output, discrete = FALSE, ordering = NULL) {
+fash_structure_plot <- function(eb_output, discrete = FALSE, ordering = NULL, selected_indices = NULL) {
+
+  # Select indices if specified
+  if (!is.null(selected_indices)) {
+    eb_output_selected <- eb_output
+    eb_output_selected$posterior_weight <- eb_output$posterior_weight[selected_indices, , drop = FALSE]
+  } else {
+    eb_output_selected <- eb_output
+  }
+
   # Extract posterior weights matrix
   posterior_weights_matrix <- eb_output$posterior_weight
 
   # Reorder datasets if ordering is specified
   if (!is.null(ordering)) {
-    order_result <- fash_post_ordering(eb_output, ordering = ordering)
+    order_result <- fash_post_ordering(eb_output_selected, ordering = ordering)
     posterior_weights_matrix <- order_result$ordered_matrix
     ordered_indices <- order_result$ordered_indices
   } else {

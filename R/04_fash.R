@@ -407,5 +407,83 @@ print.fash <- function(x, ...) {
 
 
 
+#' Perform Functional Hypothesis Testing on Posterior Samples
+#'
+#' This function applies a user-specified functional to posterior samples from a `fash` object, calculates the
+#' local false sign rate (LFSR) for each dataset, and returns a ranked data frame. The computation can be
+#' parallelized if `num_cores > 1`.
+#'
+#' @param functional A function applied to each posterior sample to extract a scalar statistic.
+#' @param lfsr_cal A function used to compute the local false sign rate (lfsr).
+#'   Default is `function(x) {min(mean(x <= 0), mean(x >= 0))}`.
+#' @param fash A `fash` object.
+#' @param indices A numeric vector specifying the dataset indices to evaluate.
+#' @param smooth_var A numeric vector specifying refined x values for prediction.
+#' @param num_cores An integer specifying the number of cores to use for parallel processing.
+#'   Default is `1` (sequential execution).
+#'
+#' @return A data frame containing:
+#'
+#' \describe{
+#'   \item{indices}{The dataset indices corresponding to `indices`.}
+#'   \item{lfsr}{The computed local false sign rate (LFSR) for each dataset.}
+#'   \item{cfsr}{The cumulative false sign rate (CFSR), calculated as the cumulative mean of `lfsr`.}
+#' }
+#'
+#'
+#' @examples
+#' # Define a functional (e.g., mean of posterior samples)
+#' functional_example <- function(x) { mean(x) }
+#'
+#' # Example fash object (assuming it has been fitted)
+#' data_list <- list(
+#'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
+#'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
+#' )
+#' grid <- seq(0, 2, length.out = 10)
+#' fash_obj <- fash(data_list = data_list, Y = "y", smooth_var = "x", grid = grid, likelihood = "poisson", verbose = TRUE)
+#'
+#' # Perform functional hypothesis testing with parallel execution
+#' result <- testing_functional(functional = functional_example, fash = fash_obj, indices = 1:2, num_cores = 2)
+#' print(result)
+#'
+#' @export
+testing_functional <- function(functional,
+                               lfsr_cal = function(x) { min(mean(x <= 0), mean(x >= 0)) },
+                               fash, indices,
+                               smooth_var = NULL,
+                               num_cores = 1) {
+  # Define the function to be run for each index
+  compute_lfsr <- function(index) {
+    sample_index <- predict(fash, index = index, smooth_var = smooth_var, only.samples = TRUE)
+    result <- apply(sample_index, 2, functional)
+    lfsr <- lfsr_cal(result)
+    return(c(index, lfsr))
+  }
 
+  # Parallel or sequential execution
+  if (num_cores > 1) {
+    library(parallel)
+    results_list <- mclapply(indices, compute_lfsr, mc.cores = num_cores)
+  } else {
+    # Sequential execution with progress bar
+    lfsr_vec <- NULL
+    pb <- txtProgressBar(min = 0, max = length(indices), style = 3)
+    results_list <- list()
+    for (i in seq_along(indices)) {
+      setTxtProgressBar(pb, i)
+      results_list[[i]] <- compute_lfsr(indices[i])
+    }
+    close(pb)
+  }
+
+  # Convert results to a data frame
+  results_mat <- do.call(rbind, results_list)
+  result_df <- data.frame(indices = results_mat[, 1], lfsr = results_mat[, 2]) %>%
+    arrange(lfsr, increasing = TRUE)
+
+  result_df$cfsr <- cumsum(result_df$lfsr) / seq_len(nrow(result_df))
+
+  return(result_df)
+}
 
