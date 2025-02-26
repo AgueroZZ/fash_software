@@ -1,30 +1,24 @@
-# Compile all shared objects for TMB models
-all: Gaussian_ind.so Gaussian_dep.so Gaussian_ind_fixed.so Gaussian_dep_fixed.so Poisson_ind.so Poisson_ind_fixed.so
+# Detect OS and set correct shared library extension
+UNAME := $(shell uname -s)
 
-# Compile Gaussian_ind.cpp into Gaussian_ind.so
-Gaussian_ind.so: Gaussian_ind.cpp
-	Rscript --vanilla -e "TMB::compile('Gaussian_ind.cpp', '-O0 -g')"
+ifeq ($(UNAME), Darwin)  # macOS
+  EXT = so
+else ifeq ($(UNAME), Linux)
+  EXT = so
+else  # Assume Windows (MSYS or Cygwin)
+  EXT = dll
+endif
 
-# Compile Gaussian_ind_fixed.cpp into Gaussian_ind_fixed.so
-Gaussian_ind_fixed.so: Gaussian_ind_fixed.cpp
-	Rscript --vanilla -e "TMB::compile('Gaussian_ind_fixed.cpp', '-O0 -g')"
+# Define all target shared object files
+TMB_TARGETS = Gaussian_ind.$(EXT) Gaussian_ind_fixed.$(EXT) Gaussian_dep.$(EXT) Gaussian_dep_fixed.$(EXT) Poisson_ind.$(EXT) Poisson_ind_fixed.$(EXT)
 
-# Compile Gaussian_dep.cpp into Gaussian_dep.so
-Gaussian_dep.so: Gaussian_dep.cpp
-	Rscript --vanilla -e "TMB::compile('Gaussian_dep.cpp', '-O0 -g')"
+# Default target: compile all shared objects
+all: $(TMB_TARGETS)
 
-# Compile Gaussian_dep_fixed.cpp into Gaussian_dep_fixed.so
-Gaussian_dep_fixed.so: Gaussian_dep_fixed.cpp
-	Rscript --vanilla -e "TMB::compile('Gaussian_dep_fixed.cpp', '-O0 -g')"
+# General rule to compile any .cpp file into a shared object
+%.$(EXT): %.cpp
+	Rscript --vanilla -e "TMB::compile('$<', '-O0 -g')"
 
-# Compile Poisson_ind.cpp into Poisson_ind.so
-Poisson_ind.so: Poisson_ind.cpp
-	Rscript --vanilla -e "TMB::compile('Poisson_ind.cpp', '-O0 -g')"
-
-# Compile Poisson_ind.cpp into Poisson_ind.so
-Poisson_ind_fixed.so: Poisson_ind_fixed.cpp
-	Rscript --vanilla -e "TMB::compile('Poisson_ind_fixed.cpp', '-O0 -g')"
-
-# Clean up generated files
+# Clean up generated shared object and intermediate files
 clean:
-	rm -f *.so *.o
+	rm -f $(TMB_TARGETS) *.o
