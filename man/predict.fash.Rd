@@ -10,6 +10,7 @@
   smooth_var = NULL,
   only.samples = FALSE,
   M = 3000,
+  deriv = 0,
   ...
 )
 }
@@ -23,6 +24,8 @@
 \item{only.samples}{A logical value. If `TRUE`, returns posterior samples. If `FALSE`, summarizes the samples into mean and 95 percent confidence intervals. Default is `FALSE`.}
 
 \item{M}{An integer specifying the number of posterior samples to generate. Default is `3000`.}
+
+\item{deriv}{An integer specifying the order of the derivative to compute. Default is `0`.}
 
 \item{...}{Additional arguments (not used).}
 }

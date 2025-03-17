@@ -33,11 +33,13 @@ Type objective_function<Type>::operator() ()
   
   // Log prior on W
   Type lpW = 0;
-  Type bb = (beta * beta).sum();
-  lpW += -0.5 * betaprec * bb; // Beta part
-  lpW += -0.5 * d_beta * log(2*M_PI);
-  Type logdet2 = d_beta * log(betaprec);
-  lpW += 0.5 * logdet2; // for fixed effect
+  if (betaprec != 0){
+    Type bb = (beta * beta).sum();
+    lpW += -0.5 * betaprec * bb; // Beta part
+    lpW += -0.5 * d_beta * log(2*M_PI);
+    Type logdet2 = d_beta * log(betaprec);
+    lpW += 0.5 * logdet2; // for fixed effect
+  }
 
   REPORT(lpW);
   

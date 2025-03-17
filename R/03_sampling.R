@@ -13,6 +13,7 @@
 #' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior. Default is 2.
 #' @param pred_step A numeric value specifying the prediction step size. Default is 1.
 #' @param likelihood A character string specifying the likelihood function to use. Options are `"gaussian"` and `"poisson"`.
+#' @param deriv An integer specifying the order of the derivative to compute. Default is 0.
 #'
 #' @return A numeric matrix of posterior sample paths, where rows correspond to grid points in `refined_x` and columns correspond to the generated samples.
 #'
@@ -26,7 +27,13 @@
 #' samples <- fash_fit_once(data_i = fash_data$data_list[[1]], refined_x = refined_x, M = 100, num_basis = 60,
 #'                          psd_iwp = 0.5, Si = NULL, Omegai = NULL, likelihood = "poisson")
 #'
-fash_fit_once <- function(data_i, refined_x, M, psd_iwp, Si = NULL, Omegai = NULL, num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1, likelihood) {
+fash_fit_once <- function(data_i, refined_x, M, psd_iwp, Si = NULL, Omegai = NULL, num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1, likelihood, deriv = 0) {
+
+  # return error if deriv is not strictly smaller than order
+  if(deriv >= order){
+    stop("deriv must be strictly smaller than order.")
+  }
+
   # Create the tmbdat object using the existing helper function
   tmbdat <- fash_set_tmbdat(data_i, Si, Omegai, num_basis = num_basis, betaprec = betaprec, order = order)
 
@@ -39,11 +46,20 @@ fash_fit_once <- function(data_i, refined_x, M, psd_iwp, Si = NULL, Omegai = NUL
   knots <- seq(min(x), max(x), length.out = num_basis)
 
   # Compute the refined matrix
-  design_all <- BayesGP:::global_poly_helper(refined_x, p = order)
+
+  if((order - deriv) >= 1){
+    design_all <- BayesGP:::global_poly_helper(refined_x, p = order)
+    design_all <- as.matrix(design_all[, 1:(order - deriv), drop = FALSE])
+    for (i in 1:ncol(design_all)) {
+      design_all[, i] <- (factorial(i + deriv - 1) / factorial(i - 1)) * design_all[, i]
+    }
+  }
 
   if (psd_iwp != 0) {
-    B_refined <- BayesGP:::local_poly_helper(knots = knots, refined_x = refined_x, p = order)
+    B_refined <- BayesGP:::local_poly_helper(knots = knots, refined_x = refined_x, p = (order-deriv))
     design_all <- cbind(B_refined, design_all)
+  }else{
+    B_refined <- matrix(0, nrow = length(refined_x), ncol = 0)
   }
 
   # Determine the DLL for TMB based on likelihood and error structure
@@ -92,6 +108,20 @@ fash_fit_once <- function(data_i, refined_x, M, psd_iwp, Si = NULL, Omegai = NUL
   # Generate posterior samples for coefficients
   samps_coef <- LaplacesDemon::rmvnp(n = M, mu = opt$par, Omega = as.matrix(prec_matrix))
 
+  if(deriv > 0){
+    if(ncol(B_refined) > 0){
+      # take out the corresponding B elements and global poly elements
+      samps_coef1 <- samps_coef[, 1:ncol(B_refined), drop = FALSE]
+      samps_coef2 <- samps_coef[, (ncol(B_refined) + 1):ncol(samps_coef), drop = FALSE]
+      # remove the first deriv columns
+      samps_coef2 <- samps_coef2[, -c(1:deriv), drop = FALSE]
+      # redefine samples_coef
+      samps_coef <- cbind(samps_coef1, samps_coef2)
+    }else{
+      samps_coef <- samps_coef[, -c(1:deriv), drop = FALSE]
+    }
+  }
+
   # Compute posterior sample paths
   samps_fitted <- design_all %*% t(samps_coef)
 
@@ -120,6 +150,7 @@ fash_fit_once <- function(data_i, refined_x, M, psd_iwp, Si = NULL, Omegai = NUL
 #' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior. Default is 2.
 #' @param pred_step A numeric value specifying the prediction step size. Default is 1.
 #' @param likelihood A character string specifying the likelihood function to use. Options are `"gaussian"` and `"poisson"`.
+#' @param deriv An integer specifying the order of the derivative to compute. Default is 0.
 #'
 #' @return A list containing:
 #'   \describe{
@@ -148,7 +179,7 @@ fash_fit_once <- function(data_i, refined_x, M, psd_iwp, Si = NULL, Omegai = NUL
 #' print(results$sampled_counts)
 #'
 fash_bma_sampling <- function(data_i, posterior_weights, psd_values, refined_x, M, Si = NULL, Omegai = NULL,
-                              num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1, likelihood) {
+                              num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1, likelihood, deriv = 0) {
   # Check that posterior_weights and psd_values match in length
   if (length(posterior_weights) != length(psd_values)) {
     stop("posterior_weights and psd_values must have the same length.")
@@ -182,7 +213,8 @@ fash_bma_sampling <- function(data_i, posterior_weights, psd_values, refined_x, 
       betaprec = betaprec,
       order = order,
       pred_step = pred_step,
-      likelihood = likelihood
+      likelihood = likelihood,
+      deriv = deriv
     )
 
     # Assign samples to the corresponding columns in the output matrix

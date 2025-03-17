@@ -265,6 +265,7 @@ plot.fash <- function(x, ordering = NULL, discrete = FALSE, ...) {
 #' @param smooth_var A numeric vector specifying refined x values for prediction. If `NULL`, uses the x values from the model fit. Default is `NULL`.
 #' @param only.samples A logical value. If `TRUE`, returns posterior samples. If `FALSE`, summarizes the samples into mean and 95 percent confidence intervals. Default is `FALSE`.
 #' @param M An integer specifying the number of posterior samples to generate. Default is `3000`.
+#' @param deriv An integer specifying the order of the derivative to compute. Default is `0`.
 #' @param ... Additional arguments (not used).
 #'
 #' @return If `only.samples = TRUE`, a matrix of posterior samples where rows correspond to `smooth_var` and columns correspond to posterior draws.
@@ -305,7 +306,7 @@ plot.fash <- function(x, ordering = NULL, discrete = FALSE, ...) {
 #' summary <- predict(fash_obj, index = 1, smooth_var = seq(1, 5, length.out = 50), only.samples = FALSE, M = 5000)
 #'
 #' @export
-predict.fash <- function(object, index = 1, smooth_var = NULL, only.samples = FALSE, M = 3000, ...) {
+predict.fash <- function(object, index = 1, smooth_var = NULL, only.samples = FALSE, M = 3000, deriv = 0, ...) {
   # Validate input
   if (!inherits(object, "fash")) {
     stop("Input must be a `fash` object.")
@@ -340,7 +341,8 @@ predict.fash <- function(object, index = 1, smooth_var = NULL, only.samples = FA
     betaprec = settings$betaprec,
     order = settings$order,
     pred_step = settings$pred_step,
-    likelihood = settings$likelihood
+    likelihood = settings$likelihood,
+    deriv = deriv
   )$posterior_samples
 
   # Return samples if only.samples = TRUE

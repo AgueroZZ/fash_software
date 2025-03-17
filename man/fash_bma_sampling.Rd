@@ -16,7 +16,8 @@ fash_bma_sampling(
   betaprec = 1e-06,
   order = 2,
   pred_step = 1,
-  likelihood
+  likelihood,
+  deriv = 0
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ fash_bma_sampling(
 \item{pred_step}{A numeric value specifying the prediction step size. Default is 1.}
 
 \item{likelihood}{A character string specifying the likelihood function to use. Options are `"gaussian"` and `"poisson"`.}
+
+\item{deriv}{An integer specifying the order of the derivative to compute. Default is 0.}
 }
 \value{
 A list containing:
