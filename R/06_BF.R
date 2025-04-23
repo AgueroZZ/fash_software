@@ -24,9 +24,10 @@
 #' @keywords internal
 collapse_L <- function(L, log = FALSE) {
   if (ncol(L) > 1) {
-    pi_hat_star <- mixsqp::mixsqp(L = L[, -1, drop = FALSE],
+    pi_hat_star <- mixsqp::mixsqp(L = L,
                                   log = log,
-                                  control = list(verbose = FALSE))$x
+                                  control = list(verbose = FALSE))$x[-1]
+    pi_hat_star <- pi_hat_star / sum(pi_hat_star)
   } else {
     pi_hat_star <- rep(1, nrow(L))
   }
