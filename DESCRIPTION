@@ -1,10 +1,11 @@
 Package: fashr
 Type: Package
 Title: Flexible Functional Adaptive SHrinkage Through Empirical Bayes
-Version: 0.1.1
+Version: 0.1.2
 Author: Ziang Zhang
 Maintainer: Ziang Zhang <ziangzhang@uchicago.edu>
-Description: R package that implements the functional adaptive shrinkage through empirical Bayes.
+Description: R package that implements the functional adaptive shrinkage 
+    through empirical Bayes.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
