@@ -21,7 +21,10 @@
 #' collapse_result <- collapse_L(L, log = FALSE)
 #' print(collapse_result$L_c)
 #'
+#' @importFrom mixsqp mixsqp
+#' 
 #' @keywords internal
+#' 
 collapse_L <- function(L, log = FALSE) {
   if (ncol(L) > 1) {
     pi_hat_star <- mixsqp::mixsqp(L = L,
@@ -39,8 +42,6 @@ collapse_L <- function(L, log = FALSE) {
   return(list(L_c = L_c, pi_hat_star = pi_hat_star))
 }
 
-
-
 #' Compute Bayes Factors for Each Dataset in a FASH Object
 #'
 #' This function computes **Bayes Factors (BF)** for each dataset in a `fash` object.
@@ -52,6 +53,7 @@ collapse_L <- function(L, log = FALSE) {
 #' @return A numeric vector of Bayes Factors, where each entry corresponds to a dataset.
 #'
 #' @examples
+#' 
 #' data_list <- list(
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
@@ -64,13 +66,13 @@ collapse_L <- function(L, log = FALSE) {
 #' print(BF_values)
 #'
 #' @export
+#' 
 BF_compute <- function(fash){
   L <- exp(fash$L_matrix)
   L_c <- collapse_L(L, log = FALSE)$L_c
   BF <- L_c[, 2] / L_c[, 1]
   return(BF)
 }
-
 
 #' Perform Bayes Factor-Based Control for Estimating \eqn{\pi_0}
 #'
@@ -88,11 +90,13 @@ BF_compute <- function(fash){
 #' }
 #'
 #' @examples
+#' 
 #' BF_values <- runif(100, 0.5, 5)  # Example Bayes Factors
 #' BF_control_results <- BF_control(BF_values, plot = TRUE)
 #' print(BF_control_results$pi0_hat_star)
 #'
 #' @export
+#' 
 BF_control <- function(BF, plot = FALSE) {
   BF_sorted <- sort(BF, decreasing = FALSE)
 
@@ -124,7 +128,9 @@ BF_control <- function(BF, plot = FALSE) {
 #' @param L_matrix A numeric matrix representing the log-likelihoods of datasets across mixture components.
 #'   Rows correspond to datasets, and columns correspond to mixture components.
 #' @param pi0 A numeric scalar representing the estimated proportion of null datasets.
+#' 
 #' @param pi_alt A numeric vector representing the estimated weights of the alternative components.
+#' 
 #' @param grid A numeric vector representing the grid of Predictive Standard Deviation (PSD) values.
 #'
 #' @return A list containing:
@@ -151,6 +157,7 @@ BF_control <- function(BF, plot = FALSE) {
 #' print(update_result$posterior_weight)
 #'
 #' @keywords internal
+#' 
 fash_prior_posterior_update <- function(L_matrix, pi0, pi_alt, grid){
 
   num_datasets <- nrow(L_matrix)
@@ -179,9 +186,6 @@ fash_prior_posterior_update <- function(L_matrix, pi0, pi_alt, grid){
     posterior_weight = posterior_weight
   ))
 }
-
-
-
 
 #' Update Prior and Posterior Weights in a FASH Object Using Bayes Factor Control
 #'
@@ -234,7 +238,8 @@ fash_prior_posterior_update <- function(L_matrix, pi0, pi_alt, grid){
 #' print(fash_updated$lfdr)
 #'
 #' @export
-BF_update <- function(fash, plot = FALSE) {
+#' 
+BF_update <- function (fash, plot = FALSE) {
   # Compute Lc
   L <- exp(fash$L_matrix)
   L_c <- collapse_L(L, log = FALSE)$L_c
