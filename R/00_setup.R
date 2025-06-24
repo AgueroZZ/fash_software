@@ -1,6 +1,11 @@
 #' Roxygen commands for package registration
 #'
-#' @useDynLib fashr
+#' @useDynLib Gaussian_dep
+#' @useDynLib Gaussian_ind
+#' @useDynLib Gaussian_dep_fixed
+#' @useDynLib Gaussian_ind_fixed
+#' @useDynLib Poisson_ind
+#' @useDynLib Poisson_ind_fixed
 #' @importFrom TMB compile
 #'
 #' @keywords internal
