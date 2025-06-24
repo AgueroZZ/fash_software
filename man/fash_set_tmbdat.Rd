@@ -55,4 +55,5 @@ Omega <- diag(5)
 data <- fash_set_data(Y, smooth_var, offset, S, Omega)
 tmbdat <- fash_set_tmbdat(data$data_list[[1]], Si = S[[1]], Omegai = Omega)
 
+
 }

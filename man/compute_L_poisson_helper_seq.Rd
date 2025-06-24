@@ -46,3 +46,4 @@ likelihoods <- compute_L_poisson_helper_seq(
 )
 
 }
+\keyword{internal}

@@ -27,6 +27,15 @@
 #' samples <- fash_fit_once(data_i = fash_data$data_list[[1]], refined_x = refined_x, M = 100, num_basis = 60,
 #'                          psd_iwp = 0.5, Si = NULL, Omegai = NULL, likelihood = "poisson")
 #'
+#'
+#' @importFrom TMB MakeADFun
+#' @importFrom numDeriv jacobian
+#' @importFrom LaplacesDemon rmvnp
+#' @importFrom stats nlminb
+#' @importFrom Matrix forceSymmetric
+#'
+#' @keywords internal
+#'
 fash_fit_once <- function(data_i, refined_x, M, psd_iwp, Si = NULL, Omegai = NULL, num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1, likelihood, deriv = 0) {
 
   # return error if deriv is not strictly smaller than order
@@ -48,7 +57,7 @@ fash_fit_once <- function(data_i, refined_x, M, psd_iwp, Si = NULL, Omegai = NUL
   # Compute the refined matrix
 
   if((order - deriv) >= 1){
-    design_all <- BayesGP:::global_poly_helper(refined_x, p = order)
+    design_all <- global_poly_helper(refined_x, p = order)
     design_all <- as.matrix(design_all[, 1:(order - deriv), drop = FALSE])
     for (i in 1:ncol(design_all)) {
       design_all[, i] <- (factorial(i + deriv - 1) / factorial(i - 1)) * design_all[, i]
@@ -56,7 +65,7 @@ fash_fit_once <- function(data_i, refined_x, M, psd_iwp, Si = NULL, Omegai = NUL
   }
 
   if (psd_iwp != 0) {
-    B_refined <- BayesGP:::local_poly_helper(knots = knots, refined_x = refined_x, p = (order-deriv))
+    B_refined <- local_poly_helper(knots = knots, refined_x = refined_x, p = (order-deriv))
     design_all <- cbind(B_refined, design_all)
   }else{
     B_refined <- matrix(0, nrow = length(refined_x), ncol = 0)
@@ -177,6 +186,9 @@ fash_fit_once <- function(data_i, refined_x, M, psd_iwp, Si = NULL, Omegai = NUL
 #' )
 #' print(results$posterior_samples)
 #' print(results$sampled_counts)
+#'
+#'
+#' @keywords internal
 #'
 fash_bma_sampling <- function(data_i, posterior_weights, psd_values, refined_x, M, Si = NULL, Omegai = NULL,
                               num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1, likelihood, deriv = 0) {

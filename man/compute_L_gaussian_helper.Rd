@@ -54,3 +54,4 @@ log_likelihood <- compute_L_gaussian_helper(
 )
 
 }
+\keyword{internal}

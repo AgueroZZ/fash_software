@@ -60,4 +60,6 @@ refined_x <- seq(0, 10, length.out = 50)
 samples <- fash_fit_once(data_i = fash_data$data_list[[1]], refined_x = refined_x, M = 100, num_basis = 60,
                          psd_iwp = 0.5, Si = NULL, Omegai = NULL, likelihood = "poisson")
 
+
 }
+\keyword{internal}

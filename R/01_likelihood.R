@@ -25,7 +25,10 @@
 #' L_matrix_gaussian <- fash_L_compute(fash_data, likelihood = "gaussian", num_cores = 1, grid = grid, num_basis = 30, betaprec = 1e-6, order = 2, verbose = TRUE)
 #' L_matrix_poisson <- fash_L_compute(fash_data, likelihood = "poisson", num_cores = 1, grid = grid, num_basis = 30, betaprec = 1e-6, order = 2, verbose = TRUE)
 #'
-#' @export
+#' @importFrom utils setTxtProgressBar txtProgressBar
+#' @importFrom parallel mclapply
+#'
+#' @keywords internal
 fash_L_compute <- function(fash_data, likelihood = "gaussian", num_cores = 1, grid = seq(0, 2, length.out = 10), pred_step = 1, num_basis = 30, betaprec = 1e-6, order = 2, verbose = FALSE) {
   num_datasets <- length(fash_data$data_list)
   datasets <- fash_data$data_list
@@ -150,6 +153,9 @@ fash_L_compute <- function(fash_data, likelihood = "gaussian", num_cores = 1, gr
 #'   data$data_list[[1]], Si = S[1,], Omegai = Omega, psd_iwp = 0.1
 #' )
 #'
+#' @importFrom TMB MakeADFun
+#' @keywords internal
+#'
 compute_L_gaussian_helper <- function(data_i, Si, Omegai, psd_iwp, num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1) {
   # Create the tmbdat object using existing helper function
   tmbdat <- fash_set_tmbdat(data_i, Si, Omegai, num_basis = num_basis, betaprec = betaprec, order = order)
@@ -239,6 +245,8 @@ compute_L_gaussian_helper <- function(data_i, Si, Omegai, psd_iwp, num_basis = 3
 #'   data$data_list[[1]], Si = S[[1]], Omegai = Omega, grid = grid
 #' )
 #'
+#' @keywords internal
+#'
 compute_L_gaussian_helper_seq <- function(data_i, Si, Omegai, grid, num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1) {
   # Initialize vector to store log-likelihoods
   log_likelihoods <- numeric(length(grid))
@@ -290,6 +298,8 @@ compute_L_gaussian_helper_seq <- function(data_i, Si, Omegai, grid, num_basis = 
 #'   data_i = fash_data$data_list[[1]], grid = grid
 #' )
 #'
+#' @keywords internal
+#'
 compute_L_poisson_helper_seq <- function(data_i, grid, num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1) {
   # Initialize vector to store log-likelihoods
   log_likelihoods <- numeric(length(grid))
@@ -340,6 +350,9 @@ compute_L_poisson_helper_seq <- function(data_i, grid, num_basis = 30, betaprec 
 #' log_likelihood <- compute_L_poisson_helper(
 #'   data_i = fash_data$data_list[[1]], psd_iwp = 0.1
 #' )
+#'
+#' @importFrom TMB MakeADFun
+#' @keywords internal
 #'
 compute_L_poisson_helper <- function(data_i, psd_iwp, num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1) {
   # Create the tmbdat object using existing helper function

@@ -45,3 +45,4 @@ log_likelihood <- compute_L_poisson_helper(
 )
 
 }
+\keyword{internal}

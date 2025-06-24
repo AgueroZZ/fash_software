@@ -1,15 +1,93 @@
-#' Roxygen commands
+#' Roxygen commands for package registration
 #'
-#' @useDynLib Gaussian_dep
-#' @useDynLib Gaussian_ind
-#' @useDynLib Gaussian_dep_fixed
-#' @useDynLib Gaussian_ind_fixed
-#' @useDynLib Poisson_ind
-#' @useDynLib Poisson_ind_fixed
+#' @useDynLib fashr
+#' @importFrom TMB compile
+#'
+#' @keywords internal
 #'
 dummy <- function() {
-  return(NULL)
+  NULL
 }
+
+#' Constructing and evaluating the global polynomials, to account for boundary conditions (design matrix)
+#'
+#' @param x A vector of locations to evaluate the global polynomials
+#' @param p An integer value indicates the order of smoothness
+#' @return A matrix with i,j componet being the value of jth basis function
+#' value at ith element of x, the ncol should equal to p, and nrow
+#' should equal to the number of elements in x
+#' @examples
+#' global_poly(x = c(0, 0.2, 0.4, 0.6, 0.8), p = 2)
+#'
+#' @keywords internal
+#'
+global_poly_helper <- function(x, p = 2) {
+  result <- NULL
+  for (i in 1:p) {
+    result <- cbind(result, x^(i - 1))
+  }
+  result
+}
+
+#' Constructing and evaluating the local O-spline basis (design matrix)
+#'
+#' @param knots A vector of knots used to construct the O-spline basis, first knot should be viewed as "0",
+#' the reference starting location. These k knots will define (k-1) basis function in total.
+#' @param refined_x A vector of locations to evaluate the O-spline basis
+#' @param p An integer value indicates the order of smoothness
+#' @param neg_sign_order An integer value N such that D = ((-1)^N)*D for the splines at negative knots. Default is 0.
+#' @return A matrix with i,j component being the value of jth basis function
+#' value at ith element of refined_x, the ncol should equal to number of knots minus 1, and nrow
+#' should equal to the number of elements in refined_x.
+#' @examples
+#' local_poly(knots = c(0, 0.2, 0.4, 0.6, 0.8), refined_x = seq(0, 0.8, by = 0.1), p = 2)
+#'
+#' @keywords internal
+#'
+local_poly_helper <- function(knots, refined_x, p = 2, neg_sign_order = 0) {
+  if (min(knots) >= 0) {
+    # The case of all-positive knots
+    D <- get_local_poly(knots, refined_x, p)
+  } else if (max(knots) <= 0) {
+    # Handle the negative part only
+    refined_x_neg <- ifelse(refined_x < 0, -refined_x, 0)
+    knots_neg <- unique(sort(ifelse(knots < 0, -knots, 0)))
+    D <- get_local_poly(knots_neg, refined_x_neg, p)
+    D <- D * ((-1)^neg_sign_order)
+  } else {
+    # Handle the negative part
+    refined_x_neg <- ifelse(refined_x < 0, -refined_x, 0)
+    knots_neg <- unique(sort(ifelse(knots < 0, -knots, 0)))
+    D1 <- get_local_poly(knots_neg, refined_x_neg, p)
+    D1 <- D1 * ((-1)^neg_sign_order)
+
+    # Handle the positive part
+    refined_x_pos <- ifelse(refined_x > 0, refined_x, 0)
+    knots_pos <- unique(sort(ifelse(knots > 0, knots, 0)))
+    D2 <- get_local_poly(knots_pos, refined_x_pos, p)
+
+    D <- cbind(D1, D2)
+  }
+  D # Local poly design matrix
+}
+
+#' Constructing the precision matrix given the knot sequence (helper)
+#'
+#' @param x A vector of knots used to construct the O-spline basis, first knot should be viewed as "0",
+#' the reference starting location. These k knots will define (k-1) basis function in total.
+#' @return A precision matrix of the corresponding basis function, should be diagonal matrix with
+#' size (k-1) by (k-1).
+#' @examples
+#' compute_weights_precision(x = c(0,0.2,0.4,0.6,0.8))
+#'
+#' @keywords internal
+#'
+compute_weights_precision_helper <- function(x){
+  d <- diff(x)
+  Precweights <- diag(d)
+  Precweights
+}
+
 
 
 #' Setup Quantities for FASH
@@ -209,6 +287,7 @@ fash_set_data <- function(Y, smooth_var, offset = 0, S = NULL, Omega = NULL, dat
 #' data <- fash_set_data(Y, smooth_var, offset, S, Omega)
 #' tmbdat <- fash_set_tmbdat(data$data_list[[1]], Si = S[[1]], Omegai = Omega)
 #'
+#'
 #' @export
 fash_set_tmbdat <- function(data_i, Si = NULL, Omegai = NULL, num_basis = 30, betaprec = 1e-6, order = 2) {
   # Extract smoothing variables and response
@@ -220,9 +299,9 @@ fash_set_tmbdat <- function(data_i, Si = NULL, Omegai = NULL, num_basis = 30, be
   knots <- seq(min(x), max(x), length.out = num_basis)
 
   # Generate the design matrices for the spline basis
-  X <- BayesGP:::global_poly_helper(x, p = order)
-  P <- BayesGP::compute_weights_precision_helper(knots)
-  B <- BayesGP:::local_poly_helper(knots = knots, refined_x = x, p = order)
+  X <- global_poly_helper(x, p = order)
+  P <- compute_weights_precision_helper(knots)
+  B <- local_poly_helper(knots = knots, refined_x = x, p = order)
 
   # Prepare the tmbdat list
   tmbdat <- list(

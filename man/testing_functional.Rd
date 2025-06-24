@@ -60,4 +60,5 @@ fash_obj <- fash(data_list = data_list, Y = "y", smooth_var = "x", grid = grid, 
 result <- testing_functional(functional = functional_example, fash = fash_obj, indices = 1:2, num_cores = 2)
 print(result)
 
+
 }

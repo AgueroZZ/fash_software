@@ -97,6 +97,9 @@ compute_lfsr_sampling <- function(fash_fit, index, smooth_var = NULL, M = 3000, 
 #' # Compute min LFSR with parallel execution
 #' result_parallel <- min_lfsr_sampling(fash_obj, num_cores = 2)
 #'
+#' @importFrom parallel mclapply
+#' @importFrom utils txtProgressBar setTxtProgressBar
+#'
 #' @export
 min_lfsr_sampling <- function(fash_fit, smooth_var = NULL, M = 3000, num_cores = 1, deriv = 0) {
   datasets <- fash_fit$fash_data$data_list
@@ -122,9 +125,9 @@ min_lfsr_sampling <- function(fash_fit, smooth_var = NULL, M = 3000, num_cores =
     results_list <- parallel::mclapply(1:n_datasets, compute_min_lfsr, mc.cores = num_cores)
   } else {
     # Sequential execution with progress bar
-    pb <- txtProgressBar(min = 0, max = n_datasets, style = 3)
+    pb <- utils::txtProgressBar(min = 0, max = n_datasets, style = 3)
     results_list <- lapply(1:n_datasets, function(i) {
-      setTxtProgressBar(pb, i)
+      utils::setTxtProgressBar(pb, i)
       compute_min_lfsr(i)
     })
     close(pb)
@@ -192,6 +195,11 @@ compute_posterior_sign_prob <- function(mu, sigma2) {
 #' Computes the posterior mean and variance for a given dataset, refined x-values,
 #' and a specific PSD value.
 #'
+#' @importFrom TMB MakeADFun
+#' @importFrom numDeriv jacobian
+#' @importFrom Matrix forceSymmetric
+#' @importFrom stats nlminb
+#'
 #' @keywords internal
 compute_marginal_mean_var_once <- function(data_i, refined_x, psd_iwp, Si = NULL, Omegai = NULL, num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1, likelihood, deriv = 0) {
   # Create the tmbdat object using the existing helper function
@@ -211,7 +219,7 @@ compute_marginal_mean_var_once <- function(data_i, refined_x, psd_iwp, Si = NULL
   }
 
   if (psd_iwp != 0) {
-    B_refined <- BayesGP:::local_poly_helper(knots = knots, refined_x = refined_x, p = (order-deriv))
+    B_refined <- local_poly_helper(knots = knots, refined_x = refined_x, p = (order-deriv))
     tmbdat$sigmaIWP <- psd_iwp / sqrt((pred_step ^ ((2 * order) - 1)) / (((2 * order) - 1) * (factorial(order - 1) ^ 2)))
   } else{
     return(data.frame(mean = rep(0, length(refined_x)), var = rep(0, length(refined_x))))
@@ -424,6 +432,9 @@ compute_lfsr_summary <- function(object, index = 1, smooth_var = NULL, deriv = 0
 #' result_parallel <- min_lfsr_summary(fash_obj, num_cores = 2)
 #' print(result_parallel)
 #'
+#' @importFrom parallel mclapply
+#' @importFrom utils txtProgressBar setTxtProgressBar
+#'
 #' @export
 min_lfsr_summary <- function(object, smooth_var = NULL, num_cores = 1, deriv = 0) {
   datasets <- object$fash_data$data_list
@@ -444,9 +455,9 @@ min_lfsr_summary <- function(object, smooth_var = NULL, num_cores = 1, deriv = 0
     results_list <- parallel::mclapply(1:n_datasets, compute_min_lfsr_single, mc.cores = num_cores)
   } else {
     # Sequential execution with progress bar
-    pb <- txtProgressBar(min = 0, max = n_datasets, style = 3)
+    pb <- utils::txtProgressBar(min = 0, max = n_datasets, style = 3)
     results_list <- lapply(1:n_datasets, function(i) {
-      setTxtProgressBar(pb, i)
+      utils::setTxtProgressBar(pb, i)
       compute_min_lfsr_single(i)
     })
     close(pb)

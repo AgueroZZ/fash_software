@@ -2,10 +2,11 @@
 % Please edit documentation in R/00_setup.R
 \name{dummy}
 \alias{dummy}
-\title{Roxygen commands}
+\title{Roxygen commands for package registration}
 \usage{
 dummy()
 }
 \description{
-Roxygen commands
+Roxygen commands for package registration
 }
+\keyword{internal}

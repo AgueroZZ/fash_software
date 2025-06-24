@@ -53,3 +53,4 @@ L_matrix_gaussian <- fash_L_compute(fash_data, likelihood = "gaussian", num_core
 L_matrix_poisson <- fash_L_compute(fash_data, likelihood = "poisson", num_cores = 1, grid = grid, num_basis = 30, betaprec = 1e-6, order = 2, verbose = TRUE)
 
 }
+\keyword{internal}

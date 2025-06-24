@@ -79,4 +79,6 @@ results <- fash_bma_sampling(
 print(results$posterior_samples)
 print(results$sampled_counts)
 
+
 }
+\keyword{internal}

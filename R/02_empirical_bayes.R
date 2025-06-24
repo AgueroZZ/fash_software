@@ -20,7 +20,11 @@
 #' print(result$prior_weight)
 #' print(result$posterior_weight)
 #'
+#' @importFrom mixsqp mixsqp
+#'
 #' @export
+#'
+#'
 fash_eb_est <- function(L_matrix, penalty = 1, grid) {
   num_datasets <- nrow(L_matrix)
   num_components <- ncol(L_matrix)
@@ -101,6 +105,9 @@ fash_eb_est <- function(L_matrix, penalty = 1, grid) {
 #' plot_disc <- fash_structure_plot(eb_output, discrete = TRUE, ordering = "median")
 #' print(plot_cont)
 #' print(plot_disc)
+#'
+#' @importFrom ggplot2 ggplot aes geom_bar labs scale_fill_brewer scale_fill_gradient coord_flip theme_minimal theme element_blank element_rect
+#' @importFrom reshape2 melt
 #'
 #' @export
 fash_structure_plot <- function(eb_output, discrete = FALSE, ordering = NULL, selected_indices = NULL) {

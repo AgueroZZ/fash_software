@@ -24,6 +24,7 @@ This function estimates **\eqn{\pi_0}**, the proportion of datasets that follow 
 using **Bayes Factor (BF) control**.
 }
 \examples{
+
 BF_values <- runif(100, 0.5, 5)  # Example Bayes Factors
 BF_control_results <- BF_control(BF_values, plot = TRUE)
 print(BF_control_results$pi0_hat_star)

@@ -54,3 +54,4 @@ likelihoods <- compute_L_gaussian_helper_seq(
 )
 
 }
+\keyword{internal}

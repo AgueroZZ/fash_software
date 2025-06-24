@@ -449,6 +449,9 @@ print.fash <- function(x, ...) {
 #' result <- testing_functional(functional = functional_example, fash = fash_obj, indices = 1:2, num_cores = 2)
 #' print(result)
 #'
+#'
+#' @importFrom parallel mclapply
+#' @importFrom utils setTxtProgressBar txtProgressBar
 #' @export
 testing_functional <- function(functional,
                                lfsr_cal = function(x) { min(mean(x <= 0), mean(x >= 0)) },
@@ -466,14 +469,14 @@ testing_functional <- function(functional,
   # Parallel or sequential execution
   if (num_cores > 1) {
     library(parallel)
-    results_list <- mclapply(indices, compute_lfsr, mc.cores = num_cores)
+    results_list <- parallel::mclapply(indices, compute_lfsr, mc.cores = num_cores)
   } else {
     # Sequential execution with progress bar
     lfsr_vec <- NULL
-    pb <- txtProgressBar(min = 0, max = length(indices), style = 3)
+    pb <- utils::txtProgressBar(min = 0, max = length(indices), style = 3)
     results_list <- list()
     for (i in seq_along(indices)) {
-      setTxtProgressBar(pb, i)
+      utils::setTxtProgressBar(pb, i)
       results_list[[i]] <- compute_lfsr(indices[i])
     }
     close(pb)
@@ -481,8 +484,12 @@ testing_functional <- function(functional,
 
   # Convert results to a data frame
   results_mat <- do.call(rbind, results_list)
-  result_df <- data.frame(indices = results_mat[, 1], lfsr = results_mat[, 2]) %>%
-    arrange(lfsr, increasing = TRUE)
+
+  result_df <- data.frame(
+    indices = results_mat[, 1],
+    lfsr    = results_mat[, 2]
+  )
+  result_df <- result_df[order(result_df$lfsr), ]
 
   result_df$cfsr <- cumsum(result_df$lfsr) / seq_len(nrow(result_df))
 
