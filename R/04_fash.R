@@ -303,12 +303,15 @@ plot.fash <- function(x, ordering = NULL, discrete = FALSE, ...) {
 #' samples <- predict(fash_obj, index = 1, smooth_var = seq(1, 5, length.out = 50), only.samples = TRUE, M = 5000)
 #' summary <- predict(fash_obj, index = 1, smooth_var = seq(1, 5, length.out = 50), only.samples = FALSE, M = 5000)
 #'
+#' @importFrom stats predict
 #' @importFrom stats median
 #' @importFrom stats quantile
+#'
+#' @method predict fash
 #' 
 #' @export
 #' 
-predict.fash <- function(object, index = 1, smooth_var = NULL, only.samples = FALSE, M = 3000, deriv = 0, ...) {
+predict.fash <- function (object, index = 1, smooth_var = NULL, only.samples = FALSE, M = 3000, deriv = 0, ...) {
   # Validate input
   if (!inherits(object, "fash")) {
     stop("Input must be a `fash` object.")
