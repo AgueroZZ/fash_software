@@ -162,7 +162,7 @@ BF_control <- function(BF, plot = FALSE) {
 #'
 #' @keywords internal
 #' 
-fash_prior_posterior_update <- function(L_matrix, pi0, pi_alt, grid){
+fash_prior_posterior_update <- function (L_matrix, pi0, pi_alt, grid) {
 
   num_datasets <- nrow(L_matrix)
   num_components <- ncol(L_matrix)
@@ -257,7 +257,8 @@ BF_update <- function (fash, plot = FALSE) {
   pi0_hat <- BF_res$pi0_hat_star
 
   # Update prior and posterior weights
-  update_res <- fash_prior_posterior_update(L = fash$L_matrix, pi0 = pi0_hat, pi_alt = pi_alt, grid = fash$psd_grid)
+  update_res <- fash_prior_posterior_update(L_matrix = fash$L_matrix, 
+                  pi0 = pi0_hat, pi_alt = pi_alt, grid = fash$psd_grid)
 
   # Update fash object
   fash$prior_weights <- update_res$prior_weight

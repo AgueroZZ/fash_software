@@ -1,5 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
+^check\_package\.Rmd$
+^debug\_lfsr\.R$
 ^doc$
 ^Meta$
+^obsolete$
