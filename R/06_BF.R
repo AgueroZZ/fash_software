@@ -95,6 +95,10 @@ BF_compute <- function(fash){
 #' BF_control_results <- BF_control(BF_values, plot = TRUE)
 #' print(BF_control_results$pi0_hat_star)
 #'
+#' @importFrom graphics par
+#' @importFrom graphics hist
+#' @importFrom graphics abline
+#'
 #' @export
 #' 
 BF_control <- function(BF, plot = FALSE) {

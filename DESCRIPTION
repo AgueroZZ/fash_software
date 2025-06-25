@@ -1,7 +1,7 @@
 Encoding: UTF-8
 Type: Package
 Package: fashr
-Version: 0.1.5
+Version: 0.1.7
 Date: 2025-06-25
 Title: Flexible Functional Adaptive SHrinkage Through Empirical Bayes
 Authors@R: person("Ziang","Zhang",role=c("aut","cre"),
@@ -14,7 +14,10 @@ License: GPL (>= 3)
 SystemRequirements: GNU make
 Imports:
     Matrix,
+    methods,
+    graphics,
     TMB,
+    parallel,
     numDeriv,
     LaplacesDemon,
     mixsqp,

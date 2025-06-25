@@ -40,6 +40,9 @@
 #' result <- fash(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", grid = grid, likelihood = "poisson", verbose = TRUE)
 #' print(result)
 #'
+#' @importFrom graphics abline
+#' @importFrom graphics legend
+#' 
 #' @export
 fash <- function(Y = NULL, smooth_var = NULL, offset = 0, S = NULL, Omega = NULL, data_list = NULL, grid = seq(0, 2, length.out = 10),
                   likelihood = "gaussian", num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1, penalty = 1,
@@ -251,11 +254,6 @@ plot.fash <- function(x, ordering = NULL, discrete = FALSE, ...) {
   )
 }
 
-
-
-
-
-
 #' Predict Method for fash Objects
 #'
 #' Generates posterior predictions for a specific dataset from a `fash` object using Bayesian Model Averaging.
@@ -305,7 +303,11 @@ plot.fash <- function(x, ordering = NULL, discrete = FALSE, ...) {
 #' samples <- predict(fash_obj, index = 1, smooth_var = seq(1, 5, length.out = 50), only.samples = TRUE, M = 5000)
 #' summary <- predict(fash_obj, index = 1, smooth_var = seq(1, 5, length.out = 50), only.samples = FALSE, M = 5000)
 #'
+#' @importFrom stats median
+#' @importFrom stats quantile
+#' 
 #' @export
+#' 
 predict.fash <- function(object, index = 1, smooth_var = NULL, only.samples = FALSE, M = 3000, deriv = 0, ...) {
   # Validate input
   if (!inherits(object, "fash")) {
@@ -452,7 +454,9 @@ print.fash <- function(x, ...) {
 #'
 #' @importFrom parallel mclapply
 #' @importFrom utils setTxtProgressBar txtProgressBar
+#' 
 #' @export
+#' 
 testing_functional <- function(functional,
                                lfsr_cal = function(x) { min(mean(x <= 0), mean(x >= 0)) },
                                fash, indices,
@@ -468,7 +472,6 @@ testing_functional <- function(functional,
 
   # Parallel or sequential execution
   if (num_cores > 1) {
-    library(parallel)
     results_list <- parallel::mclapply(indices, compute_lfsr, mc.cores = num_cores)
   } else {
     # Sequential execution with progress bar

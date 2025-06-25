@@ -153,7 +153,7 @@ fash_structure_plot <- function(eb_output, discrete = FALSE, ordering = NULL, se
   }
 
   # Create the structure plot
-  ggplot2::ggplot(melted_data, ggplot2::aes(x = factor(id, levels = posterior_weights_df$id), y = value, fill = variable)) +
+  ggplot2::ggplot(melted_data, ggplot2::aes_string(x = factor(id, levels = posterior_weights_df$id), y = value, fill = variable)) +
     ggplot2::geom_bar(stat = "identity", position = "stack") +
     ggplot2::labs(
       x = "Datasets",

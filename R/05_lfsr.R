@@ -33,7 +33,10 @@
 #' print(lfsr_result$pos_prob)  # Print the positive probability
 #' print(lfsr_result$neg_prob)  # Print the negative probability
 #'
+#' @importFrom stats pnorm
+#' 
 #' @export
+#' 
 compute_lfsr_sampling <- function(fash_fit, index, smooth_var = NULL, M = 3000, deriv = 0) {
   # Validate input
   if (!inherits(fash_fit, "fash")) stop("fash_fit must be a `fash` object.")

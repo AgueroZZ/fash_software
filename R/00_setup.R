@@ -292,8 +292,10 @@ fash_set_data <- function(Y, smooth_var, offset = 0, S = NULL, Omega = NULL, dat
 #' data <- fash_set_data(Y, smooth_var, offset, S, Omega)
 #' tmbdat <- fash_set_tmbdat(data$data_list[[1]], Si = S[[1]], Omegai = Omega)
 #'
+#' @importFrom methods as
 #'
 #' @export
+#' 
 fash_set_tmbdat <- function(data_i, Si = NULL, Omegai = NULL, num_basis = 30, betaprec = 1e-6, order = 2) {
   # Extract smoothing variables and response
   y <- data_i$y
