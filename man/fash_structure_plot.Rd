@@ -12,30 +12,30 @@ fash_structure_plot(
 )
 }
 \arguments{
-\item{eb_output}{A list output from `fash_eb_est`, containing:
+\item{eb_output}{A list output from \code{fash_eb_est}, containing:
 \describe{
   \item{posterior_weight}{A numeric matrix of posterior weights (datasets as rows, PSD as columns).}
   \item{prior_weight}{A data frame of prior weights (not used in this plot).}
 }}
 
-\item{discrete}{A logical value. If `TRUE`, treats PSD values as discrete categories with distinct colors.
-If `FALSE`, treats PSD values as a continuous variable with a gradient. Default is `FALSE`.}
+\item{discrete}{A logical value. If \code{TRUE}, treats PSD values as discrete categories with distinct colors.
+If \code{FALSE}, treats PSD values as a continuous variable with a gradient.}
 
 \item{ordering}{A character string specifying the method for reordering datasets. Options are:
 \describe{
   \item{NULL}{No reordering (default).}
-  \item{`"mean"`}{Reorder by the mean of the posterior PSD.}
-  \item{`"median"`}{Reorder by the median of the posterior PSD.}
-  \item{`"lfdr"`}{Reorder by the local false discovery rate (posterior probability of PSD = 0).}
+  \item{`mean`}{Reorder by the mean of the posterior PSD.}
+  \item{`median`}{Reorder by the median of the posterior PSD.}
+  \item{`lfdr`}{Reorder by the local false discovery rate (posterior probability of PSD = 0).}
 }}
 
-\item{selected_indices}{A numeric vector specifying the indices of datasets to display. If `NULL`, displays all datasets.}
+\item{selected_indices}{A numeric vector specifying the indices of datasets to display. If \code{NULL}, displays all datasets.}
 }
 \value{
 A ggplot object representing the structure plot.
 }
 \description{
-This function takes the output of `fash_eb_est` and generates a structure plot
+This function takes the output of \code{fash_eb_est} and generates a structure plot
 visualizing the posterior weights for all datasets. It can display PSD values
 as either continuous or discrete variables and optionally reorder datasets.
 }

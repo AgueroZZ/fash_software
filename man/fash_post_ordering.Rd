@@ -7,7 +7,7 @@
 fash_post_ordering(eb_output, ordering = "mean")
 }
 \arguments{
-\item{eb_output}{A list output from `fash_eb_est`, containing:
+\item{eb_output}{A list output from \code{fash_eb_est}, containing:
 \describe{
   \item{\code{posterior_weight}}{A numeric matrix of posterior weights (datasets as rows, PSD as columns).}
   \item{\code{prior_weight}}{A data frame of prior weights (not used in this function).}
@@ -29,7 +29,7 @@ A list containing:
   }
 }
 \description{
-Orders the posterior weight matrix from `fash_eb_est` based on a specified method of the posterior PSD.
+Orders the posterior weight matrix from \code{fash_eb_est} based on a specified method of the posterior PSD.
 }
 \examples{
 # Example usage

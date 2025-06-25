@@ -17,23 +17,23 @@ fash_L_compute(
 )
 }
 \arguments{
-\item{fash_data}{The output from `fash_set_data`, containing preprocessed datasets.}
+\item{fash_data}{The output from \code{fash_set_data}, containing preprocessed datasets.}
 
-\item{likelihood}{A character string specifying the likelihood function to use. Options are `"gaussian"` and `"poisson"`. Default is `"gaussian"`.}
+\item{likelihood}{A character string specifying the likelihood function to use. Options are `gaussian` and `poisson`.}
 
-\item{num_cores}{An integer specifying the number of cores to use for parallel processing. Default is 1.}
+\item{num_cores}{An integer specifying the number of cores to use for parallel processing.}
 
-\item{grid}{A numeric vector representing the grid of PSD (Predictive Standard Deviation) values. Default is `seq(0, 2, length.out = 10)`.}
+\item{grid}{A numeric vector representing the grid of PSD (Predictive Standard Deviation) values.}
 
-\item{pred_step}{A numeric value specifying the prediction step size. Default is 1.}
+\item{pred_step}{A numeric value specifying the prediction step size.}
 
-\item{num_basis}{An integer specifying the number of O-Spline basis functions to use for the approximation. Default is 30.}
+\item{num_basis}{An integer specifying the number of O-Spline basis functions to use for the approximation.}
 
-\item{betaprec}{A numeric value representing the precision of the fixed effects coefficients (`beta`). Default is `1e-6`.}
+\item{betaprec}{A numeric value representing the precision of the fixed effects coefficients.}
 
-\item{order}{An integer specifying the order of the Integrated Wiener Process (IWP) prior. Default is 2.}
+\item{order}{An integer specifying the order of the Integrated Wiener Process (IWP) prior.}
 
-\item{verbose}{A logical value. If `TRUE`, shows a progress bar when `num_cores = 1`. Default is `FALSE`.}
+\item{verbose}{A logical value. If \code{TRUE}, shows a progress bar when \code{num_cores = 1}.}
 }
 \value{
 A numeric matrix where each row corresponds to a dataset and each column corresponds to a grid value of PSD.

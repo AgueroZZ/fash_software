@@ -9,7 +9,7 @@ BF_control(BF, plot = FALSE)
 \arguments{
 \item{BF}{A numeric vector of Bayes Factors computed from `BF_compute()`.}
 
-\item{plot}{A logical value. If `TRUE`, generates diagnostic plots for BF control. Default is `FALSE`.}
+\item{plot}{A logical value. If \code{TRUE}, generates diagnostic plots for BF control.}
 }
 \value{
 A list containing:
@@ -20,8 +20,8 @@ A list containing:
 }
 }
 \description{
-This function estimates **\eqn{\pi_0}**, the proportion of datasets that follow the null hypothesis,
-using **Bayes Factor (BF) control**.
+This function estimates \eqn{\pi_0}, the proportion of datasets that follow the null hypothesis,
+using Bayes Factor (BF) control.
 }
 \examples{
 

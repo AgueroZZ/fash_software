@@ -3,7 +3,7 @@
 #' This function performs empirical Bayes estimation on the provided (log) likelihood matrix, incorporating an optional Dirichlet prior penalty.
 #'
 #' @param L_matrix A numeric matrix representing the log-likelihood values. Rows correspond to datasets, and columns correspond to grid points.
-#' @param penalty A numeric value representing the lambda value for the Dirichlet prior. Default is 1 (no additional penalty).
+#' @param penalty A numeric value representing the lambda value for the Dirichlet prior.
 #' @param grid A numeric vector representing the grid of PSD (Predictive Standard Deviation) values.
 #'
 #' @return A list containing:
@@ -75,25 +75,25 @@ fash_eb_est <- function(L_matrix, penalty = 1, grid) {
 
 #' Structure Plot for Posterior Weights
 #'
-#' This function takes the output of `fash_eb_est` and generates a structure plot
+#' This function takes the output of \code{fash_eb_est} and generates a structure plot
 #' visualizing the posterior weights for all datasets. It can display PSD values
 #' as either continuous or discrete variables and optionally reorder datasets.
 #'
-#' @param eb_output A list output from `fash_eb_est`, containing:
+#' @param eb_output A list output from \code{fash_eb_est}, containing:
 #'   \describe{
 #'     \item{posterior_weight}{A numeric matrix of posterior weights (datasets as rows, PSD as columns).}
 #'     \item{prior_weight}{A data frame of prior weights (not used in this plot).}
 #'   }
-#' @param discrete A logical value. If `TRUE`, treats PSD values as discrete categories with distinct colors.
-#'                 If `FALSE`, treats PSD values as a continuous variable with a gradient. Default is `FALSE`.
+#' @param discrete A logical value. If \code{TRUE}, treats PSD values as discrete categories with distinct colors.
+#'                 If \code{FALSE}, treats PSD values as a continuous variable with a gradient.
 #' @param ordering A character string specifying the method for reordering datasets. Options are:
 #'   \describe{
 #'     \item{NULL}{No reordering (default).}
-#'     \item{`"mean"`}{Reorder by the mean of the posterior PSD.}
-#'     \item{`"median"`}{Reorder by the median of the posterior PSD.}
-#'     \item{`"lfdr"`}{Reorder by the local false discovery rate (posterior probability of PSD = 0).}
+#'     \item{`mean`}{Reorder by the mean of the posterior PSD.}
+#'     \item{`median`}{Reorder by the median of the posterior PSD.}
+#'     \item{`lfdr`}{Reorder by the local false discovery rate (posterior probability of PSD = 0).}
 #'   }
-#' @param selected_indices A numeric vector specifying the indices of datasets to display. If `NULL`, displays all datasets.
+#' @param selected_indices A numeric vector specifying the indices of datasets to display. If \code{NULL}, displays all datasets.
 #' @return A ggplot object representing the structure plot.
 #'
 #' @examples
@@ -180,9 +180,9 @@ fash_structure_plot <- function(eb_output, discrete = FALSE, ordering = NULL, se
 
 #' Order Posterior Weight Matrix
 #'
-#' Orders the posterior weight matrix from `fash_eb_est` based on a specified method of the posterior PSD.
+#' Orders the posterior weight matrix from \code{fash_eb_est} based on a specified method of the posterior PSD.
 #'
-#' @param eb_output A list output from `fash_eb_est`, containing:
+#' @param eb_output A list output from \code{fash_eb_est}, containing:
 #'   \describe{
 #'     \item{\code{posterior_weight}}{A numeric matrix of posterior weights (datasets as rows, PSD as columns).}
 #'     \item{\code{prior_weight}}{A data frame of prior weights (not used in this function).}

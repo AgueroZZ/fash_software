@@ -3,15 +3,15 @@
 #' Computes the L matrix, where each row corresponds to a dataset and each column corresponds to a grid value of PSD (Predictive Standard Deviation).
 #' Handles both Gaussian and Poisson likelihoods using helper functions.
 #'
-#' @param fash_data The output from `fash_set_data`, containing preprocessed datasets.
-#' @param likelihood A character string specifying the likelihood function to use. Options are `"gaussian"` and `"poisson"`. Default is `"gaussian"`.
-#' @param num_cores An integer specifying the number of cores to use for parallel processing. Default is 1.
-#' @param grid A numeric vector representing the grid of PSD (Predictive Standard Deviation) values. Default is `seq(0, 2, length.out = 10)`.
-#' @param pred_step A numeric value specifying the prediction step size. Default is 1.
-#' @param num_basis An integer specifying the number of O-Spline basis functions to use for the approximation. Default is 30.
-#' @param betaprec A numeric value representing the precision of the fixed effects coefficients (`beta`). Default is `1e-6`.
-#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior. Default is 2.
-#' @param verbose A logical value. If `TRUE`, shows a progress bar when `num_cores = 1`. Default is `FALSE`.
+#' @param fash_data The output from \code{fash_set_data}, containing preprocessed datasets.
+#' @param likelihood A character string specifying the likelihood function to use. Options are `gaussian` and `poisson`.
+#' @param num_cores An integer specifying the number of cores to use for parallel processing.
+#' @param grid A numeric vector representing the grid of PSD (Predictive Standard Deviation) values.
+#' @param pred_step A numeric value specifying the prediction step size.
+#' @param num_basis An integer specifying the number of O-Spline basis functions to use for the approximation.
+#' @param betaprec A numeric value representing the precision of the fixed effects coefficients.
+#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior.
+#' @param verbose A logical value. If \code{TRUE}, shows a progress bar when \code{num_cores = 1}.
 #'
 #' @return A numeric matrix where each row corresponds to a dataset and each column corresponds to a grid value of PSD.
 #'
@@ -127,17 +127,17 @@ fash_L_compute <- function(fash_data, likelihood = "gaussian", num_cores = 1, gr
 #'
 #' Computes the log-likelihood for a Gaussian model using a TMB-based approach.
 #' Handles both random-effects models and fixed-effects-only models, with DLL selection
-#' based on whether standard errors (`S`) are specified.
+#' based on whether standard errors (\code{S}) are specified.
 #'
-#' @param data_i A single dataset extracted from the `data_list` component of `fash_set_data`.
-#'               Must be a list containing `y`, `x`, and `offset`.
+#' @param data_i A single dataset extracted from the \code{data_list} component of \code{fash_set_data}.
+#'               Must be a list containing \code{y}, \code{x}, and \code{offset}.
 #' @param Si A numeric vector representing the standard errors for the dataset.
 #' @param Omegai A numeric precision matrix for the dataset.
 #' @param psd_iwp A numeric value for the precision parameter of the Integrated Wiener Process. If 0, only fixed effects are used.
 #' @param num_basis An integer specifying the number of O-Spline basis functions. Default is 30.
-#' @param betaprec A numeric value representing the precision of the fixed effects coefficients (`beta`). Default is `1e-6`.
-#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior. Default is 2.
-#' @param pred_step A numeric value specifying the prediction step size. Default is 1.
+#' @param betaprec A numeric value representing the precision of the fixed effects coefficients.
+#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior.
+#' @param pred_step A numeric value specifying the prediction step size.
 #'
 #' @return A numeric value representing the negative log-likelihood for the dataset.
 #'
@@ -217,18 +217,18 @@ compute_L_gaussian_helper <- function(data_i, Si, Omegai, psd_iwp, num_basis = 3
 
 #' Compute Log-Likelihoods for All Grid Values of PSD (Predictive Standard Deviation)
 #'
-#' Computes the log-likelihood for a single dataset across all values of `psd_iwp` specified in the grid.
-#' This function iteratively calls `compute_L_gaussian_helper` for each grid value.
+#' Computes the log-likelihood for a single dataset across all values of \code{psd_iwp} specified in the grid.
+#' This function iteratively calls \code{compute_L_gaussian_helper} for each grid value.
 #'
-#' @param data_i A single dataset extracted from the `data_list` component of `fash_set_data`.
-#'               Must be a list containing `y`, `x`, and `offset`.
+#' @param data_i A single dataset extracted from the \code{data_list} component of \code{fash_set_data}.
+#'               Must be a list containing \code{y}, \code{x}, and \code{offset}.
 #' @param Si A numeric vector representing the standard errors for the dataset.
 #' @param Omegai A numeric precision matrix for the dataset.
 #' @param grid A numeric vector representing the grid of PSD (Predictive Standard Deviation) values.
-#' @param num_basis An integer specifying the number of O-Spline basis functions. Default is 30.
-#' @param betaprec A numeric value representing the precision of the fixed effects coefficients (`beta`). Default is `1e-6`.
-#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior. Default is 2.
-#' @param pred_step A numeric value specifying the prediction step size. Default is 1.
+#' @param num_basis An integer specifying the number of O-Spline basis functions.
+#' @param betaprec A numeric value representing the precision of the fixed effects coefficients.
+#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior.
+#' @param pred_step A numeric value specifying the prediction step size.
 #'
 #' @return A numeric vector of log-likelihood values, one for each grid value.
 #'
@@ -274,16 +274,16 @@ compute_L_gaussian_helper_seq <- function(data_i, Si, Omegai, grid, num_basis = 
 
 #' Compute Log-Likelihoods for All Grid Values of PSD (Poisson)
 #'
-#' Computes the log-likelihood for a single dataset across all values of `psd_iwp` specified in the grid.
-#' This function iteratively calls `compute_L_poisson_helper` for each grid value.
+#' Computes the log-likelihood for a single dataset across all values of \code{psd_iwp} specified in the grid.
+#' This function iteratively calls \code{compute_L_poisson_helper} for each grid value.
 #'
-#' @param data_i A single dataset extracted from the `data_list` component of `fash_set_data`.
-#'               Must be a list containing `y`, `x`, and `offset`.
+#' @param data_i A single dataset extracted from the \code{data_list} component of \code{fash_set_data}.
+#'               Must be a list containing \code{y}, \code{x}, and \code{offset}.
 #' @param grid A numeric vector representing the grid of PSD (Predictive Standard Deviation) values.
-#' @param num_basis An integer specifying the number of O-Spline basis functions. Default is 30.
-#' @param betaprec A numeric value representing the precision of the fixed effects coefficients (`beta`). Default is `1e-6`.
-#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior. Default is 2.
-#' @param pred_step A numeric value specifying the prediction step size. Default is 1.
+#' @param num_basis An integer specifying the number of O-Spline basis functions.
+#' @param betaprec A numeric value representing the precision of the fixed effects coefficients (`beta`).
+#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior.
+#' @param pred_step A numeric value specifying the prediction step size.
 #'
 #' @return A numeric vector of log-likelihood values, one for each grid value.
 #'
@@ -331,13 +331,13 @@ compute_L_poisson_helper_seq <- function(data_i, grid, num_basis = 30, betaprec 
 #' Computes the log-likelihood for a Poisson model using a TMB-based approach.
 #' Handles both random-effects models and fixed-effects-only models.
 #'
-#' @param data_i A single dataset extracted from the `data_list` component of `fash_set_data`.
-#'               Must be a list containing `y`, `x`, and `offset`.
+#' @param data_i A single dataset extracted from the \code{data_list} component of \code{fash_set_data}.
+#'               Must be a list containing \code{y}, \code{x}, and \code{offset}.
 #' @param psd_iwp A numeric value for the precision parameter of the Integrated Wiener Process. If 0, only fixed effects are used.
-#' @param num_basis An integer specifying the number of O-Spline basis functions. Default is 30.
-#' @param betaprec A numeric value representing the precision of the fixed effects coefficients (`beta`). Default is `1e-6`.
-#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior. Default is 2.
-#' @param pred_step A numeric value specifying the prediction step size. Default is 1.
+#' @param num_basis An integer specifying the number of O-Spline basis functions.
+#' @param betaprec A numeric value representing the precision of the fixed effects coefficients (`beta`).
+#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior.
+#' @param pred_step A numeric value specifying the prediction step size.
 #'
 #' @return A numeric value representing the negative log-likelihood for the dataset.
 #'

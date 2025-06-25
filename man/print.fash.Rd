@@ -7,12 +7,12 @@
 \method{print}{fash}(x, ...)
 }
 \arguments{
-\item{x}{A `fash` object.}
+\item{x}{A \code{fash} object.}
 
 \item{...}{Additional arguments (not used).}
 }
 \description{
-Displays a summary of the fitted `fash` object, including the number of datasets,
+Displays a summary of the fitted \code{fash} object, including the number of datasets,
 type of likelihood used, the number of PSD grid values, and the order of the Integrated Wiener Process (IWP).
 }
 \examples{

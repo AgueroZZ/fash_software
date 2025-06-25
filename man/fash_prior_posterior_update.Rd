@@ -20,14 +20,16 @@ Rows correspond to datasets, and columns correspond to mixture components.}
 A list containing:
 \describe{
   \item{prior_weight}{A data frame with two columns:
-    - `psd`: The PSD grid values corresponding to non-trivial weights.
-    - `prior_weight`: The updated prior weights.}
+  \describe{
+     \item{psd}{A numeric vector of PSD values corresponding to non-trivial weights.}
+     \item{prior_weight}{A numeric vector of prior weights corresponding to the PSD values.}
+  }}
   \item{posterior_weight}{A numeric matrix of posterior weights, where rows correspond to datasets
     and columns correspond to non-trivial mixture components.}
 }
 }
 \description{
-This function updates the **prior and posterior weights** in a FASH model using the estimated
+This function updates the prior and posterior weights in a FASH model using the estimated
 proportion of null datasets (\eqn{\pi_0}) and the reweighted prior under the alternative hypothesis (\eqn{\pi_{alt}}).
 }
 \examples{

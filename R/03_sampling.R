@@ -2,20 +2,20 @@
 #'
 #' This function fits the model for a given dataset and specified PSD value, and generates posterior sample paths at refined grid points.
 #'
-#' @param data_i A single dataset extracted from the `data_list` component of `fash_set_data`. Must be a list containing `y`, `x`, and `offset`.
+#' @param data_i A single dataset extracted from the \code{data_list} component of \code{fash_set_data}. Must be a list containing \code{y}, \code{x}, and \code{offset}.
 #' @param refined_x A numeric vector of grid points where posterior sample paths are evaluated.
-#' @param M An integer specifying the number of posterior samples to generate. Default is 100.
+#' @param M An integer specifying the number of posterior samples to generate.
 #' @param psd_iwp A numeric value specifying the PSD value for the Integrated Wiener Process.
-#' @param Si A numeric vector representing the standard errors for the dataset (if applicable). Default is `NULL`.
-#' @param Omegai A numeric precision matrix for the dataset (if applicable). Default is `NULL`.
-#' @param num_basis An integer specifying the number of O-Spline basis functions. Default is 30.
-#' @param betaprec A numeric value representing the precision of the fixed effects coefficients (`beta`). Default is `1e-6`.
-#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior. Default is 2.
-#' @param pred_step A numeric value specifying the prediction step size. Default is 1.
-#' @param likelihood A character string specifying the likelihood function to use. Options are `"gaussian"` and `"poisson"`.
-#' @param deriv An integer specifying the order of the derivative to compute. Default is 0.
+#' @param Si A numeric vector representing the standard errors for the dataset (if applicable).
+#' @param Omegai A numeric precision matrix for the dataset (if applicable).
+#' @param num_basis An integer specifying the number of O-Spline basis functions.
+#' @param betaprec A numeric value representing the precision of the fixed effects coefficients.
+#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior.
+#' @param pred_step A numeric value specifying the prediction step size.
+#' @param likelihood A character string specifying the likelihood function to use. Options are `gaussian` and `poisson`.
+#' @param deriv An integer specifying the order of the derivative to compute.
 #'
-#' @return A numeric matrix of posterior sample paths, where rows correspond to grid points in `refined_x` and columns correspond to the generated samples.
+#' @return A numeric matrix of posterior sample paths, where rows correspond to grid points in \code{refined_x} and columns correspond to the generated samples.
 #'
 #' @examples
 #' # Example usage
@@ -147,19 +147,19 @@ fash_fit_once <- function(data_i, refined_x, M, psd_iwp, Si = NULL, Omegai = NUL
 #' 1. Sampling PSD values based on posterior weights.
 #' 2. Using the sampled PSD values to generate posterior samples.
 #'
-#' @param data_i A single dataset extracted from the `data_list` component of `fash_set_data`. Must be a list containing `y`, `x`, and `offset`.
+#' @param data_i A single dataset extracted from the \code{data_list} component of \code{fash_set_data}. Must be a list containing \code{y}, \code{x}, and \code{offset}.
 #' @param posterior_weights A numeric vector representing the posterior weights of the PSD values for the i-th dataset.
 #' @param psd_values A numeric vector of PSD values corresponding to the posterior weights.
 #' @param refined_x A numeric vector of grid points where posterior sample paths are evaluated.
 #' @param M An integer specifying the total number of posterior samples to generate.
-#' @param Si A numeric vector representing the standard errors for the dataset (if applicable). Default is `NULL`.
-#' @param Omegai A numeric precision matrix for the dataset (if applicable). Default is `NULL`.
-#' @param num_basis An integer specifying the number of O-Spline basis functions. Default is 30.
-#' @param betaprec A numeric value representing the precision of the fixed effects coefficients (`beta`). Default is `1e-6`.
-#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior. Default is 2.
-#' @param pred_step A numeric value specifying the prediction step size. Default is 1.
-#' @param likelihood A character string specifying the likelihood function to use. Options are `"gaussian"` and `"poisson"`.
-#' @param deriv An integer specifying the order of the derivative to compute. Default is 0.
+#' @param Si A numeric vector representing the standard errors for the dataset (if applicable).
+#' @param Omegai A numeric precision matrix for the dataset (if applicable).
+#' @param num_basis An integer specifying the number of O-Spline basis functions.
+#' @param betaprec A numeric value representing the precision of the fixed effects coefficients.
+#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior.
+#' @param pred_step A numeric value specifying the prediction step size.
+#' @param likelihood A character string specifying the likelihood function to use. Options are `gaussian` and `poisson`.
+#' @param deriv An integer specifying the order of the derivative to compute.
 #'
 #' @return A list containing:
 #'   \describe{

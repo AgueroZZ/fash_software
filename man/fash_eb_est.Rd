@@ -9,7 +9,7 @@ fash_eb_est(L_matrix, penalty = 1, grid)
 \arguments{
 \item{L_matrix}{A numeric matrix representing the log-likelihood values. Rows correspond to datasets, and columns correspond to grid points.}
 
-\item{penalty}{A numeric value representing the lambda value for the Dirichlet prior. Default is 1 (no additional penalty).}
+\item{penalty}{A numeric value representing the lambda value for the Dirichlet prior.}
 
 \item{grid}{A numeric vector representing the grid of PSD (Predictive Standard Deviation) values.}
 }

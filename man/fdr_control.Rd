@@ -7,24 +7,24 @@
 fdr_control(fash_obj, alpha = 0.05, plot = FALSE)
 }
 \arguments{
-\item{fash_obj}{A `fash` object containing the results of the FASH pipeline, including `lfdr`.}
+\item{fash_obj}{A \code{fash} object containing the results of the FASH pipeline, including \code{lfdr}.}
 
-\item{alpha}{A numeric value specifying the significance level for hypothesis testing. Default is `0.05`.}
+\item{alpha}{A numeric value specifying the significance level for hypothesis testing.}
 
-\item{plot}{A logical value. If `TRUE`, plots the sorted FDR values with a horizontal line at the `alpha` level. Default is `FALSE`.}
+\item{plot}{A logical value. If \code{TRUE}, plots the sorted FDR values with a horizontal line at the \code{alpha} level.}
 }
 \value{
 A list containing:
 
-      - `fdr_results`: A data frame with columns:
+      - \code{fdr_results}: A data frame with columns:
 
-      - `index`: The original dataset index.
+      - \code{index}: The original dataset index.
 
-      - `FDR`: The false discovery rate for each dataset.
+      - \code{FDR}: The false discovery rate for each dataset.
 }
 \description{
 This function performs hypothesis testing by controlling the False Discovery Rate (FDR) based on the
-local false discovery rate (lfdr) stored in the `fash` object.
+local false discovery rate (lfdr) stored in the \code{fash} object.
 }
 \examples{
 # Example usage

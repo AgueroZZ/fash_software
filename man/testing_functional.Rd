@@ -18,31 +18,29 @@ testing_functional(
 \arguments{
 \item{functional}{A function applied to each posterior sample to extract a scalar statistic.}
 
-\item{lfsr_cal}{A function used to compute the local false sign rate (lfsr).
-Default is `function(x) {min(mean(x <= 0), mean(x >= 0))}`.}
+\item{lfsr_cal}{A function used to compute the local false sign rate (lfsr).}
 
-\item{fash}{A `fash` object.}
+\item{fash}{A \code{fash} object.}
 
 \item{indices}{A numeric vector specifying the dataset indices to evaluate.}
 
 \item{smooth_var}{A numeric vector specifying refined x values for prediction.}
 
-\item{num_cores}{An integer specifying the number of cores to use for parallel processing.
-Default is `1` (sequential execution).}
+\item{num_cores}{An integer specifying the number of cores to use for parallel processing.}
 }
 \value{
 A data frame containing:
 
 \describe{
-  \item{indices}{The dataset indices corresponding to `indices`.}
+  \item{indices}{The dataset indices corresponding to \code{indices}.}
   \item{lfsr}{The computed local false sign rate (LFSR) for each dataset.}
-  \item{cfsr}{The cumulative false sign rate (CFSR), calculated as the cumulative mean of `lfsr`.}
+  \item{cfsr}{The cumulative false sign rate (CFSR), calculated as the cumulative mean of \code{lfsr}.}
 }
 }
 \description{
-This function applies a user-specified functional to posterior samples from a `fash` object, calculates the
+This function applies a user-specified functional to posterior samples from a \code{fash} object, calculates the
 local false sign rate (LFSR) for each dataset, and returns a ranked data frame. The computation can be
-parallelized if `num_cores > 1`.
+parallelized if \code{num_cores > 1}.
 }
 \examples{
 # Define a functional (e.g., mean of posterior samples)

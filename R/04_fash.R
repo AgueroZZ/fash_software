@@ -1,25 +1,25 @@
 #' Perform Full FASH Analysis
 #'
 #' This function performs the full FASH pipeline, including data setup, likelihood computation,
-#' empirical Bayes estimation, and outputs a structured `fash` object.
+#' empirical Bayes estimation, and outputs a structured \code{fash} object.
 #'
-#' @param Y Either a numeric matrix of response variables or a character string specifying the column name in `data_list` for response variables.
-#' @param smooth_var A numeric matrix, vector, or a character string specifying the column name in `data_list` for smoothing variables.
-#' @param offset A numeric matrix, vector, scalar, or a character string specifying the column name in `data_list` for offset variables. Defaults to 0.
-#' @param S A numeric matrix, vector, scalar, or list representing the standard errors of `Y`. Or a character string specifying the column name in `data_list` for SD. Default is `NULL`.
-#' @param Omega Either a list of precision matrices (one for each dataset) or a single precision matrix (shared across all datasets). Default is `NULL`.
-#' @param data_list A list of data frames, where each data frame corresponds to a single dataset. Default is `NULL`.
-#' @param grid A numeric vector representing the grid of PSD (Predictive Standard Deviation) values. Default is `seq(0, 2, length.out = 10)`.
-#' @param likelihood A character string specifying the likelihood function to use. Options are `"gaussian"` and `"poisson"`. Default is `"gaussian"`.
-#' @param num_basis An integer specifying the number of O-Spline basis functions. Default is 30.
-#' @param betaprec A numeric value representing the precision of the fixed effects coefficients (`beta`). Default is `1e-6`.
-#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior. Default is 2.
-#' @param pred_step A numeric value specifying the prediction step size. Default is 1.
-#' @param penalty A numeric value representing the lambda value for the Dirichlet prior. Default is 1 (no additional penalty).
-#' @param num_cores An integer specifying the number of cores to use for parallel processing. Default is 1.
-#' @param verbose A logical value. If `TRUE`, shows progress messages and timing for each step. Default is `FALSE`.
+#' @param Y Either a numeric matrix of response variables or a character string specifying the column name in \code{data_list} for response variables.
+#' @param smooth_var A numeric matrix, vector, or a character string specifying the column name in \code{data_list} for smoothing variables.
+#' @param offset A numeric matrix, vector, scalar, or a character string specifying the column name in \code{data_list} for offset variables.
+#' @param S A numeric matrix, vector, scalar, or list representing the standard errors of \code{Y}. Or a character string specifying the column name in \code{data_list} for SD.
+#' @param Omega Either a list of precision matrices (one for each dataset) or a single precision matrix (shared across all datasets).
+#' @param data_list A list of data frames, where each data frame corresponds to a single dataset.
+#' @param grid A numeric vector representing the grid of PSD (Predictive Standard Deviation) values.
+#' @param likelihood A character string specifying the likelihood function to use. Options are `gaussian` and `poisson`.
+#' @param num_basis An integer specifying the number of O-Spline basis functions.
+#' @param betaprec A numeric value representing the precision of the fixed effects coefficients.
+#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior.
+#' @param pred_step A numeric value specifying the prediction step size.
+#' @param penalty A numeric value representing the lambda value for the Dirichlet prior.
+#' @param num_cores An integer specifying the number of cores to use for parallel processing.
+#' @param verbose A logical value. If \code{TRUE}, shows progress messages and timing for each step.
 #'
-#' @return A `fash` object containing:
+#' @return A \code{fash} object containing:
 #'   \describe{
 #'     \item{\code{prior_weights}}{Estimated prior weights for PSD values.}
 #'     \item{\code{posterior_weights}}{Posterior weight matrix of PSD values.}
@@ -42,7 +42,7 @@
 #'
 #' @importFrom graphics abline
 #' @importFrom graphics legend
-#' 
+#'
 #' @export
 fash <- function(Y = NULL, smooth_var = NULL, offset = 0, S = NULL, Omega = NULL, data_list = NULL, grid = seq(0, 2, length.out = 10),
                   likelihood = "gaussian", num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1, penalty = 1,
@@ -128,19 +128,19 @@ fash <- function(Y = NULL, smooth_var = NULL, offset = 0, S = NULL, Omega = NULL
 #' Perform False Discovery Rate (FDR) Control
 #'
 #' This function performs hypothesis testing by controlling the False Discovery Rate (FDR) based on the
-#' local false discovery rate (lfdr) stored in the `fash` object.
+#' local false discovery rate (lfdr) stored in the \code{fash} object.
 #'
-#' @param fash_obj A `fash` object containing the results of the FASH pipeline, including `lfdr`.
-#' @param alpha A numeric value specifying the significance level for hypothesis testing. Default is `0.05`.
-#' @param plot A logical value. If `TRUE`, plots the sorted FDR values with a horizontal line at the `alpha` level. Default is `FALSE`.
+#' @param fash_obj A \code{fash} object containing the results of the FASH pipeline, including \code{lfdr}.
+#' @param alpha A numeric value specifying the significance level for hypothesis testing.
+#' @param plot A logical value. If \code{TRUE}, plots the sorted FDR values with a horizontal line at the \code{alpha} level.
 #'
 #' @return A list containing:
 #'
-#'       - `fdr_results`: A data frame with columns:
+#'       - \code{fdr_results}: A data frame with columns:
 #'
-#'       - `index`: The original dataset index.
+#'       - \code{index}: The original dataset index.
 #'
-#'       - `FDR`: The false discovery rate for each dataset.
+#'       - \code{FDR}: The false discovery rate for each dataset.
 #'
 #' @examples
 #' # Example usage
@@ -208,21 +208,21 @@ fdr_control <- function(fash_obj, alpha = 0.05, plot = FALSE) {
 
 #' Plot Method for fash Objects
 #'
-#' Generates a structure plot of the posterior weights stored in the `fash` object,
+#' Generates a structure plot of the posterior weights stored in the \code{fash} object,
 #' visualizing the distribution of posterior weights across datasets and PSD values.
 #'
-#' @param x A `fash` object containing the results of the FASH pipeline.
+#' @param x A \code{fash} object containing the results of the FASH pipeline.
 #' @param ordering A character string specifying the method for reordering datasets (e.g., "mean" or "lfdr").
 #'
-#'   - `"mean"`: Reorder by the mean of the posterior PSD.
+#'   - \code{"mean"}: Reorder by the mean of the posterior PSD.
 #'
-#'   - `"lfdr"`: Reorder by the local false discovery rate.
+#'   - \code{"lfdr"}: Reorder by the local false discovery rate.
 #'
-#'   - `NULL`: No reordering (default).
+#'   - \code{NULL}: No reordering (default).
 #'
-#' @param discrete A logical value. If `TRUE`, treats PSD values as discrete categories with distinct colors.
-#'                 If `FALSE`, treats PSD values as a continuous variable with a gradient. Default is `FALSE`.
-#' @param ... Additional arguments passed to `fash_structure_plot`.
+#' @param discrete A logical value. If \code{TRUE}, treats PSD values as discrete categories with distinct colors.
+#'                 If \code{FALSE}, treats PSD values as a continuous variable with a gradient.
+#' @param ... Additional arguments passed to \code{fash_structure_plot}.
 #'
 #' @examples
 #' data_list <- list(
@@ -256,28 +256,28 @@ plot.fash <- function(x, ordering = NULL, discrete = FALSE, ...) {
 
 #' Predict Method for fash Objects
 #'
-#' Generates posterior predictions for a specific dataset from a `fash` object using Bayesian Model Averaging.
+#' Generates posterior predictions for a specific dataset from a \code{fash} object using Bayesian Model Averaging.
 #'
-#' @param object A `fash` object containing the results of the FASH pipeline.
-#' @param index An integer specifying the dataset index to predict. Default is `1`.
-#' @param smooth_var A numeric vector specifying refined x values for prediction. If `NULL`, uses the x values from the model fit. Default is `NULL`.
-#' @param only.samples A logical value. If `TRUE`, returns posterior samples. If `FALSE`, summarizes the samples into mean and 95 percent confidence intervals. Default is `FALSE`.
-#' @param M An integer specifying the number of posterior samples to generate. Default is `3000`.
-#' @param deriv An integer specifying the order of the derivative to compute. Default is `0`.
+#' @param object A \code{fash} object containing the results of the FASH pipeline.
+#' @param index An integer specifying the dataset index to predict.
+#' @param smooth_var A numeric vector specifying refined x values for prediction. If \code{NULL}, uses the x values from the model fit.
+#' @param only.samples A logical value. If \code{TRUE}, returns posterior samples. If \code{FALSE}, summarizes the samples into mean and 95 percent confidence intervals.
+#' @param M An integer specifying the number of posterior samples to generate.
+#' @param deriv An integer specifying the order of the derivative to compute.
 #' @param ... Additional arguments (not used).
 #'
-#' @return If `only.samples = TRUE`, a matrix of posterior samples where rows correspond to `smooth_var` and columns correspond to posterior draws.
-#' If `only.samples = FALSE`, a data frame summarizing posterior predictions with columns:
+#' @return If \code{only.samples = TRUE}, a matrix of posterior samples where rows correspond to \code{smooth_var} and columns correspond to posterior draws.
+#' If \code{only.samples = FALSE}, a data frame summarizing posterior predictions with columns:
 #'
-#'   - `x`: The refined x values.
+#'   - \code{x}: The refined x values.
 #'
-#'   - `mean`: The posterior mean.
+#'   - \code{mean}: The posterior mean.
 #'
-#'   - `lower`: The lower bound of the 95 percent interval.
+#'   - \code{lower}: The lower bound of the 95 percent interval.
 #'
-#'   - `upper`: The upper bound of the 95 percent interval.
+#'   - \code{upper}: The upper bound of the 95 percent interval.
 #'
-#'   - `median`: The posterior median.
+#'   - \code{median}: The posterior median.
 #'
 #' @examples
 #' # Example 1: Predict for a specific dataset with summarized results
@@ -308,9 +308,9 @@ plot.fash <- function(x, ordering = NULL, discrete = FALSE, ...) {
 #' @importFrom stats quantile
 #'
 #' @method predict fash
-#' 
+#'
 #' @export
-#' 
+#'
 predict.fash <- function (object, index = 1, smooth_var = NULL, only.samples = FALSE, M = 3000, deriv = 0, ...) {
   # Validate input
   if (!inherits(object, "fash")) {
@@ -373,10 +373,10 @@ predict.fash <- function (object, index = 1, smooth_var = NULL, only.samples = F
 
 #' Print Method for fash Objects
 #'
-#' Displays a summary of the fitted `fash` object, including the number of datasets,
+#' Displays a summary of the fitted \code{fash} object, including the number of datasets,
 #' type of likelihood used, the number of PSD grid values, and the order of the Integrated Wiener Process (IWP).
 #'
-#' @param x A `fash` object.
+#' @param x A \code{fash} object.
 #' @param ... Additional arguments (not used).
 #'
 #' @examples
@@ -416,25 +416,23 @@ print.fash <- function(x, ...) {
 
 #' Perform Functional Hypothesis Testing on Posterior Samples
 #'
-#' This function applies a user-specified functional to posterior samples from a `fash` object, calculates the
+#' This function applies a user-specified functional to posterior samples from a \code{fash} object, calculates the
 #' local false sign rate (LFSR) for each dataset, and returns a ranked data frame. The computation can be
-#' parallelized if `num_cores > 1`.
+#' parallelized if \code{num_cores > 1}.
 #'
 #' @param functional A function applied to each posterior sample to extract a scalar statistic.
 #' @param lfsr_cal A function used to compute the local false sign rate (lfsr).
-#'   Default is `function(x) {min(mean(x <= 0), mean(x >= 0))}`.
-#' @param fash A `fash` object.
+#' @param fash A \code{fash} object.
 #' @param indices A numeric vector specifying the dataset indices to evaluate.
 #' @param smooth_var A numeric vector specifying refined x values for prediction.
 #' @param num_cores An integer specifying the number of cores to use for parallel processing.
-#'   Default is `1` (sequential execution).
 #'
 #' @return A data frame containing:
 #'
 #' \describe{
-#'   \item{indices}{The dataset indices corresponding to `indices`.}
+#'   \item{indices}{The dataset indices corresponding to \code{indices}.}
 #'   \item{lfsr}{The computed local false sign rate (LFSR) for each dataset.}
-#'   \item{cfsr}{The cumulative false sign rate (CFSR), calculated as the cumulative mean of `lfsr`.}
+#'   \item{cfsr}{The cumulative false sign rate (CFSR), calculated as the cumulative mean of \code{lfsr}.}
 #' }
 #'
 #'
@@ -457,9 +455,9 @@ print.fash <- function(x, ...) {
 #'
 #' @importFrom parallel mclapply
 #' @importFrom utils setTxtProgressBar txtProgressBar
-#' 
+#'
 #' @export
-#' 
+#'
 testing_functional <- function(functional,
                                lfsr_cal = function(x) { min(mean(x <= 0), mean(x >= 0)) },
                                fash, indices,

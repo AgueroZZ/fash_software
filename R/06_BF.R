@@ -1,12 +1,12 @@
 #' Collapse a Likelihood Matrix for Bayes Factor Computation
 #'
-#' This function collapses a likelihood matrix into a **2-column matrix**, reweighting the likelihood
-#' under the alternative hypothesis. This is done using the **mix-SQP algorithm** to estimate
+#' This function collapses a likelihood matrix into a 2-column matrix, reweighting the likelihood
+#' under the alternative hypothesis. This is done using the mix-SQP algorithm to estimate
 #' the optimal mixture weights under the alternative hypothesis.
 #'
 #' @param L A numeric matrix representing the likelihoods. Rows correspond to datasets, and
 #'   columns correspond to mixture components (including the null component in the first column).
-#' @param log A logical value. If `TRUE`, treats `L` as a **log-likelihood matrix**. Default is `FALSE`.
+#' @param log A logical value. If \code{TRUE}, treats \code{L} as a log-likelihood matrix.
 #'
 #' @return A list containing:
 #' \describe{
@@ -22,9 +22,9 @@
 #' print(collapse_result$L_c)
 #'
 #' @importFrom mixsqp mixsqp
-#' 
+#'
 #' @keywords internal
-#' 
+#'
 collapse_L <- function(L, log = FALSE) {
   if (ncol(L) > 1) {
     pi_hat_star <- mixsqp::mixsqp(L = L,
@@ -44,16 +44,16 @@ collapse_L <- function(L, log = FALSE) {
 
 #' Compute Bayes Factors for Each Dataset in a FASH Object
 #'
-#' This function computes **Bayes Factors (BF)** for each dataset in a `fash` object.
+#' This function computes Bayes Factors (BF) for each dataset in a \code{fash} object.
 #' The BF is calculated as the ratio of likelihood under the alternative hypothesis
 #' to the likelihood under the null hypothesis.
 #'
-#' @param fash A `fash` object containing the fitted model and likelihood matrix.
+#' @param fash A \code{fash} object containing the fitted model and likelihood matrix.
 #'
 #' @return A numeric vector of Bayes Factors, where each entry corresponds to a dataset.
 #'
 #' @examples
-#' 
+#'
 #' data_list <- list(
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
@@ -66,7 +66,7 @@ collapse_L <- function(L, log = FALSE) {
 #' print(BF_values)
 #'
 #' @export
-#' 
+#'
 BF_compute <- function(fash){
   L <- exp(fash$L_matrix)
   L_c <- collapse_L(L, log = FALSE)$L_c
@@ -76,11 +76,11 @@ BF_compute <- function(fash){
 
 #' Perform Bayes Factor-Based Control for Estimating \eqn{\pi_0}
 #'
-#' This function estimates **\eqn{\pi_0}**, the proportion of datasets that follow the null hypothesis,
-#' using **Bayes Factor (BF) control**.
+#' This function estimates \eqn{\pi_0}, the proportion of datasets that follow the null hypothesis,
+#' using Bayes Factor (BF) control.
 #'
 #' @param BF A numeric vector of Bayes Factors computed from `BF_compute()`.
-#' @param plot A logical value. If `TRUE`, generates diagnostic plots for BF control. Default is `FALSE`.
+#' @param plot A logical value. If \code{TRUE}, generates diagnostic plots for BF control.
 #'
 #' @return A list containing:
 #' \describe{
@@ -90,7 +90,7 @@ BF_compute <- function(fash){
 #' }
 #'
 #' @examples
-#' 
+#'
 #' BF_values <- runif(100, 0.5, 5)  # Example Bayes Factors
 #' BF_control_results <- BF_control(BF_values, plot = TRUE)
 #' print(BF_control_results$pi0_hat_star)
@@ -100,7 +100,7 @@ BF_compute <- function(fash){
 #' @importFrom graphics abline
 #'
 #' @export
-#' 
+#'
 BF_control <- function(BF, plot = FALSE) {
   BF_sorted <- sort(BF, decreasing = FALSE)
 
@@ -126,22 +126,24 @@ BF_control <- function(BF, plot = FALSE) {
 
 #' Update Prior and Posterior Weights Given \eqn{\pi_0} and \eqn{\pi_{alt}}
 #'
-#' This function updates the **prior and posterior weights** in a FASH model using the estimated
+#' This function updates the prior and posterior weights in a FASH model using the estimated
 #' proportion of null datasets (\eqn{\pi_0}) and the reweighted prior under the alternative hypothesis (\eqn{\pi_{alt}}).
 #'
 #' @param L_matrix A numeric matrix representing the log-likelihoods of datasets across mixture components.
 #'   Rows correspond to datasets, and columns correspond to mixture components.
 #' @param pi0 A numeric scalar representing the estimated proportion of null datasets.
-#' 
+#'
 #' @param pi_alt A numeric vector representing the estimated weights of the alternative components.
-#' 
+#'
 #' @param grid A numeric vector representing the grid of Predictive Standard Deviation (PSD) values.
 #'
 #' @return A list containing:
 #' \describe{
 #'   \item{prior_weight}{A data frame with two columns:
-#'     - `psd`: The PSD grid values corresponding to non-trivial weights.
-#'     - `prior_weight`: The updated prior weights.}
+#'   \describe{
+#'      \item{psd}{A numeric vector of PSD values corresponding to non-trivial weights.}
+#'      \item{prior_weight}{A numeric vector of prior weights corresponding to the PSD values.}
+#'   }}
 #'   \item{posterior_weight}{A numeric matrix of posterior weights, where rows correspond to datasets
 #'     and columns correspond to non-trivial mixture components.}
 #' }
@@ -161,9 +163,8 @@ BF_control <- function(BF, plot = FALSE) {
 #' print(update_result$posterior_weight)
 #'
 #' @keywords internal
-#' 
+#'
 fash_prior_posterior_update <- function (L_matrix, pi0, pi_alt, grid) {
-
   num_datasets <- nrow(L_matrix)
   num_components <- ncol(L_matrix)
 
@@ -193,14 +194,14 @@ fash_prior_posterior_update <- function (L_matrix, pi0, pi_alt, grid) {
 
 #' Update Prior and Posterior Weights in a FASH Object Using Bayes Factor Control
 #'
-#' This function updates the **prior and posterior weights** in a fitted `fash` object using
-#' **Bayes Factor (BF) control**. It automatically computes the Bayes Factor (BF), estimates
+#' This function updates the prior and posterior weights in a fitted \code{fash} object using
+#' Bayes Factor (BF) control. It automatically computes the Bayes Factor (BF), estimates
 #' the proportion of null datasets (\eqn{\pi_0}), and updates the model accordingly.
 #'
-#' @param fash A `fash` object containing the fitted model and likelihood matrix.
-#' @param plot A logical value. If `TRUE`, generates diagnostic plots for BF control. Default is `FALSE`.
+#' @param fash A \code{fash} object containing the fitted model and likelihood matrix.
+#' @param plot A logical value. If \code{TRUE}, generates diagnostic plots for BF control.
 #'
-#' @return The updated `fash` object with the following components updated:
+#' @return The updated \code{fash} object with the following components updated:
 #' \describe{
 #'   \item{prior_weights}{Updated prior mixture weights reflecting the estimated \eqn{\pi_0}.}
 #'   \item{posterior_weights}{Updated posterior mixture weights for each dataset.}
@@ -211,16 +212,16 @@ fash_prior_posterior_update <- function (L_matrix, pi0, pi_alt, grid) {
 #' @details
 #' This function performs the following steps:
 #' \enumerate{
-#'   \item **Computes Bayes Factors (BF)**: The BF is calculated as the ratio of likelihood under
+#'   \item \bold{Computes Bayes Factors (BF)}: The BF is calculated as the ratio of likelihood under
 #'         the alternative hypothesis to the likelihood under the null hypothesis.
-#'   \item **Estimates \eqn{\pi_0}: The function applies BF-based control to estimate
+#'   \item \bold{Estimates \eqn{\pi_0}}: The function applies BF-based control to estimate
 #'         the proportion of null datasets.
-#'   \item **Updates prior weights**: The function updates the prior mixture weights to reflect
+#'   \item \bold{Updates prior weights}: The function updates the prior mixture weights to reflect
 #'         the estimated null proportion.
-#'   \item **Updates posterior weights**: The posterior weights are updated based on the
+#'   \item \bold{Updates posterior weights}: The posterior weights are updated based on the
 #'         reweighted prior and likelihood matrix.
-#'   \item **Stores the computed Bayes Factors and LFDR**: The function now saves the computed BF
-#'         and LFDR in the `fash` object for further analysis.
+#'   \item \bold{Stores the computed Bayes Factors and LFDR}: The function now saves the computed BF
+#'         and LFDR in the \code{fash} object for further analysis.
 #' }
 #'
 #' @examples
@@ -242,7 +243,7 @@ fash_prior_posterior_update <- function (L_matrix, pi0, pi_alt, grid) {
 #' print(fash_updated$lfdr)
 #'
 #' @export
-#' 
+#'
 BF_update <- function (fash, plot = FALSE) {
   # Compute Lc
   L <- exp(fash$L_matrix)
@@ -257,7 +258,7 @@ BF_update <- function (fash, plot = FALSE) {
   pi0_hat <- BF_res$pi0_hat_star
 
   # Update prior and posterior weights
-  update_res <- fash_prior_posterior_update(L_matrix = fash$L_matrix, 
+  update_res <- fash_prior_posterior_update(L_matrix = fash$L_matrix,
                   pi0 = pi0_hat, pi_alt = pi_alt, grid = fash$psd_grid)
 
   # Update fash object

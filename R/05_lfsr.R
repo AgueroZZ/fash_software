@@ -1,19 +1,19 @@
 #' Compute Local False Sign Rate (LFSR) for a Single Dataset
 #'
-#' This function computes the **local false sign rate (LFSR)** for a specific dataset within a `fash` object
+#' This function computes the local false sign rate (LFSR) for a specific dataset within a \code{fash} object
 #' using posterior sampling. It estimates the probability that the sign of the effect is positive or negative
 #' at each grid point and returns the full probability vectors.
 #'
-#' @param fash_fit A `fash` object containing posterior samples.
+#' @param fash_fit A \code{fash} object containing posterior samples.
 #' @param index An integer specifying the dataset index for which to compute the LFSR.
 #' @param smooth_var A numeric vector specifying refined x values for prediction.
-#'   If `NULL`, defaults to the dataset's original x values.
-#' @param M An integer specifying the number of posterior samples to generate. Default is `3000`.
-#' @param deriv An integer specifying the order of the derivative to compute. Default is `0`.
+#'   If \code{NULL}, defaults to the dataset's original x values.
+#' @param M An integer specifying the number of posterior samples to generate.
+#' @param deriv An integer specifying the order of the derivative to compute.
 #'
 #' @return A list containing:
 #' \describe{
-#'   \item{lfsr}{A numeric vector of LFSR values, where each entry corresponds to a grid point in `smooth_var`.}
+#'   \item{lfsr}{A numeric vector of LFSR values, where each entry corresponds to a grid point in \code{smooth_var}.}
 #'   \item{pos_prob}{A numeric vector of probabilities that the effect is positive at each grid point.}
 #'   \item{neg_prob}{A numeric vector of probabilities that the effect is negative at each grid point.}
 #' }
@@ -62,17 +62,16 @@ compute_lfsr_sampling <- function(fash_fit, index, smooth_var = NULL, M = 3000, 
 
 #' Compute Minimum Local False Sign Rate (LFSR) from Posterior Samples
 #'
-#' This function computes the minimum local false sign rate (LFSR) for each dataset in a `fash` object.
-#' It estimates the probability that the sign of the effect is positive or negative at each grid point
+#' This function computes the minimum local false sign rate (LFSR) for each dataset in a \code{fash} object.
+#' It estimates the probability that the sign of the effect is positive or negative at each x value
 #' and returns a ranked data frame.
 #'
-#' @param fash_fit A `fash` object containing posterior samples.
+#' @param fash_fit A \code{fash} object containing posterior samples.
 #' @param smooth_var A numeric vector specifying refined x values for prediction.
-#'   If `NULL`, defaults to the dataset's original x values.
-#' @param M An integer specifying the number of posterior samples to generate. Default is `3000`.
+#'   If \code{NULL}, defaults to the dataset's original x values.
+#' @param M An integer specifying the number of posterior samples to generate.
 #' @param num_cores An integer specifying the number of cores to use for parallel processing.
-#'   Default is `1` (sequential execution).
-#' @param deriv An integer specifying the order of the derivative to compute. Default is `0`.
+#' @param deriv An integer specifying the order of the derivative to compute.
 #'
 #'
 #' @return A data frame containing:
@@ -300,14 +299,14 @@ compute_marginal_mean_var <- function(data_i, psd_values, refined_x,
 #' Compute Local False Sign Rate (LFSR) from Marginal Posterior Mean and Variance
 #'
 #' This function computes the local false sign rate (LFSR) at each evaluation point
-#' for a specific dataset in a `fash` object using the posterior mean and variance
+#' for a specific dataset in a \code{fash} object using the posterior mean and variance
 #' instead of sampling-based methods.
 #'
-#' @param object A `fash` object containing the fitted results.
-#' @param index An integer specifying the dataset index. Default is `1`.
+#' @param object A \code{fash} object containing the fitted results.
+#' @param index An integer specifying the dataset index.
 #' @param smooth_var A numeric vector specifying refined x values for evaluation.
-#'   If `NULL`, defaults to the dataset's original x values.
-#' @param deriv An integer specifying the order of the derivative to compute. Default is `0`.
+#'   If \code{NULL}, defaults to the dataset's original x values.
+#' @param deriv An integer specifying the order of the derivative to compute.
 #'
 #' @return A data frame with the following columns:
 #'
@@ -315,7 +314,7 @@ compute_marginal_mean_var <- function(data_i, psd_values, refined_x,
 #'   \item{x}{The refined x values where posterior probabilities are evaluated.}
 #'   \item{pos_prob}{The posterior probability that the function is positive at each x.}
 #'   \item{neg_prob}{The posterior probability that the function is negative at each x.}
-#'   \item{lfsr}{The local false sign rate (LFSR) at each x, computed as `pmin(pos_prob, neg_prob)`.}
+#'   \item{lfsr}{The local false sign rate (LFSR) at each x, computed as \code{pmin(pos_prob, neg_prob)}.}
 #' }
 #'
 #' @examples
@@ -396,15 +395,14 @@ compute_lfsr_summary <- function(object, index = 1, smooth_var = NULL, deriv = 0
 
 #' Compute Minimum Local False Sign Rate (LFSR) for All Datasets
 #'
-#' This function computes the minimum LFSR for each dataset in a `fash` object using
+#' This function computes the minimum LFSR for each dataset in a \code{fash} object using
 #' the posterior mean and variance instead of sampling-based methods.
 #'
-#' @param object A `fash` object containing the fitted results.
+#' @param object A \code{fash} object containing the fitted results.
 #' @param smooth_var A numeric vector specifying refined x values for evaluation.
-#'   If `NULL`, defaults to the dataset's original x values.
+#'   If \code{NULL}, defaults to the dataset's original x values.
 #' @param num_cores An integer specifying the number of cores to use for parallel processing.
-#'   Default is `1` (sequential execution).
-#' @param deriv An integer specifying the order of the derivative to compute. Default is `0`.
+#' @param deriv An integer specifying the order of the derivative to compute.
 #'
 #' @return A data frame containing:
 #'

@@ -7,15 +7,14 @@
 min_lfsr_summary(object, smooth_var = NULL, num_cores = 1, deriv = 0)
 }
 \arguments{
-\item{object}{A `fash` object containing the fitted results.}
+\item{object}{A \code{fash} object containing the fitted results.}
 
 \item{smooth_var}{A numeric vector specifying refined x values for evaluation.
-If `NULL`, defaults to the dataset's original x values.}
+If \code{NULL}, defaults to the dataset's original x values.}
 
-\item{num_cores}{An integer specifying the number of cores to use for parallel processing.
-Default is `1` (sequential execution).}
+\item{num_cores}{An integer specifying the number of cores to use for parallel processing.}
 
-\item{deriv}{An integer specifying the order of the derivative to compute. Default is `0`.}
+\item{deriv}{An integer specifying the order of the derivative to compute.}
 }
 \value{
 A data frame containing:
@@ -27,7 +26,7 @@ A data frame containing:
 }
 }
 \description{
-This function computes the minimum LFSR for each dataset in a `fash` object using
+This function computes the minimum LFSR for each dataset in a \code{fash} object using
 the posterior mean and variance instead of sampling-based methods.
 }
 \examples{

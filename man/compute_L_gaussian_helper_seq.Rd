@@ -16,8 +16,8 @@ compute_L_gaussian_helper_seq(
 )
 }
 \arguments{
-\item{data_i}{A single dataset extracted from the `data_list` component of `fash_set_data`.
-Must be a list containing `y`, `x`, and `offset`.}
+\item{data_i}{A single dataset extracted from the \code{data_list} component of \code{fash_set_data}.
+Must be a list containing \code{y}, \code{x}, and \code{offset}.}
 
 \item{Si}{A numeric vector representing the standard errors for the dataset.}
 
@@ -25,20 +25,20 @@ Must be a list containing `y`, `x`, and `offset`.}
 
 \item{grid}{A numeric vector representing the grid of PSD (Predictive Standard Deviation) values.}
 
-\item{num_basis}{An integer specifying the number of O-Spline basis functions. Default is 30.}
+\item{num_basis}{An integer specifying the number of O-Spline basis functions.}
 
-\item{betaprec}{A numeric value representing the precision of the fixed effects coefficients (`beta`). Default is `1e-6`.}
+\item{betaprec}{A numeric value representing the precision of the fixed effects coefficients.}
 
-\item{order}{An integer specifying the order of the Integrated Wiener Process (IWP) prior. Default is 2.}
+\item{order}{An integer specifying the order of the Integrated Wiener Process (IWP) prior.}
 
-\item{pred_step}{A numeric value specifying the prediction step size. Default is 1.}
+\item{pred_step}{A numeric value specifying the prediction step size.}
 }
 \value{
 A numeric vector of log-likelihood values, one for each grid value.
 }
 \description{
-Computes the log-likelihood for a single dataset across all values of `psd_iwp` specified in the grid.
-This function iteratively calls `compute_L_gaussian_helper` for each grid value.
+Computes the log-likelihood for a single dataset across all values of \code{psd_iwp} specified in the grid.
+This function iteratively calls \code{compute_L_gaussian_helper} for each grid value.
 }
 \examples{
 # Example usage

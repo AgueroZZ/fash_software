@@ -13,17 +13,16 @@ min_lfsr_sampling(
 )
 }
 \arguments{
-\item{fash_fit}{A `fash` object containing posterior samples.}
+\item{fash_fit}{A \code{fash} object containing posterior samples.}
 
 \item{smooth_var}{A numeric vector specifying refined x values for prediction.
-If `NULL`, defaults to the dataset's original x values.}
+If \code{NULL}, defaults to the dataset's original x values.}
 
-\item{M}{An integer specifying the number of posterior samples to generate. Default is `3000`.}
+\item{M}{An integer specifying the number of posterior samples to generate.}
 
-\item{num_cores}{An integer specifying the number of cores to use for parallel processing.
-Default is `1` (sequential execution).}
+\item{num_cores}{An integer specifying the number of cores to use for parallel processing.}
 
-\item{deriv}{An integer specifying the order of the derivative to compute. Default is `0`.}
+\item{deriv}{An integer specifying the order of the derivative to compute.}
 }
 \value{
 A data frame containing:
@@ -35,8 +34,8 @@ A data frame containing:
 }
 }
 \description{
-This function computes the minimum local false sign rate (LFSR) for each dataset in a `fash` object.
-It estimates the probability that the sign of the effect is positive or negative at each grid point
+This function computes the minimum local false sign rate (LFSR) for each dataset in a \code{fash} object.
+It estimates the probability that the sign of the effect is positive or negative at each x value
 and returns a ranked data frame.
 }
 \examples{

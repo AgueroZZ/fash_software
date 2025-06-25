@@ -14,25 +14,25 @@ fash_set_data(
 )
 }
 \arguments{
-\item{Y}{Either a numeric matrix of response variables or a character string specifying the column name in `data_list` for response variables. Required if `data_list` is provided.}
+\item{Y}{Either a numeric matrix of response variables or a character string specifying the column name in \code{data_list} for response variables. Required if \code{data_list} is provided.}
 
-\item{smooth_var}{A numeric matrix, vector, or a character string specifying the column name in `data_list` for smoothing variables. Required if `data_list` is provided.}
+\item{smooth_var}{A numeric matrix, vector, or a character string specifying the column name in \code{data_list} for smoothing variables. Required if \code{data_list} is provided.}
 
-\item{offset}{A numeric matrix, vector, scalar, or a character string specifying the column name in `data_list` for offset variables. Defaults to 0.}
+\item{offset}{A numeric matrix, vector, scalar, or a character string specifying the column name in \code{data_list} for offset variables.}
 
-\item{S}{A numeric matrix, vector, scalar, or list representing the standard errors of `Y`. Or a character string specifying the column name in `data_list` for SD. If provided as a matrix, it must have the same dimensions as `Y`. If a vector or scalar, it will be expanded to match the dimensions of `Y`. Default is `NULL`.}
+\item{S}{A numeric matrix, vector, scalar, or list representing the standard errors of \code{Y}. Or a character string specifying the column name in \code{data_list} for SD. If provided as a matrix, it must have the same dimensions as \code{Y}. If a vector or scalar, it will be expanded to match the dimensions of \code{Y}.}
 
-\item{Omega}{Either a list of precision matrices (one for each dataset) or a single precision matrix (shared across all datasets). Default is `NULL`.}
+\item{Omega}{Either a list of precision matrices (one for each dataset) or a single precision matrix (shared across all datasets). Default is \code{NULL}.}
 
-\item{data_list}{A list of data frames, where each data frame corresponds to a single dataset. Default is `NULL`.}
+\item{data_list}{A list of data frames, where each data frame corresponds to a single dataset.}
 }
 \value{
 A list with the following components:
-\item{data_list}{A list of data frames, where each data frame corresponds to a row of `Y`. Each data frame contains:
+\item{data_list}{A list of data frames, where each data frame corresponds to a row of \code{Y}. Each data frame contains:
   \describe{
-    \item{\code{y}}{The response variables for the corresponding row of `Y`.}
-    \item{\code{x}}{The smoothing variables for the corresponding row of `smooth_var`.}
-    \item{\code{offset}}{The offset values for the corresponding row of `offset`.}
+    \item{\code{y}}{The response variables for the corresponding row of \code{NULL}.}
+    \item{\code{x}}{The smoothing variables for the corresponding row of \code{smooth_var}.}
+    \item{\code{offset}}{The offset values for the corresponding row of \code{offset}.}
   }
 }
 \item{S}{A list of standard errors, where each element corresponds to the standard errors for a single dataset.}

@@ -7,27 +7,27 @@
 compute_lfsr_sampling(fash_fit, index, smooth_var = NULL, M = 3000, deriv = 0)
 }
 \arguments{
-\item{fash_fit}{A `fash` object containing posterior samples.}
+\item{fash_fit}{A \code{fash} object containing posterior samples.}
 
 \item{index}{An integer specifying the dataset index for which to compute the LFSR.}
 
 \item{smooth_var}{A numeric vector specifying refined x values for prediction.
-If `NULL`, defaults to the dataset's original x values.}
+If \code{NULL}, defaults to the dataset's original x values.}
 
-\item{M}{An integer specifying the number of posterior samples to generate. Default is `3000`.}
+\item{M}{An integer specifying the number of posterior samples to generate.}
 
-\item{deriv}{An integer specifying the order of the derivative to compute. Default is `0`.}
+\item{deriv}{An integer specifying the order of the derivative to compute.}
 }
 \value{
 A list containing:
 \describe{
-  \item{lfsr}{A numeric vector of LFSR values, where each entry corresponds to a grid point in `smooth_var`.}
+  \item{lfsr}{A numeric vector of LFSR values, where each entry corresponds to a grid point in \code{smooth_var}.}
   \item{pos_prob}{A numeric vector of probabilities that the effect is positive at each grid point.}
   \item{neg_prob}{A numeric vector of probabilities that the effect is negative at each grid point.}
 }
 }
 \description{
-This function computes the **local false sign rate (LFSR)** for a specific dataset within a `fash` object
+This function computes the local false sign rate (LFSR) for a specific dataset within a \code{fash} object
 using posterior sampling. It estimates the probability that the sign of the effect is positive or negative
 at each grid point and returns the full probability vectors.
 }

@@ -7,14 +7,14 @@
 compute_lfsr_summary(object, index = 1, smooth_var = NULL, deriv = 0)
 }
 \arguments{
-\item{object}{A `fash` object containing the fitted results.}
+\item{object}{A \code{fash} object containing the fitted results.}
 
-\item{index}{An integer specifying the dataset index. Default is `1`.}
+\item{index}{An integer specifying the dataset index.}
 
 \item{smooth_var}{A numeric vector specifying refined x values for evaluation.
-If `NULL`, defaults to the dataset's original x values.}
+If \code{NULL}, defaults to the dataset's original x values.}
 
-\item{deriv}{An integer specifying the order of the derivative to compute. Default is `0`.}
+\item{deriv}{An integer specifying the order of the derivative to compute.}
 }
 \value{
 A data frame with the following columns:
@@ -23,12 +23,12 @@ A data frame with the following columns:
   \item{x}{The refined x values where posterior probabilities are evaluated.}
   \item{pos_prob}{The posterior probability that the function is positive at each x.}
   \item{neg_prob}{The posterior probability that the function is negative at each x.}
-  \item{lfsr}{The local false sign rate (LFSR) at each x, computed as `pmin(pos_prob, neg_prob)`.}
+  \item{lfsr}{The local false sign rate (LFSR) at each x, computed as \code{pmin(pos_prob, neg_prob)}.}
 }
 }
 \description{
 This function computes the local false sign rate (LFSR) at each evaluation point
-for a specific dataset in a `fash` object using the posterior mean and variance
+for a specific dataset in a \code{fash} object using the posterior mean and variance
 instead of sampling-based methods.
 }
 \examples{

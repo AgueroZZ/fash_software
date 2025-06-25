@@ -7,13 +7,13 @@
 BF_compute(fash)
 }
 \arguments{
-\item{fash}{A `fash` object containing the fitted model and likelihood matrix.}
+\item{fash}{A \code{fash} object containing the fitted model and likelihood matrix.}
 }
 \value{
 A numeric vector of Bayes Factors, where each entry corresponds to a dataset.
 }
 \description{
-This function computes **Bayes Factors (BF)** for each dataset in a `fash` object.
+This function computes Bayes Factors (BF) for each dataset in a \code{fash} object.
 The BF is calculated as the ratio of likelihood under the alternative hypothesis
 to the likelihood under the null hypothesis.
 }

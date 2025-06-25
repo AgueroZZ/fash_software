@@ -15,36 +15,36 @@
 )
 }
 \arguments{
-\item{object}{A `fash` object containing the results of the FASH pipeline.}
+\item{object}{A \code{fash} object containing the results of the FASH pipeline.}
 
-\item{index}{An integer specifying the dataset index to predict. Default is `1`.}
+\item{index}{An integer specifying the dataset index to predict.}
 
-\item{smooth_var}{A numeric vector specifying refined x values for prediction. If `NULL`, uses the x values from the model fit. Default is `NULL`.}
+\item{smooth_var}{A numeric vector specifying refined x values for prediction. If \code{NULL}, uses the x values from the model fit.}
 
-\item{only.samples}{A logical value. If `TRUE`, returns posterior samples. If `FALSE`, summarizes the samples into mean and 95 percent confidence intervals. Default is `FALSE`.}
+\item{only.samples}{A logical value. If \code{TRUE}, returns posterior samples. If \code{FALSE}, summarizes the samples into mean and 95 percent confidence intervals.}
 
-\item{M}{An integer specifying the number of posterior samples to generate. Default is `3000`.}
+\item{M}{An integer specifying the number of posterior samples to generate.}
 
-\item{deriv}{An integer specifying the order of the derivative to compute. Default is `0`.}
+\item{deriv}{An integer specifying the order of the derivative to compute.}
 
 \item{...}{Additional arguments (not used).}
 }
 \value{
-If `only.samples = TRUE`, a matrix of posterior samples where rows correspond to `smooth_var` and columns correspond to posterior draws.
-If `only.samples = FALSE`, a data frame summarizing posterior predictions with columns:
+If \code{only.samples = TRUE}, a matrix of posterior samples where rows correspond to \code{smooth_var} and columns correspond to posterior draws.
+If \code{only.samples = FALSE}, a data frame summarizing posterior predictions with columns:
 
-  - `x`: The refined x values.
+  - \code{x}: The refined x values.
 
-  - `mean`: The posterior mean.
+  - \code{mean}: The posterior mean.
 
-  - `lower`: The lower bound of the 95 percent interval.
+  - \code{lower}: The lower bound of the 95 percent interval.
 
-  - `upper`: The upper bound of the 95 percent interval.
+  - \code{upper}: The upper bound of the 95 percent interval.
 
-  - `median`: The posterior median.
+  - \code{median}: The posterior median.
 }
 \description{
-Generates posterior predictions for a specific dataset from a `fash` object using Bayesian Model Averaging.
+Generates posterior predictions for a specific dataset from a \code{fash} object using Bayesian Model Averaging.
 }
 \examples{
 # Example 1: Predict for a specific dataset with summarized results

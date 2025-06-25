@@ -7,23 +7,23 @@
 \method{plot}{fash}(x, ordering = NULL, discrete = FALSE, ...)
 }
 \arguments{
-\item{x}{A `fash` object containing the results of the FASH pipeline.}
+\item{x}{A \code{fash} object containing the results of the FASH pipeline.}
 
 \item{ordering}{A character string specifying the method for reordering datasets (e.g., "mean" or "lfdr").
 
-  - `"mean"`: Reorder by the mean of the posterior PSD.
+  - \code{"mean"}: Reorder by the mean of the posterior PSD.
 
-  - `"lfdr"`: Reorder by the local false discovery rate.
+  - \code{"lfdr"}: Reorder by the local false discovery rate.
 
-  - `NULL`: No reordering (default).}
+  - \code{NULL}: No reordering (default).}
 
-\item{discrete}{A logical value. If `TRUE`, treats PSD values as discrete categories with distinct colors.
-If `FALSE`, treats PSD values as a continuous variable with a gradient. Default is `FALSE`.}
+\item{discrete}{A logical value. If \code{TRUE}, treats PSD values as discrete categories with distinct colors.
+If \code{FALSE}, treats PSD values as a continuous variable with a gradient.}
 
-\item{...}{Additional arguments passed to `fash_structure_plot`.}
+\item{...}{Additional arguments passed to \code{fash_structure_plot}.}
 }
 \description{
-Generates a structure plot of the posterior weights stored in the `fash` object,
+Generates a structure plot of the posterior weights stored in the \code{fash} object,
 visualizing the distribution of posterior weights across datasets and PSD values.
 }
 \examples{

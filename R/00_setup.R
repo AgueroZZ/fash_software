@@ -18,7 +18,7 @@ dummy <- function() {
 #'
 #' @param x A vector of locations to evaluate the global polynomials
 #' @param p An integer value indicates the order of smoothness
-#' @return A matrix with i,j componet being the value of jth basis function
+#' @return A matrix with i,j component being the value of jth basis function
 #' value at ith element of x, the ncol should equal to p, and nrow
 #' should equal to the number of elements in x
 #' @examples
@@ -34,13 +34,33 @@ global_poly_helper <- function(x, p = 2) {
   result
 }
 
+get_local_poly <- function(knots, refined_x, p) {
+  dif <- diff(knots)
+  nn <- length(refined_x)
+  n <- length(knots)
+  D <- matrix(0, nrow = nn, ncol = n - 1)
+  for (j in 1:nn) {
+    for (i in 1:(n - 1)) {
+      if (refined_x[j] <= knots[i]) {
+        D[j, i] <- 0
+      } else if (refined_x[j] <= knots[i + 1] & refined_x[j] >= knots[i]) {
+        D[j, i] <- (1 / factorial(p)) * (refined_x[j] - knots[i])^p
+      } else {
+        k <- 1:p
+        D[j, i] <- sum((dif[i]^k) * ((refined_x[j] - knots[i + 1])^(p - k)) / (factorial(k) * factorial(p - k)))
+      }
+    }
+  }
+  D # Local poly design matrix
+}
+
 #' Constructing and evaluating the local O-spline basis (design matrix)
 #'
 #' @param knots A vector of knots used to construct the O-spline basis, first knot should be viewed as "0",
 #' the reference starting location. These k knots will define (k-1) basis function in total.
 #' @param refined_x A vector of locations to evaluate the O-spline basis
 #' @param p An integer value indicates the order of smoothness
-#' @param neg_sign_order An integer value N such that D = ((-1)^N)*D for the splines at negative knots. Default is 0.
+#' @param neg_sign_order An integer value N such that D = ((-1)^N)*D for the splines at negative knots.
 #' @return A matrix with i,j component being the value of jth basis function
 #' value at ith element of refined_x, the ncol should equal to number of knots minus 1, and nrow
 #' should equal to the number of elements in refined_x.
@@ -99,19 +119,19 @@ compute_weights_precision_helper <- function(x){
 #'
 #' This function prepares the necessary data structures for implementing the Function Adaptive SHrinkage (FASH) approach. It processes the input data, smoothing variables, offsets, standard errors, and optional precision matrices to generate a list of data frames and supporting matrices.
 #'
-#' @param Y Either a numeric matrix of response variables or a character string specifying the column name in `data_list` for response variables. Required if `data_list` is provided.
-#' @param smooth_var A numeric matrix, vector, or a character string specifying the column name in `data_list` for smoothing variables. Required if `data_list` is provided.
-#' @param offset A numeric matrix, vector, scalar, or a character string specifying the column name in `data_list` for offset variables. Defaults to 0.
-#' @param S A numeric matrix, vector, scalar, or list representing the standard errors of `Y`. Or a character string specifying the column name in `data_list` for SD. If provided as a matrix, it must have the same dimensions as `Y`. If a vector or scalar, it will be expanded to match the dimensions of `Y`. Default is `NULL`.
-#' @param Omega Either a list of precision matrices (one for each dataset) or a single precision matrix (shared across all datasets). Default is `NULL`.
-#' @param data_list A list of data frames, where each data frame corresponds to a single dataset. Default is `NULL`.
+#' @param Y Either a numeric matrix of response variables or a character string specifying the column name in \code{data_list} for response variables. Required if \code{data_list} is provided.
+#' @param smooth_var A numeric matrix, vector, or a character string specifying the column name in \code{data_list} for smoothing variables. Required if \code{data_list} is provided.
+#' @param offset A numeric matrix, vector, scalar, or a character string specifying the column name in \code{data_list} for offset variables.
+#' @param S A numeric matrix, vector, scalar, or list representing the standard errors of \code{Y}. Or a character string specifying the column name in \code{data_list} for SD. If provided as a matrix, it must have the same dimensions as \code{Y}. If a vector or scalar, it will be expanded to match the dimensions of \code{Y}.
+#' @param Omega Either a list of precision matrices (one for each dataset) or a single precision matrix (shared across all datasets). Default is \code{NULL}.
+#' @param data_list A list of data frames, where each data frame corresponds to a single dataset.
 #'
 #' @return A list with the following components:
-#' \item{data_list}{A list of data frames, where each data frame corresponds to a row of `Y`. Each data frame contains:
+#' \item{data_list}{A list of data frames, where each data frame corresponds to a row of \code{Y}. Each data frame contains:
 #'   \describe{
-#'     \item{\code{y}}{The response variables for the corresponding row of `Y`.}
-#'     \item{\code{x}}{The smoothing variables for the corresponding row of `smooth_var`.}
-#'     \item{\code{offset}}{The offset values for the corresponding row of `offset`.}
+#'     \item{\code{y}}{The response variables for the corresponding row of \code{NULL}.}
+#'     \item{\code{x}}{The smoothing variables for the corresponding row of \code{smooth_var}.}
+#'     \item{\code{offset}}{The offset values for the corresponding row of \code{offset}.}
 #'   }
 #' }
 #' \item{S}{A list of standard errors, where each element corresponds to the standard errors for a single dataset.}
@@ -258,19 +278,19 @@ fash_set_data <- function(Y, smooth_var, offset = 0, S = NULL, Omega = NULL, dat
 
 #' Create a TMB Data Object for a Specific Dataset
 #'
-#' Processes the `tmbdat` object for a specific dataset, using the provided smoothing variables,
+#' Processes the \code{tmbdat} object for a specific dataset, using the provided smoothing variables,
 #' standard errors, and precision matrix. This function generates spline basis matrices,
 #' penalty matrices, and other quantities required for modeling.
 #'
-#' @param data_i A single dataset extracted from the `data_list` component of `fash_set_data`.
-#'               Must be a list containing `y`, `x`, and `offset`.
-#' @param Si A numeric vector representing the standard errors for the dataset. Default is `NULL`.
-#' @param Omegai A numeric precision matrix for the dataset. Default is `NULL`.
-#' @param num_basis An integer specifying the number of O-Spline basis functions to use for the approximation. Default is 30.
-#' @param betaprec A numeric value representing the precision of the fixed effects coefficients (`beta`). Default is `1e-6`.
-#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior. Default is 2.
+#' @param data_i A single dataset extracted from the \code{data_list} component of \code{fash_set_data}.
+#'               Must be a list containing \code{y}, \code{x}, and \code{offset}.
+#' @param Si A numeric vector representing the standard errors for the dataset.
+#' @param Omegai A numeric precision matrix for the dataset.
+#' @param num_basis An integer specifying the number of O-Spline basis functions to use for the approximation.
+#' @param betaprec A numeric value representing the precision of the fixed effects coefficients.
+#' @param order An integer specifying the order of the Integrated Wiener Process (IWP) prior.
 #'
-#' @return A list formatted as a `tmbdat` object, containing:
+#' @return A list formatted as a \code{tmbdat} object, containing:
 #' \item{y}{A numeric vector of response variables for the dataset.}
 #' \item{X}{A sparse matrix representing the design matrix for fixed effects.}
 #' \item{P}{A sparse matrix representing the penalty matrix for the spline coefficients.}
@@ -278,9 +298,9 @@ fash_set_data <- function(Y, smooth_var, offset = 0, S = NULL, Omega = NULL, dat
 #' \item{offset}{A numeric vector of offsets for the dataset.}
 #' \item{logPdet}{The log determinant of the penalty matrix.}
 #' \item{betaprec}{The precision for the fixed effects coefficients.}
-#' \item{S}{The standard errors for the dataset, if provided as `Si`.}
-#' \item{Omega}{The precision matrix for the dataset as a sparse matrix, if provided as `Omegai`.}
-#' \item{log_det_Omega}{The log determinant of the precision matrix, if `Omegai` is provided.}
+#' \item{S}{The standard errors for the dataset, if provided as \code{Si}.}
+#' \item{Omega}{The precision matrix for the dataset as a sparse matrix, if provided as \code{Omegai}.}
+#' \item{log_det_Omega}{The log determinant of the precision matrix, if \code{Omegai} is provided.}
 #'
 #' @examples
 #' # Example usage

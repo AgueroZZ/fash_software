@@ -10,7 +10,7 @@ collapse_L(L, log = FALSE)
 \item{L}{A numeric matrix representing the likelihoods. Rows correspond to datasets, and
 columns correspond to mixture components (including the null component in the first column).}
 
-\item{log}{A logical value. If `TRUE`, treats `L` as a **log-likelihood matrix**. Default is `FALSE`.}
+\item{log}{A logical value. If \code{TRUE}, treats \code{L} as a log-likelihood matrix.}
 }
 \value{
 A list containing:
@@ -21,8 +21,8 @@ A list containing:
 }
 }
 \description{
-This function collapses a likelihood matrix into a **2-column matrix**, reweighting the likelihood
-under the alternative hypothesis. This is done using the **mix-SQP algorithm** to estimate
+This function collapses a likelihood matrix into a 2-column matrix, reweighting the likelihood
+under the alternative hypothesis. This is done using the mix-SQP algorithm to estimate
 the optimal mixture weights under the alternative hypothesis.
 }
 \examples{

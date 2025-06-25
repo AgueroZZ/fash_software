@@ -14,18 +14,18 @@ compute_L_poisson_helper(
 )
 }
 \arguments{
-\item{data_i}{A single dataset extracted from the `data_list` component of `fash_set_data`.
-Must be a list containing `y`, `x`, and `offset`.}
+\item{data_i}{A single dataset extracted from the \code{data_list} component of \code{fash_set_data}.
+Must be a list containing \code{y}, \code{x}, and \code{offset}.}
 
 \item{psd_iwp}{A numeric value for the precision parameter of the Integrated Wiener Process. If 0, only fixed effects are used.}
 
-\item{num_basis}{An integer specifying the number of O-Spline basis functions. Default is 30.}
+\item{num_basis}{An integer specifying the number of O-Spline basis functions.}
 
-\item{betaprec}{A numeric value representing the precision of the fixed effects coefficients (`beta`). Default is `1e-6`.}
+\item{betaprec}{A numeric value representing the precision of the fixed effects coefficients (`beta`).}
 
-\item{order}{An integer specifying the order of the Integrated Wiener Process (IWP) prior. Default is 2.}
+\item{order}{An integer specifying the order of the Integrated Wiener Process (IWP) prior.}
 
-\item{pred_step}{A numeric value specifying the prediction step size. Default is 1.}
+\item{pred_step}{A numeric value specifying the prediction step size.}
 }
 \value{
 A numeric value representing the negative log-likelihood for the dataset.

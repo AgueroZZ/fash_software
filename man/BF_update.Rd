@@ -7,12 +7,12 @@
 BF_update(fash, plot = FALSE)
 }
 \arguments{
-\item{fash}{A `fash` object containing the fitted model and likelihood matrix.}
+\item{fash}{A \code{fash} object containing the fitted model and likelihood matrix.}
 
-\item{plot}{A logical value. If `TRUE`, generates diagnostic plots for BF control. Default is `FALSE`.}
+\item{plot}{A logical value. If \code{TRUE}, generates diagnostic plots for BF control.}
 }
 \value{
-The updated `fash` object with the following components updated:
+The updated \code{fash} object with the following components updated:
 \describe{
   \item{prior_weights}{Updated prior mixture weights reflecting the estimated \eqn{\pi_0}.}
   \item{posterior_weights}{Updated posterior mixture weights for each dataset.}
@@ -21,23 +21,23 @@ The updated `fash` object with the following components updated:
 }
 }
 \description{
-This function updates the **prior and posterior weights** in a fitted `fash` object using
-**Bayes Factor (BF) control**. It automatically computes the Bayes Factor (BF), estimates
+This function updates the prior and posterior weights in a fitted \code{fash} object using
+Bayes Factor (BF) control. It automatically computes the Bayes Factor (BF), estimates
 the proportion of null datasets (\eqn{\pi_0}), and updates the model accordingly.
 }
 \details{
 This function performs the following steps:
 \enumerate{
-  \item **Computes Bayes Factors (BF)**: The BF is calculated as the ratio of likelihood under
+  \item \bold{Computes Bayes Factors (BF)}: The BF is calculated as the ratio of likelihood under
         the alternative hypothesis to the likelihood under the null hypothesis.
-  \item **Estimates \eqn{\pi_0}: The function applies BF-based control to estimate
+  \item \bold{Estimates \eqn{\pi_0}}: The function applies BF-based control to estimate
         the proportion of null datasets.
-  \item **Updates prior weights**: The function updates the prior mixture weights to reflect
+  \item \bold{Updates prior weights}: The function updates the prior mixture weights to reflect
         the estimated null proportion.
-  \item **Updates posterior weights**: The posterior weights are updated based on the
+  \item \bold{Updates posterior weights}: The posterior weights are updated based on the
         reweighted prior and likelihood matrix.
-  \item **Stores the computed Bayes Factors and LFDR**: The function now saves the computed BF
-        and LFDR in the `fash` object for further analysis.
+  \item \bold{Stores the computed Bayes Factors and LFDR}: The function now saves the computed BF
+        and LFDR in the \code{fash} object for further analysis.
 }
 }
 \examples{

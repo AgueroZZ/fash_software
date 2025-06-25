@@ -12,7 +12,7 @@ global_poly_helper(x, p = 2)
 \item{p}{An integer value indicates the order of smoothness}
 }
 \value{
-A matrix with i,j componet being the value of jth basis function
+A matrix with i,j component being the value of jth basis function
 value at ith element of x, the ncol should equal to p, and nrow
 should equal to the number of elements in x
 }

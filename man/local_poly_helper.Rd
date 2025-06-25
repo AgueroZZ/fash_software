@@ -14,7 +14,7 @@ the reference starting location. These k knots will define (k-1) basis function 
 
 \item{p}{An integer value indicates the order of smoothness}
 
-\item{neg_sign_order}{An integer value N such that D = ((-1)^N)*D for the splines at negative knots. Default is 0.}
+\item{neg_sign_order}{An integer value N such that D = ((-1)^N)*D for the splines at negative knots.}
 }
 \value{
 A matrix with i,j component being the value of jth basis function
