@@ -24,7 +24,8 @@ pak::pak("AgueroZZ/fash_software")
 
 This is a basic example, which tries to identify non-linear functions in
 a set of datasets. We use `order = 2` to apply the second order IWP,
-which has a base model $`S_0`$ being the space of linear functions.
+which has a base model S<sub>0</sub> being the space of linear
+functions.
 
 ``` r
 library(fashr)
@@ -45,12 +46,12 @@ for (i in 1:20) {
 fash_fit <- fash(Y = "y", smooth_var = "t", S = "sd", data = datasets, 
                   order = 2, likelihood = "gaussian", verbose = TRUE)
 #> Starting data setup...
-#> Completed data setup in 0.02 seconds.
+#> Completed data setup in 0.00 seconds.
 #> Starting likelihood computation...
 #>   |                                                                              |                                                                      |   0%  |                                                                              |====                                                                  |   5%  |                                                                              |=======                                                               |  10%  |                                                                              |==========                                                            |  15%  |                                                                              |==============                                                        |  20%  |                                                                              |==================                                                    |  25%  |                                                                              |=====================                                                 |  30%  |                                                                              |========================                                              |  35%  |                                                                              |============================                                          |  40%  |                                                                              |================================                                      |  45%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  55%  |                                                                              |==========================================                            |  60%  |                                                                              |==============================================                        |  65%  |                                                                              |=================================================                     |  70%  |                                                                              |====================================================                  |  75%  |                                                                              |========================================================              |  80%  |                                                                              |============================================================          |  85%  |                                                                              |===============================================================       |  90%  |                                                                              |==================================================================    |  95%  |                                                                              |======================================================================| 100%
-#> Completed likelihood computation in 3.39 seconds.
+#> Completed likelihood computation in 2.98 seconds.
 #> Starting empirical Bayes estimation...
-#> Completed empirical Bayes estimation in 0.05 seconds.
+#> Completed empirical Bayes estimation in 0.00 seconds.
 #> fash object created successfully.
 ```
 
@@ -94,11 +95,9 @@ str(fitted_samps)
 ```
 
 ``` r
-plot(datasets[[1]]$t, datasets[[1]]$y, type = "p", col = "black", ylab = "y",
-     xlab = "t")
+plot(datasets[[1]]$t, datasets[[1]]$y, type = "p", col = "black", ylab = "y", xlab = "t")
 lines(fitted$x, fitted$mean, col = "red")
-polygon(c(fitted$x, rev(fitted$x)), c(fitted$lower, rev(fitted$upper)),
-        col = rgb(1, 0, 0, 0.2), border = NA)
+polygon(c(fitted$x, rev(fitted$x)), c(fitted$lower, rev(fitted$upper)), col = rgb(1, 0, 0, 0.2), border = NA)
 matlines(fitted$x, fitted_samps[, 1:5], col = "blue", lty = 2, lwd = 0.5)
 ```
 
