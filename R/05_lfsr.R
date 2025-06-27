@@ -35,9 +35,9 @@
 #' print(lfsr_result$neg_prob)  # Print the negative probability
 #'
 #' @importFrom stats pnorm
-#' 
+#'
 #' @export
-#' 
+#'
 compute_lfsr_sampling <- function(fash_fit, index, smooth_var = NULL, M = 3000, deriv = 0) {
   # Validate input
   if (!inherits(fash_fit, "fash")) stop("fash_fit must be a `fash` object.")
@@ -103,7 +103,7 @@ compute_lfsr_sampling <- function(fash_fit, index, smooth_var = NULL, M = 3000, 
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'
 #' @export
-#' 
+#'
 min_lfsr_sampling <- function(fash_fit, smooth_var = NULL, M = 3000, num_cores = 1, deriv = 0) {
   datasets <- fash_fit$fash_data$data_list
   n_datasets <- length(datasets)
@@ -153,7 +153,7 @@ min_lfsr_sampling <- function(fash_fit, smooth_var = NULL, M = 3000, num_cores =
 #' that the posterior distribution is positive or negative at each point.
 #'
 #' @keywords internal
-#' 
+#'
 compute_posterior_sign_prob <- function(mu, sigma2) {
   # Validate inputs
   if (length(mu) != length(sigma2)) stop("mu and sigma2 must have the same length.")
@@ -200,7 +200,7 @@ compute_posterior_sign_prob <- function(mu, sigma2) {
 #' @importFrom stats nlminb
 #'
 #' @keywords internal
-#' 
+#'
 compute_marginal_mean_var_once <- function(data_i, refined_x, psd_iwp, Si = NULL, Omegai = NULL, num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1, likelihood, deriv = 0) {
   # Create the tmbdat object using the existing helper function
   tmbdat <- fash_set_tmbdat(data_i, Si, Omegai, num_basis = num_basis, betaprec = betaprec, order = order)

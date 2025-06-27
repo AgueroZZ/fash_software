@@ -160,9 +160,8 @@ fash <- function(Y = NULL, smooth_var = NULL, offset = 0, S = NULL, Omega = NULL
 #'   data.frame(y = rnorm(n = 5, sd = 0.7), x = 1:5, offset = 0)
 #' )
 #' S <- list(rep(0.5, 5), rep(0.8, 5), rep(0.6, 5), rep(0.7, 5))
-#' Omega <- list(diag(1/0.5^2), diag(1/0.8^2), diag(1/0.6^2), diag(1/0.7^2))
 #' grid <- seq(0, 2, length.out = 10)
-#' fash_obj <- fash(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", S = S, Omega = Omega, grid = grid, likelihood = "gaussian", verbose = TRUE)
+#' fash_obj <- fash(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", S = S, grid = grid, likelihood = "gaussian", verbose = TRUE)
 #' fdr_control(fash_obj, alpha = 0.05, plot = TRUE)
 #'
 #' @export

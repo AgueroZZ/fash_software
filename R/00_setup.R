@@ -145,7 +145,7 @@ compute_weights_precision_helper <- function(x){
 #' offset <- 1
 #' S <- c(0.5, 0.8, 1.2, 1.0, 0.9)
 #' Omega <- diag(c(1, 2, 3, 4, 5))
-#' result <- fash_set_data(NULL, Y, smooth_var, offset, S, Omega)
+#' result <- fash_set_data(Y = Y, smooth_var = smooth_var, offset = offset, S = S, Omega = Omega)
 #'
 #' # Example usage with data_list input
 #' data_list <- list(
@@ -154,7 +154,7 @@ compute_weights_precision_helper <- function(x){
 #' )
 #' S_list <- list(rep(0.5, 5), rep(0.8, 5))
 #' Omega_list <- list(diag(5), diag(5))
-#' result <- fash_set_data(data_list, "y", "x", "offset", S_list, Omega_list)
+#' result <- fash_set_data(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", S = S_list, Omega = Omega_list)
 #'
 #' @export
 #' 
@@ -318,7 +318,7 @@ fash_set_data <- function(Y, smooth_var, offset = 0, S = NULL, Omega = NULL, dat
 #' @importFrom methods as
 #'
 #' @export
-#' 
+#'
 fash_set_tmbdat <- function(data_i, Si = NULL, Omegai = NULL, num_basis = 30, betaprec = 1e-6, order = 2) {
   # Extract smoothing variables and response
   y <- data_i$y

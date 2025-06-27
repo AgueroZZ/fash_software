@@ -49,7 +49,7 @@ smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 offset <- 1
 S <- c(0.5, 0.8, 1.2, 1.0, 0.9)
 Omega <- diag(c(1, 2, 3, 4, 5))
-result <- fash_set_data(NULL, Y, smooth_var, offset, S, Omega)
+result <- fash_set_data(Y = Y, smooth_var = smooth_var, offset = offset, S = S, Omega = Omega)
 
 # Example usage with data_list input
 data_list <- list(
@@ -58,6 +58,6 @@ data_list <- list(
 )
 S_list <- list(rep(0.5, 5), rep(0.8, 5))
 Omega_list <- list(diag(5), diag(5))
-result <- fash_set_data(data_list, "y", "x", "offset", S_list, Omega_list)
+result <- fash_set_data(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", S = S_list, Omega = Omega_list)
 
 }
