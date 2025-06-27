@@ -94,9 +94,11 @@ str(fitted_samps)
 ```
 
 ``` r
-plot(datasets[[1]]$t, datasets[[1]]$y, type = "p", col = "black", ylab = "y", xlab = "t")
+plot(datasets[[1]]$t, datasets[[1]]$y, type = "p", col = "black", ylab = "y",
+     xlab = "t")
 lines(fitted$x, fitted$mean, col = "red")
-polygon(c(fitted$x, rev(fitted$x)), c(fitted$lower, rev(fitted$upper)), col = rgb(1, 0, 0, 0.2), border = NA)
+polygon(c(fitted$x, rev(fitted$x)), c(fitted$lower, rev(fitted$upper)),
+        col = rgb(1, 0, 0, 0.2), border = NA)
 matlines(fitted$x, fitted_samps[, 1:5], col = "blue", lty = 2, lwd = 0.5)
 ```
 
