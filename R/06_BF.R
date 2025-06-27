@@ -68,6 +68,11 @@ collapse_L <- function(L, log = FALSE) {
 #' @export
 #'
 BF_compute <- function(fash){
+  # Check the number of columns in L_matrix
+  if (ncol(fash$L_matrix) < 2) {
+    stop("The likelihood matrix should have at least two columns (one for the null and one for the alternative). Please check your model specification.")
+  }
+
   L <- exp(fash$L_matrix)
   L_c <- collapse_L(L, log = FALSE)$L_c
   BF <- L_c[, 2] / L_c[, 1]
@@ -102,6 +107,18 @@ BF_compute <- function(fash){
 #' @export
 #'
 BF_control <- function(BF, plot = FALSE) {
+
+  # check if BF is all NA or NaN
+  if (all(is.na(BF)) || all(is.nan(BF))) {
+    stop("Bayes Factors contain only NA or NaN values. Please consider refitting the model or checking the data if you wish to use the BF-based correction for prior.")
+  }
+
+  # if BF contains NA or NaN, provide a warning
+  if (any(is.na(BF)) || any(is.nan(BF))) {
+    warning("Bayes Factors contain NA or NaN values. These will be ignored in the analysis.")
+    BF <- BF[!is.na(BF) & !is.nan(BF)]
+  }
+
   BF_sorted <- sort(BF, decreasing = FALSE)
 
   mu <- cumsum(BF_sorted) / seq_along(BF_sorted)
@@ -225,7 +242,7 @@ fash_prior_posterior_update <- function (L_matrix, pi0, pi_alt, grid) {
 #' }
 #'
 #' @examples
-#' 
+#'
 #' # Example usage:
 #' set.seed(1)
 #' data_list <- list(
@@ -248,6 +265,12 @@ fash_prior_posterior_update <- function (L_matrix, pi0, pi_alt, grid) {
 #' @export
 #'
 BF_update <- function (fash, plot = FALSE) {
+
+  # Check the number of columns in L_matrix
+  if (ncol(fash$L_matrix) < 2) {
+    stop("The likelihood matrix should have at least two columns (one for the null and one for the alternative). Please check your model specification.")
+  }
+
   # Compute Lc
   L <- exp(fash$L_matrix)
   L_c <- collapse_L(L, log = FALSE)$L_c
@@ -255,6 +278,13 @@ BF_update <- function (fash, plot = FALSE) {
 
   # Compute Bayes Factors
   BF <- L_c[, 2] / L_c[, 1]
+
+  # check if BF is all NA or NaN
+  if (all(is.na(BF)) || all(is.nan(BF))) {
+    # provide a warning and return the fash object without updating
+    warning("Bayes Factors contain only NA or NaN values. BF-based correction cannot be applied. Returning the original fash object without updates. Please consider refitting the model or checking the data if you wish to use the BF-based correction for prior.")
+    return(fash)
+  }
 
   # Perform BF control
   BF_res <- BF_control(BF, plot = plot)

@@ -154,7 +154,7 @@ We consider the effect size estimate of $100$ eQTLs measured in day $t = 1$ to d
 - there are $20$ eQTLs that are non-linear dynamic, i.e., the effect size is changing non-linearly over time (Category C).
 
 ```{r echo=FALSE}
-set.seed(1234)
+set.seed(1)
 N <- 100
 propA <- 0.5; propB <- 0.3; propC <- 0.2
 sigma_vec <- c(0.05, 0.1, 0.2)
