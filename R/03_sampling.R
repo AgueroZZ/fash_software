@@ -19,6 +19,7 @@
 #'
 #' @examples
 #' # Example usage
+#' set.seed(1)
 #' Y <- matrix(rpois(20, lambda = 5), nrow = 4, ncol = 10, byrow = TRUE)
 #' smooth_var <- matrix(runif(20), nrow = 4, ncol = 10, byrow = TRUE)
 #' offset <- 1
@@ -169,6 +170,7 @@ fash_fit_once <- function(data_i, refined_x, M, psd_iwp, Si = NULL, Omegai = NUL
 #'
 #' @examples
 #' # Example usage
+#' set.seed(1)
 #' Y <- matrix(rpois(20, lambda = 5), nrow = 4, ncol = 5)
 #' smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 #' offset <- 1

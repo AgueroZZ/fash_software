@@ -43,6 +43,7 @@ This function prepares the necessary data structures for implementing the Functi
 }
 \examples{
 # Example usage with matrix input
+set.seed(1)
 Y <- matrix(rnorm(20), nrow = 4, ncol = 5)
 smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 offset <- 1

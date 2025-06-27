@@ -42,6 +42,7 @@ This function iteratively calls \code{compute_L_gaussian_helper} for each grid v
 }
 \examples{
 # Example usage
+set.seed(1)
 Y <- matrix(rnorm(20), nrow = 4, ncol = 5)
 smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 offset <- 1

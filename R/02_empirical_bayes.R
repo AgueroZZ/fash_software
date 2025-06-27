@@ -14,6 +14,7 @@
 #'
 #' @examples
 #' # Example usage
+#' set.seed(1)
 #' L_matrix <- matrix(rnorm(500), nrow = 100, ncol = 5)
 #' grid <- seq(0, 2, length.out = 5)
 #' result <- fash_eb_est(L_matrix, penalty = 2, grid = grid)
@@ -98,6 +99,7 @@ fash_eb_est <- function(L_matrix, penalty = 1, grid) {
 #'
 #' @examples
 #' # Example usage
+#' set.seed(1)
 #' grid <- seq(0.1, 2, length.out = 5)
 #' L_matrix <- matrix(rnorm(20), nrow = 4, ncol = 5)
 #' eb_output <- fash_eb_est(L_matrix, penalty = 2, grid = grid)
@@ -203,6 +205,7 @@ fash_structure_plot <- function(eb_output, discrete = FALSE, ordering = NULL, se
 #'
 #' @examples
 #' # Example usage
+#' set.seed(1)
 #' grid <- seq(0.1, 2, length.out = 5)
 #' L_matrix <- matrix(rnorm(20), nrow = 4, ncol = 5)
 #' eb_output <- fash_eb_est(L_matrix, penalty = 2, grid = grid)
@@ -212,6 +215,7 @@ fash_structure_plot <- function(eb_output, discrete = FALSE, ordering = NULL, se
 #' print(result$ordered_metrics)
 #'
 #' @export
+#' 
 fash_post_ordering <- function(eb_output, ordering = "mean") {
   # Extract posterior weight matrix and PSD values
   posterior_weight <- eb_output$posterior_weight

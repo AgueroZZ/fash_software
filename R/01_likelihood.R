@@ -17,6 +17,7 @@
 #'
 #' @examples
 #' # Example usage
+#' set.seed(1)
 #' Y <- matrix(rpois(20, lambda = 5), nrow = 4, ncol = 5)
 #' smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 #' offset <- 1
@@ -143,6 +144,7 @@ fash_L_compute <- function(fash_data, likelihood = "gaussian", num_cores = 1, gr
 #'
 #' @examples
 #' # Example usage
+#' set.seed(1)
 #' Y <- matrix(rnorm(20), nrow = 4, ncol = 5)
 #' smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 #' offset <- 1
@@ -234,6 +236,7 @@ compute_L_gaussian_helper <- function(data_i, Si, Omegai, psd_iwp, num_basis = 3
 #'
 #' @examples
 #' # Example usage
+#' set.seed(1)
 #' Y <- matrix(rnorm(20), nrow = 4, ncol = 5)
 #' smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 #' offset <- 1
@@ -289,6 +292,7 @@ compute_L_gaussian_helper_seq <- function(data_i, Si, Omegai, grid, num_basis = 
 #'
 #' @examples
 #' # Example usage
+#' set.seed(1)
 #' Y <- matrix(rpois(20, lambda = 5), nrow = 4, ncol = 5)
 #' smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 #' offset <- 1
@@ -343,6 +347,7 @@ compute_L_poisson_helper_seq <- function(data_i, grid, num_basis = 30, betaprec 
 #'
 #' @examples
 #' # Example usage
+#' set.seed(1)
 #' Y <- matrix(rpois(20, lambda = 5), nrow = 4, ncol = 5)
 #' smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 #' offset <- 1
@@ -352,6 +357,7 @@ compute_L_poisson_helper_seq <- function(data_i, grid, num_basis = 30, betaprec 
 #' )
 #'
 #' @importFrom TMB MakeADFun
+#' 
 #' @keywords internal
 #'
 compute_L_poisson_helper <- function(data_i, psd_iwp, num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1) {

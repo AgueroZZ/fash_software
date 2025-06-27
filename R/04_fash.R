@@ -32,6 +32,7 @@
 #'   }
 #'
 #' @examples
+#' set.seed(1)
 #' data_list <- list(
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
@@ -151,6 +152,7 @@ fash <- function(Y = NULL, smooth_var = NULL, offset = 0, S = NULL, Omega = NULL
 #'
 #' @examples
 #' # Example usage
+#' set.seed(1)
 #' data_list <- list(
 #'   data.frame(y = rnorm(n = 5, sd = 0.5), x = 1:5, offset = 0),
 #'   data.frame(y = rnorm(n = 5, sd = 0.8), x = 1:5, offset = 0),
@@ -232,6 +234,7 @@ fdr_control <- function(fash_obj, alpha = 0.05, plot = FALSE) {
 #' @param ... Additional arguments passed to \code{fash_structure_plot}.
 #'
 #' @examples
+#' set.seed(1)
 #' data_list <- list(
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
@@ -287,6 +290,9 @@ plot.fash <- function(x, ordering = NULL, discrete = FALSE, ...) {
 #'   - \code{median}: The posterior median.
 #'
 #' @examples
+#' 
+#' set.seed(1)
+#' 
 #' # Example 1: Predict for a specific dataset with summarized results
 #' data_list <- list(
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
@@ -387,6 +393,7 @@ predict.fash <- function (object, index = 1, smooth_var = NULL, only.samples = F
 #' @param ... Additional arguments (not used).
 #'
 #' @examples
+#' set.seed(1)
 #' data_list <- list(
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
@@ -444,6 +451,8 @@ print.fash <- function(x, ...) {
 #'
 #'
 #' @examples
+#' set.seed(1)
+#' 
 #' # Define a functional (e.g., mean of posterior samples)
 #' functional_example <- function(x) { mean(x) }
 #'

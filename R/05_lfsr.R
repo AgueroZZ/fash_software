@@ -20,6 +20,7 @@
 #'
 #' @examples
 #' # Example fash object (assuming it has been fitted)
+#' set.seed(1)
 #' data_list <- list(
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
@@ -84,12 +85,13 @@ compute_lfsr_sampling <- function(fash_fit, index, smooth_var = NULL, M = 3000, 
 #'
 #' @examples
 #' # Example fash object (assuming it has been fitted)
-# data_list <- list(
-#   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
-#   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
-# )
-# grid <- seq(0, 2, length.out = 10)
-# fash_obj <- fash(data_list = data_list, Y = "y", smooth_var = "x", grid = grid, likelihood = "poisson", verbose = TRUE)
+#' set.seed(1)
+#' data_list <- list(
+#'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
+#'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
+#' )
+#' grid <- seq(0, 2, length.out = 10)
+#' fash_obj <- fash(data_list = data_list, Y = "y", smooth_var = "x", grid = grid, likelihood = "poisson", verbose = TRUE)
 #'
 #' # Compute min LFSR with sequential execution
 #' result <- min_lfsr_sampling(fash_obj, num_cores = 1)
@@ -319,6 +321,7 @@ compute_marginal_mean_var <- function(data_i, psd_values, refined_x,
 #'
 #' @examples
 #' # Example usage
+#' set.seed(1)
 #' data_list <- list(
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
@@ -414,6 +417,7 @@ compute_lfsr_summary <- function(object, index = 1, smooth_var = NULL, deriv = 0
 #'
 #' @examples
 #' # Example usage
+#' set.seed(1)
 #' data_list <- list(
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
@@ -433,6 +437,7 @@ compute_lfsr_summary <- function(object, index = 1, smooth_var = NULL, deriv = 0
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'
 #' @export
+#' 
 min_lfsr_summary <- function(object, smooth_var = NULL, num_cores = 1, deriv = 0) {
   datasets <- object$fash_data$data_list
   n_datasets <- length(datasets)

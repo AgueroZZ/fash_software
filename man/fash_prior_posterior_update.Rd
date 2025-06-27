@@ -34,6 +34,7 @@ proportion of null datasets (\eqn{\pi_0}) and the reweighted prior under the alt
 }
 \examples{
 # Example usage:
+set.seed(1)
 L_matrix <- matrix(rnorm(50), nrow = 10, ncol = 5)
 pi0_hat <- 0.8
 pi_alt <- rep(0.2, 4)  # Alternative weights

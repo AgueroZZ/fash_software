@@ -47,6 +47,9 @@ If \code{only.samples = FALSE}, a data frame summarizing posterior predictions w
 Generates posterior predictions for a specific dataset from a \code{fash} object using Bayesian Model Averaging.
 }
 \examples{
+
+set.seed(1)
+
 # Example 1: Predict for a specific dataset with summarized results
 data_list <- list(
   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),

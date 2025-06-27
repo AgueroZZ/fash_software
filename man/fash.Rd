@@ -71,6 +71,7 @@ This function performs the full FASH pipeline, including data setup, likelihood 
 empirical Bayes estimation, and outputs a structured \code{fash} object.
 }
 \examples{
+set.seed(1)
 data_list <- list(
   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)

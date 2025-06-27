@@ -16,6 +16,7 @@ Displays a summary of the fitted \code{fash} object, including the number of dat
 type of likelihood used, the number of PSD grid values, and the order of the Integrated Wiener Process (IWP).
 }
 \examples{
+set.seed(1)
 data_list <- list(
   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)

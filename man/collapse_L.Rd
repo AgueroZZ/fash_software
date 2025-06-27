@@ -27,7 +27,8 @@ the optimal mixture weights under the alternative hypothesis.
 }
 \examples{
 # Example likelihood matrix (log-space)
-L <- matrix(rnorm(20), nrow = 5, ncol = 4)
+set.seed(1)
+L <- matrix(abs(rnorm(20)), nrow = 5, ncol = 4)
 collapse_result <- fashr:::collapse_L(L, log = FALSE)
 print(collapse_result$L_c)
 

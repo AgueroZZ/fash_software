@@ -33,6 +33,7 @@ at each grid point and returns the full probability vectors.
 }
 \examples{
 # Example fash object (assuming it has been fitted)
+set.seed(1)
 data_list <- list(
   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)

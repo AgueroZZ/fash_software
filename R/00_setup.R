@@ -139,6 +139,7 @@ compute_weights_precision_helper <- function(x){
 #'
 #' @examples
 #' # Example usage with matrix input
+#' set.seed(1)
 #' Y <- matrix(rnorm(20), nrow = 4, ncol = 5)
 #' smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 #' offset <- 1
@@ -156,6 +157,7 @@ compute_weights_precision_helper <- function(x){
 #' result <- fash_set_data(data_list, "y", "x", "offset", S_list, Omega_list)
 #'
 #' @export
+#' 
 fash_set_data <- function(Y, smooth_var, offset = 0, S = NULL, Omega = NULL, data_list = NULL) {
   # If data_list is provided, extract variables
   if (!is.null(data_list)) {
@@ -304,6 +306,7 @@ fash_set_data <- function(Y, smooth_var, offset = 0, S = NULL, Omega = NULL, dat
 #'
 #' @examples
 #' # Example usage
+#' set.seed(1)
 #' Y <- matrix(rnorm(20), nrow = 4, ncol = 5)
 #' smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 #' offset <- 1

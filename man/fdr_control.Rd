@@ -28,6 +28,7 @@ local false discovery rate (lfdr) stored in the \code{fash} object.
 }
 \examples{
 # Example usage
+set.seed(1)
 data_list <- list(
   data.frame(y = rnorm(n = 5, sd = 0.5), x = 1:5, offset = 0),
   data.frame(y = rnorm(n = 5, sd = 0.8), x = 1:5, offset = 0),

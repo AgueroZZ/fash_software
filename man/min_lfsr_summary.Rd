@@ -31,6 +31,7 @@ the posterior mean and variance instead of sampling-based methods.
 }
 \examples{
 # Example usage
+set.seed(1)
 data_list <- list(
   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)

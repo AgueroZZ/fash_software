@@ -25,6 +25,7 @@ This function performs empirical Bayes estimation on the provided (log) likeliho
 }
 \examples{
 # Example usage
+set.seed(1)
 L_matrix <- matrix(rnorm(500), nrow = 100, ncol = 5)
 grid <- seq(0, 2, length.out = 5)
 result <- fash_eb_est(L_matrix, penalty = 2, grid = grid)

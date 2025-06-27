@@ -18,7 +18,7 @@ The BF is calculated as the ratio of likelihood under the alternative hypothesis
 to the likelihood under the null hypothesis.
 }
 \examples{
-
+set.seed(1)
 data_list <- list(
   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)

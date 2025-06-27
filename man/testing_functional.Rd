@@ -43,6 +43,8 @@ local false sign rate (LFSR) for each dataset, and returns a ranked data frame. 
 parallelized if \code{num_cores > 1}.
 }
 \examples{
+set.seed(1)
+
 # Define a functional (e.g., mean of posterior samples)
 functional_example <- function(x) { mean(x) }
 

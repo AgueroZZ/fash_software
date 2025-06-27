@@ -36,6 +36,7 @@ Handles both random-effects models and fixed-effects-only models.
 }
 \examples{
 # Example usage
+set.seed(1)
 Y <- matrix(rpois(20, lambda = 5), nrow = 4, ncol = 5)
 smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 offset <- 1

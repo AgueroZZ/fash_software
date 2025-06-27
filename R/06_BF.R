@@ -17,7 +17,8 @@
 #'
 #' @examples
 #' # Example likelihood matrix (log-space)
-#' L <- matrix(rnorm(20), nrow = 5, ncol = 4)
+#' set.seed(1)
+#' L <- matrix(abs(rnorm(20)), nrow = 5, ncol = 4)
 #' collapse_result <- fashr:::collapse_L(L, log = FALSE)
 #' print(collapse_result$L_c)
 #'
@@ -53,7 +54,7 @@ collapse_L <- function(L, log = FALSE) {
 #' @return A numeric vector of Bayes Factors, where each entry corresponds to a dataset.
 #'
 #' @examples
-#'
+#' set.seed(1)
 #' data_list <- list(
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
@@ -95,7 +96,7 @@ BF_compute <- function(fash){
 #' }
 #'
 #' @examples
-#'
+#' set.seed(1)
 #' BF_values <- runif(100, 0.5, 5)  # Example Bayes Factors
 #' BF_control_results <- BF_control(BF_values, plot = TRUE)
 #' print(BF_control_results$pi0_hat_star)
@@ -167,6 +168,7 @@ BF_control <- function(BF, plot = FALSE) {
 #'
 #' @examples
 #' # Example usage:
+#' set.seed(1)
 #' L_matrix <- matrix(rnorm(50), nrow = 10, ncol = 5)
 #' pi0_hat <- 0.8
 #' pi_alt <- rep(0.2, 4)  # Alternative weights

@@ -27,6 +27,7 @@ Generates a structure plot of the posterior weights stored in the \code{fash} ob
 visualizing the distribution of posterior weights across datasets and PSD values.
 }
 \examples{
+set.seed(1)
 data_list <- list(
   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)

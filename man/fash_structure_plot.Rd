@@ -41,6 +41,7 @@ as either continuous or discrete variables and optionally reorder datasets.
 }
 \examples{
 # Example usage
+set.seed(1)
 grid <- seq(0.1, 2, length.out = 5)
 L_matrix <- matrix(rnorm(20), nrow = 4, ncol = 5)
 eb_output <- fash_eb_est(L_matrix, penalty = 2, grid = grid)
