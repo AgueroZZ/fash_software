@@ -4,8 +4,10 @@ Package: fashr
 Version: 0.1.15
 Date: 2025-06-26
 Title: Flexible Functional Adaptive SHrinkage Through Empirical Bayes
-Authors@R: person("Ziang","Zhang",role=c("aut","cre"),
-                  email="ziangzhang@uchicago.edu")
+Authors@R: c(person("Ziang","Zhang",role=c("aut","cre"),
+		    email = "aguero.zhang@gmail.com"),
+	     person("Peter","Carbonetto",role=c("aut")),
+             person("Matthew","Stephens",role="aut"))
 Description: Implements an empirical Bayes approach to 
     functional adaptive shrinkage.
 URL: https://github.com/AgueroZZ/fashr/

@@ -40,6 +40,12 @@ and returns a ranked data frame.
 }
 \examples{
 # Example fash object (assuming it has been fitted)
+data_list <- list(
+  data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
+  data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
+)
+grid <- seq(0, 2, length.out = 10)
+fash_obj <- fash(data_list = data_list, Y = "y", smooth_var = "x", grid = grid, likelihood = "poisson", verbose = TRUE)
 
 # Compute min LFSR with sequential execution
 result <- min_lfsr_sampling(fash_obj, num_cores = 1)
