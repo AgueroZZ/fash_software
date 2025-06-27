@@ -151,7 +151,7 @@ fash_L_compute <- function(fash_data, likelihood = "gaussian", num_cores = 1, gr
 #' S <- c(0.5, 0.8, 1.2, 1.0, 0.9)
 #' Omega <- diag(5)
 #' data <- fash_set_data(Y, smooth_var, offset, S, Omega)
-#' log_likelihood <- compute_L_gaussian_helper(
+#' log_likelihood <- fashr:::compute_L_gaussian_helper(
 #'   data$data_list[[1]], Si = S[1,], Omegai = Omega, psd_iwp = 0.1
 #' )
 #'
