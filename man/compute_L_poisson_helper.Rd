@@ -41,7 +41,7 @@ Y <- matrix(rpois(20, lambda = 5), nrow = 4, ncol = 5)
 smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 offset <- 1
 fash_data <- fash_set_data(Y, smooth_var, offset)
-log_likelihood <- compute_L_poisson_helper(
+log_likelihood <- fashr:::compute_L_poisson_helper(
   data_i = fash_data$data_list[[1]], psd_iwp = 0.1
 )
 

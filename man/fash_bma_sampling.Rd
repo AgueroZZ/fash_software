@@ -69,7 +69,7 @@ fash_data <- fash_set_data(Y, smooth_var, offset)
 posterior_weights <- c(0.1, 0.4, 0.3, 0.2)
 psd_values <- c(0.1, 0.5, 1.0, 2.0)
 refined_x <- seq(0, 10, length.out = 50)
-results <- fash_bma_sampling(
+results <- fashr:::fash_bma_sampling(
   data_i = fash_data$data_list[[1]],
   posterior_weights = posterior_weights,
   psd_values = psd_values,
@@ -79,7 +79,6 @@ results <- fash_bma_sampling(
 )
 print(results$posterior_samples)
 print(results$sampled_counts)
-
 
 }
 \keyword{internal}

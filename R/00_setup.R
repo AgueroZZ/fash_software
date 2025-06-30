@@ -22,7 +22,7 @@ dummy <- function() {
 #' value at ith element of x, the ncol should equal to p, and nrow
 #' should equal to the number of elements in x
 #' @examples
-#' global_poly(x = c(0, 0.2, 0.4, 0.6, 0.8), p = 2)
+#' fashr:::global_poly_helper(x = c(0, 0.2, 0.4, 0.6, 0.8), p = 2)
 #'
 #' @keywords internal
 #'
@@ -65,7 +65,7 @@ get_local_poly <- function(knots, refined_x, p) {
 #' value at ith element of refined_x, the ncol should equal to number of knots minus 1, and nrow
 #' should equal to the number of elements in refined_x.
 #' @examples
-#' local_poly(knots = c(0, 0.2, 0.4, 0.6, 0.8), refined_x = seq(0, 0.8, by = 0.1), p = 2)
+#' fashr:::local_poly_helper(knots = c(0, 0.2, 0.4, 0.6, 0.8), refined_x = seq(0, 0.8, by = 0.1), p = 2)
 #'
 #' @keywords internal
 #'
@@ -103,7 +103,7 @@ local_poly_helper <- function(knots, refined_x, p = 2, neg_sign_order = 0) {
 #' @return A precision matrix of the corresponding basis function, should be diagonal matrix with
 #' size (k-1) by (k-1).
 #' @examples
-#' compute_weights_precision(x = c(0,0.2,0.4,0.6,0.8))
+#' fashr:::compute_weights_precision_helper(x = c(0,0.2,0.4,0.6,0.8))
 #'
 #' @keywords internal
 #'
@@ -112,8 +112,6 @@ compute_weights_precision_helper <- function(x){
   Precweights <- diag(d)
   Precweights
 }
-
-
 
 #' Setup Quantities for FASH
 #'
@@ -273,10 +271,6 @@ fash_set_data <- function(Y, smooth_var, offset = 0, S = NULL, Omega = NULL, dat
   # Return structured list
   return(list(data_list = processed_data_list, S = S, Omega = Omega))
 }
-
-
-
-
 
 #' Create a TMB Data Object for a Specific Dataset
 #'

@@ -25,7 +25,7 @@
 #' offset <- 1
 #' fash_data <- fash_set_data(Y, smooth_var, offset)
 #' refined_x <- seq(0, 10, length.out = 50)
-#' samples <- fash_fit_once(data_i = fash_data$data_list[[1]], refined_x = refined_x, M = 100, num_basis = 60,
+#' samples <- fashr:::fash_fit_once(data_i = fash_data$data_list[[1]], refined_x = refined_x, M = 100, num_basis = 60,
 #'                          psd_iwp = 0.5, Si = NULL, Omegai = NULL, likelihood = "poisson")
 #'
 #'
@@ -178,7 +178,7 @@ fash_fit_once <- function(data_i, refined_x, M, psd_iwp, Si = NULL, Omegai = NUL
 #' posterior_weights <- c(0.1, 0.4, 0.3, 0.2)
 #' psd_values <- c(0.1, 0.5, 1.0, 2.0)
 #' refined_x <- seq(0, 10, length.out = 50)
-#' results <- fash_bma_sampling(
+#' results <- fashr:::fash_bma_sampling(
 #'   data_i = fash_data$data_list[[1]],
 #'   posterior_weights = posterior_weights,
 #'   psd_values = psd_values,
@@ -188,7 +188,6 @@ fash_fit_once <- function(data_i, refined_x, M, psd_iwp, Si = NULL, Omegai = NUL
 #' )
 #' print(results$posterior_samples)
 #' print(results$sampled_counts)
-#'
 #'
 #' @keywords internal
 #'

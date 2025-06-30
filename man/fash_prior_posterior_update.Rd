@@ -39,7 +39,7 @@ L_matrix <- matrix(rnorm(50), nrow = 10, ncol = 5)
 pi0_hat <- 0.8
 pi_alt <- rep(0.2, 4)  # Alternative weights
 grid <- seq(0, 2, length.out = 5)
-update_result <- fash_prior_posterior_update(L_matrix, pi0_hat, pi_alt, grid)
+update_result <- fashr:::fash_prior_posterior_update(L_matrix, pi0_hat, pi_alt, grid)
 
 # View updated prior weights
 print(update_result$prior_weight)

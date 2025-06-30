@@ -25,7 +25,7 @@ should equal to the number of elements in refined_x.
 Constructing and evaluating the local O-spline basis (design matrix)
 }
 \examples{
-local_poly(knots = c(0, 0.2, 0.4, 0.6, 0.8), refined_x = seq(0, 0.8, by = 0.1), p = 2)
+fashr:::local_poly_helper(knots = c(0, 0.2, 0.4, 0.6, 0.8), refined_x = seq(0, 0.8, by = 0.1), p = 2)
 
 }
 \keyword{internal}

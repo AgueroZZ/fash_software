@@ -50,8 +50,8 @@ smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 offset <- 1
 fash_data <- fash_set_data(Y, smooth_var, offset)
 grid <- seq(0.1, 2, length.out = 10)
-L_matrix_gaussian <- fash_L_compute(fash_data, likelihood = "gaussian", num_cores = 1, grid = grid, num_basis = 30, betaprec = 1e-6, order = 2, verbose = TRUE)
-L_matrix_poisson <- fash_L_compute(fash_data, likelihood = "poisson", num_cores = 1, grid = grid, num_basis = 30, betaprec = 1e-6, order = 2, verbose = TRUE)
+L_matrix_gaussian <- fashr:::fash_L_compute(fash_data, likelihood = "gaussian", num_cores = 1, grid = grid, num_basis = 30, betaprec = 1e-6, order = 2, verbose = TRUE)
+L_matrix_poisson <- fashr:::fash_L_compute(fash_data, likelihood = "poisson", num_cores = 1, grid = grid, num_basis = 30, betaprec = 1e-6, order = 2, verbose = TRUE)
 
 }
 \keyword{internal}

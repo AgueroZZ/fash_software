@@ -58,7 +58,7 @@ smooth_var <- matrix(runif(20), nrow = 4, ncol = 10, byrow = TRUE)
 offset <- 1
 fash_data <- fash_set_data(Y, smooth_var, offset)
 refined_x <- seq(0, 10, length.out = 50)
-samples <- fash_fit_once(data_i = fash_data$data_list[[1]], refined_x = refined_x, M = 100, num_basis = 60,
+samples <- fashr:::fash_fit_once(data_i = fash_data$data_list[[1]], refined_x = refined_x, M = 100, num_basis = 60,
                          psd_iwp = 0.5, Si = NULL, Omegai = NULL, likelihood = "poisson")
 
 

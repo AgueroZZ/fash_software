@@ -42,7 +42,7 @@ smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 offset <- 1
 fash_data <- fash_set_data(Y, smooth_var, offset)
 grid <- seq(0.1, 2, length.out = 10)
-likelihoods <- compute_L_poisson_helper_seq(
+likelihoods <- fashr:::compute_L_poisson_helper_seq(
   data_i = fash_data$data_list[[1]], grid = grid
 )
 

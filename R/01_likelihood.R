@@ -23,13 +23,14 @@
 #' offset <- 1
 #' fash_data <- fash_set_data(Y, smooth_var, offset)
 #' grid <- seq(0.1, 2, length.out = 10)
-#' L_matrix_gaussian <- fash_L_compute(fash_data, likelihood = "gaussian", num_cores = 1, grid = grid, num_basis = 30, betaprec = 1e-6, order = 2, verbose = TRUE)
-#' L_matrix_poisson <- fash_L_compute(fash_data, likelihood = "poisson", num_cores = 1, grid = grid, num_basis = 30, betaprec = 1e-6, order = 2, verbose = TRUE)
+#' L_matrix_gaussian <- fashr:::fash_L_compute(fash_data, likelihood = "gaussian", num_cores = 1, grid = grid, num_basis = 30, betaprec = 1e-6, order = 2, verbose = TRUE)
+#' L_matrix_poisson <- fashr:::fash_L_compute(fash_data, likelihood = "poisson", num_cores = 1, grid = grid, num_basis = 30, betaprec = 1e-6, order = 2, verbose = TRUE)
 #'
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #' @importFrom parallel mclapply
 #'
 #' @keywords internal
+#' 
 fash_L_compute <- function(fash_data, likelihood = "gaussian", num_cores = 1, grid = seq(0, 2, length.out = 10), pred_step = 1, num_basis = 30, betaprec = 1e-6, order = 2, verbose = FALSE) {
   num_datasets <- length(fash_data$data_list)
   datasets <- fash_data$data_list
@@ -144,7 +145,7 @@ fash_L_compute <- function(fash_data, likelihood = "gaussian", num_cores = 1, gr
 #'
 #' @examples
 #' # Example usage
-#' set.seed(1)
+#' #' set.seed(1)
 #' Y <- matrix(rnorm(20), nrow = 4, ncol = 5)
 #' smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 #' offset <- 1
@@ -152,7 +153,7 @@ fash_L_compute <- function(fash_data, likelihood = "gaussian", num_cores = 1, gr
 #' Omega <- diag(5)
 #' data <- fash_set_data(Y, smooth_var, offset, S, Omega)
 #' log_likelihood <- fashr:::compute_L_gaussian_helper(
-#'   data$data_list[[1]], Si = S[1,], Omegai = Omega, psd_iwp = 0.1
+#'   data$data_list[[1]], Si = S[1], Omegai = Omega, psd_iwp = 0.1
 #' )
 #'
 #' @importFrom TMB MakeADFun
@@ -244,7 +245,7 @@ compute_L_gaussian_helper <- function(data_i, Si, Omegai, psd_iwp, num_basis = 3
 #' Omega <- diag(5)
 #' data <- fash_set_data(Y, smooth_var, offset, S, Omega)
 #' grid <- seq(0.1, 2, length.out = 10)
-#' likelihoods <- compute_L_gaussian_helper_seq(
+#' likelihoods <- fashr:::compute_L_gaussian_helper_seq(
 #'   data$data_list[[1]], Si = S[[1]], Omegai = Omega, grid = grid
 #' )
 #'
@@ -298,7 +299,7 @@ compute_L_gaussian_helper_seq <- function(data_i, Si, Omegai, grid, num_basis = 
 #' offset <- 1
 #' fash_data <- fash_set_data(Y, smooth_var, offset)
 #' grid <- seq(0.1, 2, length.out = 10)
-#' likelihoods <- compute_L_poisson_helper_seq(
+#' likelihoods <- fashr:::compute_L_poisson_helper_seq(
 #'   data_i = fash_data$data_list[[1]], grid = grid
 #' )
 #'
@@ -352,7 +353,7 @@ compute_L_poisson_helper_seq <- function(data_i, grid, num_basis = 30, betaprec 
 #' smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 #' offset <- 1
 #' fash_data <- fash_set_data(Y, smooth_var, offset)
-#' log_likelihood <- compute_L_poisson_helper(
+#' log_likelihood <- fashr:::compute_L_poisson_helper(
 #'   data_i = fash_data$data_list[[1]], psd_iwp = 0.1
 #' )
 #'

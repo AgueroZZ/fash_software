@@ -20,7 +20,7 @@ should equal to the number of elements in x
 Constructing and evaluating the global polynomials, to account for boundary conditions (design matrix)
 }
 \examples{
-global_poly(x = c(0, 0.2, 0.4, 0.6, 0.8), p = 2)
+fashr:::global_poly_helper(x = c(0, 0.2, 0.4, 0.6, 0.8), p = 2)
 
 }
 \keyword{internal}
