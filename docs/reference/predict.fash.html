@@ -17,32 +17,22 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fashr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.17</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">Home</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
-
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/Basics.html">Basic Usage of `fashr`</a>
-    </li>
-    <li>
-      <a href="../articles/Introduction.html">Introduction to FASH</a>
-    </li>
-  </ul></li>
+<li>
+  <a href="../articles/index.html">Articles</a>
+</li>
+<li>
+  <a href="../reference/index.html">Functions</a>
+</li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/AgueroZZ/fashr/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
-
-  </a>
+  <a href="https://github.com/AgueroZZ/fashr" class="external-link">Source</a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -120,7 +110,10 @@ If <code>only.samples = FALSE</code>, a data frame summarizing posterior predict
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Example 1: Predict for a specific dataset with summarized results</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example 1: Predict for a specific dataset with summarized results</span></span></span>
 <span class="r-in"><span><span class="va">data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html" class="external-link">rpois</a></span><span class="op">(</span><span class="fl">5</span>, lambda <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, offset <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html" class="external-link">rpois</a></span><span class="op">(</span><span class="fl">5</span>, lambda <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, offset <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
@@ -133,62 +126,62 @@ If <code>only.samples = FALSE</code>, a data frame summarizing posterior predict
 <span class="r-out co"><span class="r-pr">#&gt;</span> Completed data setup in 0.00 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Starting likelihood computation...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================================================| 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Completed likelihood computation in 0.16 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Completed likelihood computation in 0.14 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Starting empirical Bayes estimation...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Completed empirical Bayes estimation in 0.00 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fash object created successfully.</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fash_obj</span>, index <span class="op">=</span> <span class="fl">1</span>, smooth_var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, length.out <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>, only.samples <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           x     mean   median    lower    upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.000000 1.949737 1.953301 1.345966 2.555429</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  1.081633 1.944420 1.948060 1.353626 2.534586</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  1.163265 1.939104 1.942970 1.368872 2.508703</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  1.244898 1.933788 1.937180 1.381686 2.483279</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  1.326531 1.928472 1.931786 1.386767 2.466166</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  1.408163 1.923156 1.926288 1.397206 2.449551</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  1.489796 1.917839 1.922336 1.406148 2.426100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  1.571429 1.912523 1.916165 1.419751 2.403903</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  1.653061 1.907207 1.912062 1.422361 2.383144</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 1.734694 1.901891 1.908501 1.427398 2.366207</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.816327 1.896575 1.901911 1.437064 2.345576</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.897959 1.891258 1.895963 1.447090 2.328600</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.979592 1.885942 1.889472 1.456791 2.312688</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 2.061224 1.880626 1.883937 1.461319 2.293826</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 2.142857 1.875310 1.878370 1.468066 2.278263</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 2.224490 1.869994 1.872141 1.467886 2.264930</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 2.306122 1.864677 1.866159 1.471786 2.249028</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 2.387755 1.859361 1.861463 1.471063 2.237443</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 2.469388 1.854045 1.855300 1.470570 2.224402</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 2.551020 1.848729 1.850052 1.467813 2.217179</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.632653 1.843412 1.845532 1.466957 2.210575</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.714286 1.838096 1.839829 1.469956 2.198654</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.795918 1.832780 1.835063 1.472548 2.191380</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.877551 1.827464 1.832131 1.468148 2.180865</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.959184 1.822148 1.826886 1.461772 2.176082</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 3.040816 1.816831 1.819462 1.458182 2.171720</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 3.122449 1.811515 1.813092 1.450604 2.172496</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 3.204082 1.806199 1.808320 1.437853 2.173489</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 3.285714 1.800883 1.801914 1.426448 2.174529</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 3.367347 1.795567 1.794926 1.415066 2.175032</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.448980 1.790250 1.790149 1.403845 2.176648</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32 3.530612 1.784934 1.785065 1.384107 2.177622</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33 3.612245 1.779618 1.778127 1.366228 2.179002</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34 3.693878 1.774302 1.774416 1.352074 2.183069</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35 3.775510 1.768986 1.769332 1.338384 2.186342</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36 3.857143 1.763669 1.763532 1.320526 2.192979</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37 3.938776 1.758353 1.757565 1.300660 2.198676</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38 4.020408 1.753037 1.750948 1.287966 2.206564</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39 4.102041 1.747721 1.746121 1.267166 2.218598</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40 4.183673 1.742405 1.740340 1.248323 2.224144</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41 4.265306 1.737088 1.734913 1.230693 2.238086</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42 4.346939 1.731772 1.730159 1.210651 2.248181</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43 4.428571 1.726456 1.723444 1.191067 2.256452</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44 4.510204 1.721140 1.717027 1.169302 2.265777</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45 4.591837 1.715824 1.711560 1.145096 2.276348</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46 4.673469 1.710507 1.705321 1.122264 2.289636</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47 4.755102 1.705191 1.698248 1.103086 2.307532</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48 4.836735 1.699875 1.693508 1.084669 2.320226</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49 4.918367 1.694559 1.686310 1.058966 2.329244</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50 5.000000 1.689243 1.680366 1.040421 2.342713</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           x     mean   median     lower    upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.000000 1.489148 1.487016 0.7924916 2.212558</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  1.081633 1.492357 1.488697 0.8108650 2.196768</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  1.163265 1.495567 1.491903 0.8310775 2.183535</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  1.244898 1.498776 1.494167 0.8520789 2.167828</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  1.326531 1.501986 1.497272 0.8716697 2.149724</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  1.408163 1.505195 1.501303 0.8873631 2.130055</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  1.489796 1.508404 1.504054 0.9052240 2.116422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  1.571429 1.511614 1.508078 0.9259044 2.102815</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  1.653061 1.514823 1.512105 0.9451600 2.092166</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 1.734694 1.518033 1.515040 0.9620380 2.080591</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.816327 1.521242 1.517589 0.9850960 2.065811</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.897959 1.524452 1.520211 0.9965237 2.055929</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.979592 1.527661 1.524365 1.0109694 2.048401</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 2.061224 1.530871 1.527446 1.0282717 2.036396</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 2.142857 1.534080 1.532124 1.0468424 2.030073</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 2.224490 1.537290 1.535939 1.0558674 2.012378</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 2.306122 1.540499 1.539306 1.0725382 2.002400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 2.387755 1.543709 1.544169 1.0835865 1.988887</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 2.469388 1.546918 1.546949 1.0962152 1.985589</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 2.551020 1.550128 1.550789 1.1048525 1.985199</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.632653 1.553337 1.550994 1.1079924 1.983322</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.714286 1.556546 1.553932 1.1160428 1.986366</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.795918 1.559756 1.558180 1.1254939 1.985668</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.877551 1.562965 1.560115 1.1294609 1.980082</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.959184 1.566175 1.563782 1.1436324 1.983160</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 3.040816 1.569384 1.567793 1.1435650 1.981190</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 3.122449 1.572594 1.571058 1.1449574 1.983185</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 3.204082 1.575803 1.574672 1.1464807 1.991974</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 3.285714 1.579013 1.577665 1.1487755 1.996429</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 3.367347 1.582222 1.580723 1.1517959 2.003090</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.448980 1.585432 1.584364 1.1491107 2.010830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32 3.530612 1.588641 1.586117 1.1510933 2.020010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33 3.612245 1.591851 1.591449 1.1512429 2.031422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34 3.693878 1.595060 1.593786 1.1467798 2.045410</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35 3.775510 1.598269 1.595793 1.1421869 2.059394</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36 3.857143 1.601479 1.599768 1.1341229 2.069140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37 3.938776 1.604688 1.604414 1.1265942 2.080778</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38 4.020408 1.607898 1.607383 1.1155145 2.098844</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39 4.102041 1.611107 1.608480 1.1061090 2.111370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40 4.183673 1.614317 1.610638 1.0951299 2.127555</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41 4.265306 1.617526 1.614596 1.0872406 2.148153</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42 4.346939 1.620736 1.618011 1.0763904 2.165826</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43 4.428571 1.623945 1.620235 1.0634392 2.182944</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44 4.510204 1.627155 1.623043 1.0501639 2.208567</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45 4.591837 1.630364 1.628265 1.0325134 2.223331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46 4.673469 1.633574 1.630845 1.0148095 2.244055</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47 4.755102 1.636783 1.632502 0.9992233 2.263697</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48 4.836735 1.639992 1.636524 0.9850651 2.290109</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49 4.918367 1.643202 1.639548 0.9742098 2.309625</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50 5.000000 1.646411 1.642256 0.9614250 2.332301</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 2: Generate posterior samples</span></span></span>
 <span class="r-in"><span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fash_obj</span>, index <span class="op">=</span> <span class="fl">1</span>, smooth_var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, length.out <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>, only.samples <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
@@ -199,11 +192,11 @@ If <code>only.samples = FALSE</code>, a data frame summarizing posterior predict
 <span class="r-in"><span><span class="va">summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fash_obj</span>, index <span class="op">=</span> <span class="fl">1</span>, smooth_var <span class="op">=</span> <span class="cn">NULL</span>, only.samples <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">summary</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   x     mean   median     lower    upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1 1.953851 1.956309 1.3573319 2.543291</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2 1.887344 1.890640 1.4841737 2.290744</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 3 1.820837 1.820250 1.4848937 2.193839</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 4 1.754330 1.751752 1.2994078 2.219381</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 5 1.687822 1.687312 0.9976496 2.357389</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1 1.481165 1.483540 0.7771956 2.192821</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2 1.526142 1.523740 1.0081830 2.018000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 3 1.571119 1.571655 1.1722753 1.984236</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 4 1.616096 1.622365 1.1272701 2.083401</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 5 1.661073 1.672023 0.9688726 2.315041</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 4: Increase number of posterior samples</span></span></span>
 <span class="r-in"><span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fash_obj</span>, index <span class="op">=</span> <span class="fl">1</span>, smooth_var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, length.out <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>, only.samples <span class="op">=</span> <span class="cn">TRUE</span>, M <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span></span></span>

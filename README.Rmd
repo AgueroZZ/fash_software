@@ -1,5 +1,6 @@
 ---
-output: github_document
+output:
+  rmarkdown::github_document:
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -32,7 +33,7 @@ pak::pak("AgueroZZ/fash_software")
 ## Example
 
 This is a basic example, which tries to identify non-linear functions in a set of datasets.
-We use `order = 2` to apply the second order IWP, which has a base model $S_0$ being the space of linear functions.
+We use `order = 2` to apply the second order IWP, which has a base model S<sub>0</sub> being the space of linear functions.
 
 ```{r example}
 library(fashr)

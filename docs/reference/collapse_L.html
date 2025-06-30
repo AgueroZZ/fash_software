@@ -19,32 +19,22 @@ the optimal mixture weights under the alternative hypothesis."><!-- mathjax --><
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fashr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.17</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">Home</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
-
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/Basics.html">Basic Usage of `fashr`</a>
-    </li>
-    <li>
-      <a href="../articles/Introduction.html">Introduction to FASH</a>
-    </li>
-  </ul></li>
+<li>
+  <a href="../articles/index.html">Articles</a>
+</li>
+<li>
+  <a href="../reference/index.html">Functions</a>
+</li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/AgueroZZ/fashr/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
-
-  </a>
+  <a href="https://github.com/AgueroZZ/fashr" class="external-link">Source</a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -98,11 +88,16 @@ columns correspond to mixture components (including the null component in the fi
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Example likelihood matrix (log-space)</span></span></span>
-<span class="r-in"><span><span class="va">L</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">5</span>, ncol <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">L</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">5</span>, ncol <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">collapse_result</span> <span class="op">&lt;-</span> <span class="fu">fashr</span><span class="fu">:::</span><span class="fu">collapse_L</span><span class="op">(</span><span class="va">L</span>, log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in verify.likelihood.matrix(L):</span> Input argument "L" should be a numeric matrix with &gt;= 2 columns, &gt;= 1 rows, all its entries should be non-negative, finite and not NA, and some entries should be positive</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">collapse_result</span><span class="op">$</span><span class="va">L_c</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'collapse_result' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]      [,2]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.6264538 1.5117812</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.1836433 0.3898432</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.8356286 0.6212406</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 1.5952808 2.2146999</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.3295078 1.1249309</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
