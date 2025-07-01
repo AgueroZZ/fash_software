@@ -71,9 +71,6 @@ fash_eb_est <- function(L_matrix, penalty = 1, grid) {
   ))
 }
 
-
-
-
 #' Structure Plot for Posterior Weights
 #'
 #' This function takes the output of \code{fash_eb_est} and generates a structure plot
@@ -108,11 +105,17 @@ fash_eb_est <- function(L_matrix, penalty = 1, grid) {
 #' print(plot_cont)
 #' print(plot_disc)
 #'
-#' @importFrom ggplot2 ggplot aes geom_bar labs scale_fill_brewer scale_fill_gradient coord_flip theme_minimal theme element_blank element_rect
+#' @importFrom ggplot2 ggplot aes geom_bar labs scale_fill_brewer
+#' @importFrom ggplot2 scale_fill_gradient coord_flip theme_minimal
+#' @importFrom ggplot2 theme element_blank element_rect
 #' @importFrom reshape2 melt
+#' @importFrom rlang .data
 #'
 #' @export
-fash_structure_plot <- function(eb_output, discrete = FALSE, ordering = NULL, selected_indices = NULL) {
+#' 
+fash_structure_plot <- function (eb_output, discrete = FALSE, 
+                                 ordering = NULL, 
+                                 selected_indices = NULL) {
 
   # Select indices if specified
   if (!is.null(selected_indices)) {
@@ -155,7 +158,10 @@ fash_structure_plot <- function(eb_output, discrete = FALSE, ordering = NULL, se
   }
 
   # Create the structure plot
-  ggplot2::ggplot(melted_data, ggplot2::aes(x = factor(id, levels = posterior_weights_df$id), y = value, fill = variable)) +
+  melted_data$id <- factor(melted_data$id,levels = posterior_weights_df$id)
+  return(ggplot2::ggplot(melted_data,
+                         ggplot2::aes(x = .data$id, y = .data$value,
+                                      fill = .data$variable)) +
     ggplot2::geom_bar(stat = "identity", position = "stack") +
     ggplot2::labs(
       x = "Datasets",
@@ -171,7 +177,7 @@ fash_structure_plot <- function(eb_output, discrete = FALSE, ordering = NULL, se
       panel.grid = ggplot2::element_blank(),
       panel.background = ggplot2::element_rect(fill = "white"),
       plot.background = ggplot2::element_rect(fill = "white")
-    )
+    ))
 }
 
 

@@ -4,6 +4,7 @@
 ^check\_package\.Rmd$
 ^check\_package\_poisson.Rmd$
 ^debug\_lfsr\.R$
+^\_pkgdown\.yml$
 ^doc$
 ^docs$
 ^Meta$
