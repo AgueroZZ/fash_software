@@ -16,7 +16,8 @@ A function that evaluates the random quadratic function at new x-values.
 Generates a random quadratic function with coefficients drawn from normal distributions.
 }
 \examples{
-f <- simulate_quadratic_function()
+
+f <- fashr:::simulate_quadratic_function()
 plot(1:16, f(1:16), type = 'l')
 
 }

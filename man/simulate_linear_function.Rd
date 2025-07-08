@@ -18,7 +18,8 @@ A function that evaluates the random linear function at new x-values.
 Generates a random linear function with intercept and slope drawn from normal distributions.
 }
 \examples{
-f <- simulate_linear_function()
+
+f <- fashr:::simulate_linear_function()
 plot(1:16, f(1:16), type = 'l')
 
 }

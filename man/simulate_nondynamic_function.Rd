@@ -16,7 +16,8 @@ A function that evaluates to a constant at any x.
 Generates a constant function with value drawn from a normal distribution.
 }
 \examples{
-f <- simulate_nondynamic_function()
+
+f <- fashr:::simulate_nondynamic_function()
 plot(1:16, f(1:16), type = 'l')
 
 }

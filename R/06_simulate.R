@@ -20,9 +20,10 @@
 #'
 #' @examples
 #' g <- function(x) sin(x / 5)
-#' simulate_data(g, sd = 0.2)
+#' fashr:::simulate_data(g, sd = 0.2)
 #'
 #' @keywords internal
+#' 
 simulate_data <- function(g, x = NULL, sd = 0.1){
   if (is.null(x)) {
     x <- 1:16
@@ -32,8 +33,6 @@ simulate_data <- function(g, x = NULL, sd = 0.1){
   y <- g(x) + rnorm(n = length(x), sd = sd, mean = 0)
   return(data.frame(x = x, y = y, truef = g(x), sd = sd))
 }
-
-
 
 #' Simulate a Random Nonlinear Function from an Integrated Wiener Process (IWP) Prior
 #'
@@ -53,12 +52,13 @@ simulate_data <- function(g, x = NULL, sd = 0.1){
 #'   }
 #'
 #' @examples
-#' f <- simulate_nonlinear_function()
+#' f <- fashr:::simulate_nonlinear_function()
 #' plot(1:16, f(1:16), type = 'l')
 #'
 #' @importFrom LaplacesDemon rmvnp
 #'
 #' @keywords internal
+#' 
 simulate_nonlinear_function <- function(n_basis = 20, sd_function = 1, sd_poly = 0.1, p = 1, pred_step = 16, x_range = NULL) {
   if(n_basis < 3) stop("n_basis must be greater than 3")
 
@@ -102,10 +102,12 @@ simulate_nonlinear_function <- function(n_basis = 20, sd_function = 1, sd_poly =
 #' @return A function that evaluates the random linear function at new x-values.
 #'
 #' @examples
-#' f <- simulate_linear_function()
+#' 
+#' f <- fashr:::simulate_linear_function()
 #' plot(1:16, f(1:16), type = 'l')
 #'
 #' @keywords internal
+#' 
 simulate_linear_function <- function(sd_poly = 1, pred_step = 16){
   beta0 <- rnorm(1, mean = 0, sd = sd_poly)
   beta1 <- rnorm(1, mean = 0, sd = sd_poly/pred_step)
@@ -113,8 +115,6 @@ simulate_linear_function <- function(sd_poly = 1, pred_step = 16){
     return(beta0 + beta1 * x_new)
   }
 }
-
-
 
 #' Simulate a Random Quadratic Function
 #'
@@ -125,10 +125,12 @@ simulate_linear_function <- function(sd_poly = 1, pred_step = 16){
 #' @return A function that evaluates the random quadratic function at new x-values.
 #'
 #' @examples
-#' f <- simulate_quadratic_function()
+#'
+#' f <- fashr:::simulate_quadratic_function()
 #' plot(1:16, f(1:16), type = 'l')
 #'
 #' @keywords internal
+#' 
 simulate_quadratic_function <- function(sd_poly = 1){
   beta0 <- rnorm(1, mean = 0, sd = sd_poly)
   beta1 <- rnorm(1, mean = 0, sd = sd_poly)
@@ -137,7 +139,6 @@ simulate_quadratic_function <- function(sd_poly = 1){
     return(beta0 + beta1 * x_new + beta2 * x_new^2)
   }
 }
-
 
 #' Simulate a Random Constant Function (Nondynamic)
 #'
@@ -148,18 +149,18 @@ simulate_quadratic_function <- function(sd_poly = 1){
 #' @return A function that evaluates to a constant at any x.
 #'
 #' @examples
-#' f <- simulate_nondynamic_function()
+#' 
+#' f <- fashr:::simulate_nondynamic_function()
 #' plot(1:16, f(1:16), type = 'l')
 #'
 #' @keywords internal
+#' 
 simulate_nondynamic_function <- function(sd_poly = 1){
   beta0 <- rnorm(1, mean = 0, sd = sd_poly)
   Vectorize(function(x_new) {
     return(beta0)
   })
 }
-
-
 
 #' Simulate an Entire Observed Dataset from a Randomly Generated Function
 #'

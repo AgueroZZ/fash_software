@@ -31,7 +31,7 @@ with heteroscedastic standard deviation sampled from a provided vector or scalar
 }
 \examples{
 g <- function(x) sin(x / 5)
-simulate_data(g, sd = 0.2)
+fashr:::simulate_data(g, sd = 0.2)
 
 }
 \keyword{internal}

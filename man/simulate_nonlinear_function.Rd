@@ -37,7 +37,7 @@ This function generates a random smooth function sampled from an Integrated Wien
 parameterized by the number of basis functions and smoothing parameters.
 }
 \examples{
-f <- simulate_nonlinear_function()
+f <- fashr:::simulate_nonlinear_function()
 plot(1:16, f(1:16), type = 'l')
 
 }
