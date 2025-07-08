@@ -19,20 +19,26 @@
 #' # Example usage
 #' set.seed(1)
 #' Y <- matrix(rpois(20, lambda = 5), nrow = 4, ncol = 5)
+#' S <- matrix(1, nrow = 4, ncol = 5)
 #' smooth_var <- matrix(runif(20), nrow = 4, ncol = 5)
 #' offset <- 1
-#' fash_data <- fash_set_data(Y, smooth_var, offset)
+#' fash_data_poisson <- fash_set_data(Y = Y, smooth_var = smooth_var, offset = offset)
+#' fash_data_gaussian <- fash_set_data(Y = Y, smooth_var = smooth_var, S = S)
 #' grid <- seq(0.1, 2, length.out = 10)
-#' \dontrun{
-#' L_matrix_gaussian <- fashr:::fash_L_compute(fash_data, likelihood = "gaussian", num_cores = 1, grid = grid, num_basis = 30, betaprec = 1e-6, order = 2, verbose = TRUE)
-#' L_matrix_poisson <- fashr:::fash_L_compute(fash_data, likelihood = "poisson", num_cores = 1, grid = grid, num_basis = 30, betaprec = 1e-6, order = 2, verbose = TRUE)
-#' }
+#' L_matrix_gaussian <-
+#'   fashr:::fash_L_compute(fash_data_gaussian, likelihood = "gaussian",
+#'                          num_cores = 1, grid = grid, num_basis = 30,
+#'                          betaprec = 1e-6, order = 2, verbose = TRUE)
+#' L_matrix_poisson <-
+#'   fashr:::fash_L_compute(fash_data_poisson, likelihood = "poisson",
+#'                          num_cores = 1, grid = grid, num_basis = 30,
+#'                          betaprec = 1e-6, order = 2, verbose = TRUE)
 #'
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #' @importFrom parallel mclapply
 #'
 #' @keywords internal
-#' 
+#'
 fash_L_compute <- function(fash_data, likelihood = "gaussian", num_cores = 1, grid = seq(0, 2, length.out = 10), pred_step = 1, num_basis = 30, betaprec = 1e-6, order = 2, verbose = FALSE) {
   num_datasets <- length(fash_data$data_list)
   datasets <- fash_data$data_list
@@ -360,7 +366,7 @@ compute_L_poisson_helper_seq <- function(data_i, grid, num_basis = 30, betaprec 
 #' )
 #'
 #' @importFrom TMB MakeADFun
-#' 
+#'
 #' @keywords internal
 #'
 compute_L_poisson_helper <- function(data_i, psd_iwp, num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1) {

@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fashr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.21</span>
       </span>
     </div>
 
@@ -82,19 +82,28 @@
 (FASH) scenarios. Given
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
 sets of series data:
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝐲</mi><mo>=</mo><mo stretchy="false" form="prefix">{</mo><msub><mi>y</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>:</mo><mi>j</mi><mo>∈</mo><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>n</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">]</mo></mrow><msubsup><mo stretchy="false" form="postfix">}</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup></mrow><annotation encoding="application/x-tex">\boldsymbol{y} = \{y_i(t_j): j\in[n_i]\}_{i=1}^{N}</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝐲</mi><mo>=</mo><mo stretchy="false" form="prefix">{</mo><msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>:</mo><mi>j</mi><mo>∈</mo><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>n</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">]</mo></mrow><msubsup><mo stretchy="false" form="postfix">}</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup></mrow><annotation encoding="application/x-tex">\boldsymbol{y} = \{y_{ij}: j\in[n_i]\}_{i=1}^{N}</annotation></semantics></math>,
 where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>i</mi></msub><annotation encoding="application/x-tex">n_i</annotation></semantics></math>
 is the length of the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>-th
 series, we assume that each series
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>i</mi></msub><annotation encoding="application/x-tex">y_i</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝐲</mi><mi>i</mi></msub><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>y</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>y</mi><mrow><mi>i</mi><msub><mi>n</mi><mi>i</mi></msub></mrow></msub><mo stretchy="true" form="postfix">]</mo></mrow><mi>T</mi></msup><mo>∈</mo><msup><mi>ℝ</mi><msub><mi>n</mi><mi>i</mi></msub></msup></mrow><annotation encoding="application/x-tex">\boldsymbol{y}_i = [y_{i1},...,y_{in_i}]^T \in \mathbb{R}^{n_i}</annotation></semantics></math>
 represents
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>i</mi></msub><annotation encoding="application/x-tex">n_i</annotation></semantics></math>
 measurements over the continuous treatment
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
 at levels
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>t</mi><mi>j</mi></msub><msubsup><mo stretchy="false" form="postfix">}</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><msub><mi>n</mi><mi>i</mi></msub></msubsup></mrow><annotation encoding="application/x-tex">\{t_j\}_{j=1}^{n_i}</annotation></semantics></math>.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝐭</mi><mi>i</mi></msub><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>t</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>t</mi><mrow><mi>i</mi><msub><mi>n</mi><mi>i</mi></msub></mrow></msub><mo stretchy="true" form="postfix">]</mo></mrow><mi>T</mi></msup><mo>∈</mo><msup><mi>ℝ</mi><msub><mi>n</mi><mi>i</mi></msub></msup></mrow><annotation encoding="application/x-tex">\boldsymbol{t}_i = [t_{i1},...,t_{in_i}]^T \in \mathbb{R}^{n_i}</annotation></semantics></math>.
+Furthermore, we assume each series
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝐲</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\boldsymbol{y}_i</annotation></semantics></math>
+relates to a smooth function
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">f_i(t)</annotation></semantics></math>,
+which is the main inferential interest. For example,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msub><mi>f</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>ϵ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">y_{ij} = f_i(t_{ij}) + \epsilon_{ij}</annotation></semantics></math>,
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ϵ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\epsilon_{ij}</annotation></semantics></math>
+is the noise term.</p>
 <p>Different from traditional smoothing methods that assumes each
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">f_i(t)</annotation></semantics></math>
 has a separate prior
@@ -138,6 +147,15 @@ denotes the marginal likelihood of the
 series data under the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>-th
 GP component.</p>
+<p>Specifically, the marginal likelihood
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝐋</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><annotation encoding="application/x-tex">\mathbf{L}_{ik}</annotation></semantics></math>
+is computed as:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝐋</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><mo>∫</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>𝐲</mi><mi>i</mi></msub><mo>∣</mo><msub><mi>𝐟</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi>𝒩</mi><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">(</mo><msub><mi>𝐟</mi><mi>i</mi></msub><mo>;</mo><msub><mi>m</mi><mi>k</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>𝐭</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><msub><mi>C</mi><mi>k</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>𝐭</mi><mi>i</mi></msub><mo>,</mo><msub><mi>𝐭</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo minsize="1.2" maxsize="1.2" stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi>d</mi><msub><mi>𝐟</mi><mi>i</mi></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">
+\mathbf{L}_{ik} = \int p(\boldsymbol{y}_i \mid \boldsymbol{f}_i) \, \mathcal{N}\big(\boldsymbol{f}_i; m_k(\boldsymbol{t}_i), C_k(\boldsymbol{t}_i, \boldsymbol{t}_i)\big) \, d\boldsymbol{f}_i,
+</annotation></semantics></math> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝐟</mi><mi>i</mi></msub><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>f</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>f</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><msub><mi>n</mi><mi>i</mi></msub></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">\boldsymbol{f}_i = [f_i(t_{i1}), \ldots, f_i(t_{in_i})]^T</annotation></semantics></math>
+denotes the latent function values at the observed treatment levels
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝐭</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\boldsymbol{t}_i</annotation></semantics></math>.</p>
 <p>Then the prior
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>g</mi><mi>f</mi></msub><annotation encoding="application/x-tex">g_f</annotation></semantics></math>
 is determined as:

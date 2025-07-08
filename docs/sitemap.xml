@@ -39,6 +39,12 @@
 <url><loc>/reference/plot.fash.html</loc></url>
 <url><loc>/reference/predict.fash.html</loc></url>
 <url><loc>/reference/print.fash.html</loc></url>
+<url><loc>/reference/simulate_data.html</loc></url>
+<url><loc>/reference/simulate_linear_function.html</loc></url>
+<url><loc>/reference/simulate_nondynamic_function.html</loc></url>
+<url><loc>/reference/simulate_nonlinear_function.html</loc></url>
+<url><loc>/reference/simulate_process.html</loc></url>
+<url><loc>/reference/simulate_quadratic_function.html</loc></url>
 <url><loc>/reference/testing_functional.html</loc></url>
 </urlset>
 

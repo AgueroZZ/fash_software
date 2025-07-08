@@ -18,7 +18,7 @@ This function iteratively calls compute_L_poisson_helper for each grid value."><
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fashr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.21</span>
       </span>
     </div>
 
@@ -108,10 +108,9 @@ Must be a list containing <code>y</code>, <code>x</code>, and <code>offset</code
 <span class="r-in"><span><span class="va">offset</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="va">fash_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="fash_set_data.html">fash_set_data</a></span><span class="op">(</span><span class="va">Y</span>, <span class="va">smooth_var</span>, <span class="va">offset</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">2</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">likelihoods</span> <span class="op">&lt;-</span> <span class="fu">compute_L_poisson_helper_seq</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">likelihoods</span> <span class="op">&lt;-</span> <span class="fu">fashr</span><span class="fu">:::</span><span class="fu">compute_L_poisson_helper_seq</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data_i <span class="op">=</span> <span class="va">fash_data</span><span class="op">$</span><span class="va">data_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, grid <span class="op">=</span> <span class="va">grid</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in compute_L_poisson_helper_seq(data_i = fash_data$data_list[[1]],     grid = grid):</span> could not find function "compute_L_poisson_helper_seq"</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

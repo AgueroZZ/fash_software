@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fashr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.21</span>
       </span>
     </div>
 
@@ -86,8 +86,17 @@ should equal to the number of elements in refined_x.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">local_poly</span><span class="op">(</span>knots <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.8</span><span class="op">)</span>, refined_x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.8</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>, p <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in local_poly(knots = c(0, 0.2, 0.4, 0.6, 0.8), refined_x = seq(0,     0.8, by = 0.1), p = 2):</span> could not find function "local_poly"</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">fashr</span><span class="fu">:::</span><span class="fu">local_poly_helper</span><span class="op">(</span>knots <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.8</span><span class="op">)</span>, refined_x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.8</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>, p <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2]  [,3]         [,4]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,] 0.000 0.000 0.000 0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,] 0.005 0.000 0.000 0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,] 0.020 0.000 0.000 0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,] 0.040 0.005 0.000 0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,] 0.060 0.020 0.000 0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,] 0.080 0.040 0.005 0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,] 0.100 0.060 0.020 6.162976e-33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,] 0.120 0.080 0.040 5.000000e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,] 0.140 0.100 0.060 2.000000e-02</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

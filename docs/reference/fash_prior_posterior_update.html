@@ -18,7 +18,7 @@ proportion of null datasets (\(\pi_0\)) and the reweighted prior under the alter
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fashr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.21</span>
       </span>
     </div>
 
@@ -106,16 +106,30 @@ Rows correspond to datasets, and columns correspond to mixture components.</p></
 <span class="r-in"><span><span class="va">pi0_hat</span> <span class="op">&lt;-</span> <span class="fl">0.8</span></span></span>
 <span class="r-in"><span><span class="va">pi_alt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">4</span><span class="op">)</span>  <span class="co"># Alternative weights</span></span></span>
 <span class="r-in"><span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span>, length.out <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">update_result</span> <span class="op">&lt;-</span> <span class="fu">fash_prior_posterior_update</span><span class="op">(</span><span class="va">L_matrix</span>, <span class="va">pi0_hat</span>, <span class="va">pi_alt</span>, <span class="va">grid</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in fash_prior_posterior_update(L_matrix, pi0_hat, pi_alt, grid):</span> could not find function "fash_prior_posterior_update"</span>
+<span class="r-in"><span><span class="va">update_result</span> <span class="op">&lt;-</span> <span class="fu">fashr</span><span class="fu">:::</span><span class="fu">fash_prior_posterior_update</span><span class="op">(</span><span class="va">L_matrix</span>, <span class="va">pi0_hat</span>, <span class="va">pi_alt</span>, <span class="va">grid</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># View updated prior weights</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">update_result</span><span class="op">$</span><span class="va">prior_weight</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'update_result' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   psd prior_weight</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.0         0.80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.5         0.04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1.0         0.04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 1.5         0.04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 2.0         0.04</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># View updated posterior weights</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">update_result</span><span class="op">$</span><span class="va">posterior_weight</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'update_result' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               0         0.5           1         1.5          2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,] 0.4757193 0.201810828 0.111556029 0.173162273 0.03775153</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,] 0.8181538 0.050275506 0.074426426 0.030719175 0.02642507</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,] 0.6298726 0.039023861 0.078255480 0.107027465 0.14582062</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,] 0.9710593 0.001075381 0.001347192 0.009333120 0.01718501</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,] 0.8300498 0.091943712 0.055482707 0.007532192 0.01499160</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,] 0.7424196 0.080617608 0.079720116 0.055681955 0.04156072</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,] 0.8917264 0.026945270 0.023434342 0.018461881 0.03943209</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,] 0.8764620 0.053821476 0.004811861 0.019737551 0.04516712</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,] 0.8396854 0.053663594 0.014634234 0.070919043 0.02109777</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10,] 0.6513401 0.080045036 0.067129908 0.094808954 0.10667596</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
