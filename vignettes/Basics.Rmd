@@ -1,12 +1,11 @@
 ---
-title: "Basic Usage of `fashr`"
+title: "Basic Usage of fashr"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Basics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
 
 ```{r setup}
 knitr::opts_chunk$set(fig.width = 8, fig.height = 6)
@@ -144,8 +143,7 @@ calibration_fdr <- function(fdr_result, true_indices, fdr_vec = seq(0.01,0.99,by
 }
 ```
 
-
-## **Setup**
+## Setup
 
 We consider the effect size estimate of $100$ eQTLs measured in day $t = 1$ to day $t = 16$:
 
@@ -211,16 +209,21 @@ Take a look at the true label of the datasets:
 table(labels)
 ```
 
-## **Fitting FASH**
+## Fitting FASH
 
-The default way of fitting FASH is to input the list of datasets (`data_list`), and specify the column names for the effect size (`Y`), the standard deviation of the effect size (`S`), and the time points (`smooth_var`). 
+The default way of fitting FASH is to input the list of datasets
+(`data_list`), and specify the column names for the effect size (`Y`),
+the standard deviation of the effect size (`S`), and the time points
+(`smooth_var`).
 
-The computation could be paralleled by specifying the number of cores (`num_cores`). Reducing the number of basis functions (`num_basis`) can also greatly speed up the computation. 
+The computation could be paralleled by specifying the number of cores
+(`num_cores`). Reducing the number of basis functions (`num_basis`)
+can also greatly speed up the computation.
 
-### **Testing non-linearity**
+### Testing non-linearity
 
-
-Let's first use the IWP2 model (`order = 2`), and try to detect the dynamic eQTLs with non-linear dynamics (Category C).
+Let's first use the IWP2 model (`order = 2`), and try to detect the
+dynamic eQTLs with non-linear dynamics (Category C).
 
 ```{r}
 fash_fit <- fash(Y = "y", smooth_var = "x", S = "sd", data_list = datasets, 
@@ -260,13 +263,11 @@ We can then use `fdr_control` to test the null hypothesis that $H_0: \beta_i(t) 
 fdr_result <- fdr_control(fash_fit, alpha = 0.1, plot = TRUE)
 ```
 
-
 There are 21 eQTLs flagged as significant at FDR level 0.1. We can take out the indices of these eQTLs:
 
 ```{r}
 detected_indices <- fdr_result$fdr_results$index[fdr_result$fdr_results$FDR < 0.1]
 ```
-
 
 How many of the true (non-linear) dynamic eQTLs are detected?
 
@@ -314,12 +315,13 @@ lines(datasets[[detected_indices[1]]]$x, datasets[[detected_indices[1]]]$truef, 
 polygon(c(fitted_beta_new$x, rev(fitted_beta_new$x)), c(fitted_beta_new$lower, rev(fitted_beta_new$upper)), col = rgb(1, 0, 0, 0.2), border = NA)
 ```
 
+### Testing dynamic eQTLs
 
-### **Testing dynamic eQTLs**
+What if we are interested in detecting any dynamic eQTLs, not just the
+non-linear ones? (i.e., Categories B and C)
 
-What if we are interested in detecting any dynamic eQTLs, not just the non-linear ones? (i.e., Categories B and C)
-
-We can specify the order of the IWP model to be 1, which will setup a base model $S_0$ as the space of constant functions.
+We can specify the order of the IWP model to be 1, which will setup a
+base model $S_0$ as the space of constant functions.
 
 ```{r}
 fash_fit_2 <- fash(Y = "y", smooth_var = "x", S = "sd", data_list = datasets, 
@@ -335,15 +337,13 @@ Take a look at the structure plot:
 plot(fash_fit_2, discrete = TRUE, ordering = "mean")
 ```
 
-
-Let's test the null hypothesis that $H_0: \beta_i(t) \in S_0$ at a given FDR level:
+Let's test the null hypothesis that $H_0: \beta_i(t) \in S_0$ at a
+given FDR level:
 
 ```{r}
 fdr_result_2 <- fdr_control(fash_fit_2, alpha = 0.1, plot = TRUE)
 detected_indices_2 <- fdr_result_2$fdr_results$index[fdr_result_2$fdr_results$FDR < 0.1]
 ```
-
-
 
 How many of the true dynamic eQTLs are detected?
 
