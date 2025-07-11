@@ -12,7 +12,7 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 6)
 library(fashr)
 ```
 
-```{r echo=TRUE}
+```{r}
 # Plot power against FDR
 power_versus_fdr <- function(fdr_result, true_indices, fdr_vec = seq(0.01,0.99,by = 0.01), plot = TRUE){
   power <- numeric(length(fdr_vec))
@@ -51,7 +51,7 @@ We consider the effect size estimate of $100$ eQTLs measured in day $t = 1$ to d
 - there are $30$ eQTLs that are linear dynamic, i.e., the effect size is changing linearly over time (Category B).
 - there are $20$ eQTLs that are non-linear dynamic, i.e., the effect size is changing non-linearly over time (Category C).
 
-```{r echo=TRUE}
+```{r}
 set.seed(1)
 N <- 100
 propA <- 0.5; propB <- 0.3; propC <- 0.2
@@ -127,7 +127,6 @@ dynamic eQTLs with non-linear dynamics (Category C).
 
 ```{r}
 fash_fit <- fash(Y = "y", smooth_var = "x", S = "sd", data_list = datasets, 
-                  likelihood = "gaussian", order = 2, pred_step = 1,
                   num_cores = 2, num_basis = 20, grid = seq(0, 1, by = 0.025),
                   verbose = TRUE)
 fash_fit

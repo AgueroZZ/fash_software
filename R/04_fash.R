@@ -45,9 +45,12 @@
 #' @importFrom graphics legend
 #'
 #' @export
-fash <- function(Y = NULL, smooth_var = NULL, offset = 0, S = NULL, Omega = NULL, data_list = NULL, grid = seq(0, 2, length.out = 10),
-                  likelihood = "gaussian", num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1, penalty = 1,
-                  num_cores = 1, verbose = FALSE) {
+fash <- function(Y = NULL, smooth_var = NULL, offset = 0, S = NULL, 
+                 Omega = NULL, data_list = NULL, 
+                 grid = seq(0, 2, length.out = 10),
+                 likelihood = "gaussian", num_basis = 30, 
+                 betaprec = 1e-6, order = 2, pred_step = 1, 
+                 penalty = 1, num_cores = 1, verbose = FALSE) {
 
   # Check if 0 is included in the grid, if not add it and produce a warning
   if (!0 %in% grid) {

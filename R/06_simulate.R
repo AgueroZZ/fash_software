@@ -22,6 +22,8 @@
 #' g <- function(x) sin(x / 5)
 #' fashr:::simulate_data(g, sd = 0.2)
 #'
+#' @importFrom stats rnorm
+#' 
 #' @keywords internal
 #' 
 simulate_data <- function(g, x = NULL, sd = 0.1){
@@ -55,6 +57,7 @@ simulate_data <- function(g, x = NULL, sd = 0.1){
 #' f <- fashr:::simulate_nonlinear_function()
 #' plot(1:16, f(1:16), type = 'l')
 #'
+#' @importFrom stats rnorm
 #' @importFrom LaplacesDemon rmvnp
 #'
 #' @keywords internal
@@ -75,7 +78,7 @@ simulate_nonlinear_function <- function(n_basis = 20, sd_function = 1, sd_poly =
 
   # Generate random weights for the basis functions
   sd_function <- sd_function/sqrt((pred_step^((2 * p) - 1)) / (((2 * p) - 1) * (factorial(p - 1)^2)))
-  prec_mat <- (1/sd_function^2) * fashr:::compute_weights_precision_helper(knots)
+  prec_mat <- (1/sd_function^2) * compute_weights_precision_helper(knots)
   weights <- as.vector(LaplacesDemon::rmvnp(n = 1, mu = rep(0, ncol(prec_mat)), Omega = prec_mat))
   # Generate random weights for the linear functions
   beta_vec <- rnorm(n = p, mean = 0, sd = sd_poly)
@@ -83,8 +86,8 @@ simulate_nonlinear_function <- function(n_basis = 20, sd_function = 1, sd_poly =
   # Return a function that evaluates the spline at new x values
   function(x_new) {
     # Create the B-spline basis for the new x values using the predefined knots
-    spline_new <- fashr:::local_poly_helper(knots = knots, refined_x = x_new, p = p)
-    x_new_design <- fashr:::global_poly_helper(x = x_new, p = p)
+    spline_new <- local_poly_helper(knots = knots, refined_x = x_new, p = p)
+    x_new_design <- global_poly_helper(x = x_new, p = p)
     # Return the function
     return(x_new_design %*% beta_vec + as.vector(spline_new %*% weights))
   }
@@ -106,6 +109,8 @@ simulate_nonlinear_function <- function(n_basis = 20, sd_function = 1, sd_poly =
 #' f <- fashr:::simulate_linear_function()
 #' plot(1:16, f(1:16), type = 'l')
 #'
+#' @importFrom stats rnorm
+#' 
 #' @keywords internal
 #' 
 simulate_linear_function <- function(sd_poly = 1, pred_step = 16){
@@ -129,6 +134,8 @@ simulate_linear_function <- function(sd_poly = 1, pred_step = 16){
 #' f <- fashr:::simulate_quadratic_function()
 #' plot(1:16, f(1:16), type = 'l')
 #'
+#' @importFrom stats rnorm
+#' 
 #' @keywords internal
 #' 
 simulate_quadratic_function <- function(sd_poly = 1){
@@ -153,6 +160,8 @@ simulate_quadratic_function <- function(sd_poly = 1){
 #' f <- fashr:::simulate_nondynamic_function()
 #' plot(1:16, f(1:16), type = 'l')
 #'
+#' @importFrom stats rnorm
+#' 
 #' @keywords internal
 #' 
 simulate_nondynamic_function <- function(sd_poly = 1){
