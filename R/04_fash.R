@@ -214,26 +214,28 @@ fdr_control <- function(fash_obj, alpha = 0.05, plot = FALSE) {
 }
 
 
-
-
-
 #' Plot Method for fash Objects
 #'
-#' Generates a structure plot of the posterior weights stored in the \code{fash} object,
-#' visualizing the distribution of posterior weights across datasets and PSD values.
+#' Generates a plot for a \code{fash} object, providing either a heatmap of posterior weights
+#' or a structure plot summarizing component contributions across datasets.
 #'
 #' @param x A \code{fash} object containing the results of the FASH pipeline.
-#' @param ordering A character string specifying the method for reordering datasets (e.g., "mean" or "lfdr").
+#' @param plot_type A character string specifying the type of plot to generate.
+#'   One of:
+#'   - \code{"heatmap"}: Bubble/heatmap plot of posterior weights (default).
+#'   - \code{"structure"}: Structure plot of mixture components.
+#' @param ordering A character string specifying the method for reordering datasets in the structure plot.
+#'   Only used if \code{plot_type = "structure"}.
 #'
 #'   - \code{"mean"}: Reorder by the mean of the posterior PSD.
-#'
 #'   - \code{"lfdr"}: Reorder by the local false discovery rate.
-#'
 #'   - \code{NULL}: No reordering (default).
 #'
-#' @param discrete A logical value. If \code{TRUE}, treats PSD values as discrete categories with distinct colors.
-#'                 If \code{FALSE}, treats PSD values as a continuous variable with a gradient.
-#' @param ... Additional arguments passed to \code{fash_structure_plot}.
+#' @param discrete A logical value. If \code{TRUE}, treats PSD values as discrete categories with distinct colors
+#'                 in the structure plot. Ignored if \code{plot_type = "heatmap"}.
+#' @param ... Additional arguments passed to \code{plot_heatmap} or \code{fash_structure_plot}.
+#'
+#' @return A plot object (typically a \code{ggplot}).
 #'
 #' @examples
 #' set.seed(1)
@@ -241,30 +243,58 @@ fdr_control <- function(fash_obj, alpha = 0.05, plot = FALSE) {
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
 #' )
-#' S <- NULL
-#' Omega <- NULL
 #' grid <- seq(0, 2, length.out = 10)
-#' fash_obj <- fash(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", S = S, Omega = Omega, grid = grid, likelihood = "poisson", verbose = TRUE)
-#' plot(fash_obj, ordering = "mean", discrete = TRUE)
+#' fash_obj <- fash(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", grid = grid, likelihood = "poisson", verbose = TRUE)
+#'
+#' # Heatmap plot
+#' plot(fash_obj)
+#'
+#' # Structure plot
+#' plot(fash_obj, plot_type = "structure", ordering = "mean", discrete = TRUE)
 #'
 #' @export
-plot.fash <- function(x, ordering = NULL, discrete = FALSE, ...) {
+plot.fash <- function(x,
+                      plot_type = "structure",
+                      ordering = NULL,
+                      discrete = FALSE,
+                      ...) {
   # Validate input
   if (!inherits(x, "fash")) {
     stop("Input must be a `fash` object.")
   }
 
-  # Generate the structure plot
-  fash_structure_plot(
-    eb_output = list(
-      posterior_weight = x$posterior_weights,
-      prior_weight = x$prior_weights
-    ),
-    ordering = ordering,
-    discrete = discrete,
-    ...
-  )
+  if (plot_type == "heatmap") {
+    return(
+      plot_heatmap(
+        object = x,
+        ...
+      )
+    )
+  }
+
+  else if (plot_type == "structure") {
+    return(
+      fash_structure_plot(
+        eb_output = list(
+          posterior_weight = x$posterior_weights,
+          prior_weight = x$prior_weights
+        ),
+        ordering = ordering,
+        discrete = discrete,
+        ...
+      )
+    )
+  }
+
+  else {
+    stop("Invalid plot_type. Must be either 'heatmap' or 'structure'.")
+  }
 }
+
+
+
+
+
 
 #' Predict Method for fash Objects
 #'
@@ -292,9 +322,9 @@ plot.fash <- function(x, ordering = NULL, discrete = FALSE, ...) {
 #'   - \code{median}: The posterior median.
 #'
 #' @examples
-#' 
+#'
 #' set.seed(1)
-#' 
+#'
 #' # Example 1: Predict for a specific dataset with summarized results
 #' data_list <- list(
 #'   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
@@ -454,7 +484,7 @@ print.fash <- function(x, ...) {
 #'
 #' @examples
 #' set.seed(1)
-#' 
+#'
 #' # Define a functional (e.g., mean of posterior samples)
 #' functional_example <- function(x) { mean(x) }
 #'
@@ -517,4 +547,216 @@ testing_functional <- function(functional,
 
   return(result_df)
 }
+
+
+
+
+
+#' Structure Plot for Posterior Weights
+#'
+#' This function takes the output of \code{fash_eb_est} and generates a structure plot
+#' visualizing the posterior weights for all datasets. It can display PSD values
+#' as either continuous or discrete variables and optionally reorder datasets.
+#'
+#' @param eb_output A list output from \code{fash_eb_est}, containing:
+#'   \describe{
+#'     \item{posterior_weight}{A numeric matrix of posterior weights (datasets as rows, PSD as columns).}
+#'     \item{prior_weight}{A data frame of prior weights (not used in this plot).}
+#'   }
+#' @param discrete A logical value. If \code{TRUE}, treats PSD values as discrete categories with distinct colors.
+#'                 If \code{FALSE}, treats PSD values as a continuous variable with a gradient.
+#' @param ordering A character string specifying the method for reordering datasets. Options are:
+#'   \describe{
+#'     \item{NULL}{No reordering (default).}
+#'     \item{`mean`}{Reorder by the mean of the posterior PSD.}
+#'     \item{`median`}{Reorder by the median of the posterior PSD.}
+#'     \item{`lfdr`}{Reorder by the local false discovery rate (posterior probability of PSD = 0).}
+#'   }
+#' @param selected_indices A numeric vector specifying the indices of datasets to display. If \code{NULL}, displays all datasets.
+#' @return A ggplot object representing the structure plot.
+#'
+#' @examples
+#' # Example usage
+#' set.seed(1)
+#' grid <- seq(0.1, 2, length.out = 5)
+#' L_matrix <- matrix(rnorm(20), nrow = 4, ncol = 5)
+#' eb_output <- fash_eb_est(L_matrix, penalty = 2, grid = grid)
+#' plot_cont <- fash_structure_plot(eb_output, discrete = FALSE, ordering = "mean")
+#' plot_disc <- fash_structure_plot(eb_output, discrete = TRUE, ordering = "median")
+#' print(plot_cont)
+#' print(plot_disc)
+#'
+#' @importFrom ggplot2 ggplot aes geom_bar labs scale_fill_brewer
+#' @importFrom ggplot2 scale_fill_gradient coord_flip theme_minimal
+#' @importFrom ggplot2 theme element_blank element_rect
+#' @importFrom reshape2 melt
+#' @importFrom rlang .data
+#'
+#' @export
+#'
+fash_structure_plot <- function (eb_output, discrete = FALSE,
+                                 ordering = NULL,
+                                 selected_indices = NULL) {
+
+  # Select indices if specified
+  if (!is.null(selected_indices)) {
+    eb_output_selected <- eb_output
+    eb_output_selected$posterior_weight <- eb_output$posterior_weight[selected_indices, , drop = FALSE]
+  } else {
+    eb_output_selected <- eb_output
+  }
+
+  # Extract posterior weights matrix
+  posterior_weights_matrix <- eb_output_selected$posterior_weight
+
+  # Reorder datasets if ordering is specified
+  if (!is.null(ordering)) {
+    order_result <- fash_post_ordering(eb_output_selected, ordering = ordering)
+    posterior_weights_matrix <- order_result$ordered_matrix
+    ordered_indices <- order_result$ordered_indices
+  } else {
+    ordered_indices <- seq_len(nrow(posterior_weights_matrix))
+  }
+
+  # Extract PSD values
+  psd_values <- as.numeric(colnames(posterior_weights_matrix))
+
+  # Convert the posterior matrix to a data frame for ggplot
+  posterior_weights_df <- as.data.frame(posterior_weights_matrix)
+  posterior_weights_df$id <- ordered_indices
+
+  # Melt the data frame for ggplot
+  melted_data <- reshape2::melt(posterior_weights_df, id.vars = "id")
+  melted_data$variable <- as.numeric(as.character(melted_data$variable))
+
+  # Adjust the PSD variable for discrete or continuous plotting
+  if (discrete) {
+    # Round PSD values and convert to factor
+    melted_data$variable <- factor(round(melted_data$variable, 3), levels = round(psd_values, 3))
+    fill_scale <- ggplot2::scale_fill_brewer(palette = "Set3", name = "PSD (Rounded)")
+  } else {
+    fill_scale <- ggplot2::scale_fill_gradient(low = "white", high = "blue", name = "PSD")
+  }
+
+  # Create the structure plot
+  melted_data$id <- factor(melted_data$id,levels = posterior_weights_df$id)
+  return(ggplot2::ggplot(melted_data,
+                         ggplot2::aes(x = .data$id, y = .data$value,
+                                      fill = .data$variable)) +
+           ggplot2::geom_bar(stat = "identity", position = "stack") +
+           ggplot2::labs(
+             x = "Datasets",
+             y = "Posterior Weight",
+             title = "Structure Plot of Posterior Weights"
+           ) +
+           fill_scale +
+           ggplot2::coord_flip() +
+           ggplot2::theme_minimal() +
+           ggplot2::theme(
+             axis.text.y = ggplot2::element_blank(),
+             axis.ticks.y = ggplot2::element_blank(),
+             panel.grid = ggplot2::element_blank(),
+             panel.background = ggplot2::element_rect(fill = "white"),
+             plot.background = ggplot2::element_rect(fill = "white")
+           ))
+}
+
+
+
+#' Heatmap Plot of Posterior Weights for FASH Objects
+#'
+#' This function generates a heatmap plot visualizing the posterior weights from a \code{fash} object.
+#' The y-axis shows dataset names, the x-axis shows PSD grid values, and point sizes
+#' represent the posterior weights.
+#'
+#' @param object A \code{fash} object containing posterior weights.
+#' @param selected_indices Optional character vector of dataset names or numeric indices
+#'   to specify which rows (datasets) to display. Default is \code{NULL} (all datasets).
+#' @param size_range A numeric vector of length 2 specifying the range of point sizes. Default is \code{c(1, 8)}.
+#' @param size_breaks A numeric vector specifying size breaks from 0.1 to 0.9.
+#'   Default is \code{NULL}, which automatically selects a set of breaks.
+#' @param font_size A numeric value specifying the base font size for theme elements. Default is \code{10}.
+#' @param ... Additional arguments passed to \code{ggplot2::theme} or \code{ggplot2::geom_point}.
+#'
+#' @return A \code{ggplot} object representing the heatmap plot of posterior weights.
+#'
+#' @examples
+#' # Simulate example
+#' data_list <- lapply(1:10, function(i) data.frame(y = rpois(16, 5), x = 1:16, offset = 0))
+#' grid <- seq(0, 2, length.out = 6)
+#' fash_obj <- fash(data_list = data_list, Y = "y", smooth_var = "x", grid = grid, likelihood = "poisson")
+#'
+#' # Heatmap plot for all datasets
+#' plot_heatmap(fash_obj)
+#'
+#' # Subset some datasets
+#' plot_heatmap(fash_obj, selected_indices = 1:5)
+#'
+#' @importFrom ggplot2 ggplot aes geom_point scale_size theme element_text
+#' @importFrom cowplot theme_cowplot
+#'
+#' @export
+plot_heatmap <- function(object,
+                         selected_indices = NULL,
+                         size_range = c(1, 8),
+                         size_breaks = NULL,
+                         font_size = 10,
+                         ...) {
+  if (!inherits(object, "fash")) stop("Input must be a fash object.")
+
+  posterior_weights <- object$posterior_weights
+  rownames(posterior_weights) <- names(object$fash_data$data_list)  # Ensure dataset names are set
+
+  # Add dataset names if missing
+  if (is.null(rownames(posterior_weights))) {
+    rownames(posterior_weights) <- paste0("Dataset_", seq_len(nrow(posterior_weights)))
+  }
+
+  # Optionally subset rows
+  if (!is.null(selected_indices)) {
+    if (is.character(selected_indices)) {
+      posterior_weights <- posterior_weights[selected_indices, , drop = FALSE]
+    } else if (is.numeric(selected_indices)) {
+      posterior_weights <- posterior_weights[selected_indices, , drop = FALSE]
+    } else {
+      stop("selected_indices must be a character or numeric vector.")
+    }
+  }
+
+  # Auto-generate size_breaks if NULL
+  if (is.null(size_breaks)) {
+    size_breaks <- c(0.1,0.3,0.5,0.7,0.9)
+    size_breaks <- unique(size_breaks)  # Ensure unique breaks
+  } else {
+    size_breaks <- sort(unique(size_breaks))  # Ensure unique and sorted breaks
+  }
+
+  # Reshape for ggplot
+  pdat <- data.frame(
+    dataset = rep(rownames(posterior_weights), times = ncol(posterior_weights)),
+    psd     = rep(colnames(posterior_weights), each = nrow(posterior_weights)),
+    weight  = as.vector(posterior_weights)
+  )
+  pdat <- transform(
+    pdat,
+    dataset = factor(dataset, levels = rev(unique(dataset))),
+    psd = factor(psd, levels = unique(psd))
+  )
+
+  # Make plot
+  p <- ggplot2::ggplot(pdat, ggplot2::aes(x = psd, y = dataset, size = weight)) +
+    ggplot2::geom_point(shape = 21, fill = "black", color = "white", ...) +
+    ggplot2::scale_size(range = size_range, breaks = size_breaks) +
+    cowplot::theme_cowplot(font_size = font_size) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1))
+
+  return(p)
+}
+
+
+
+
+
+
+
 

@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fashr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.21</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.22</span>
       </span>
     </div>
 
@@ -108,28 +108,117 @@
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
+<p>Suppose we have
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+sets of eQTLs. The effect size estimate for the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>th
+eQTL at time
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><annotation encoding="application/x-tex">t_{ir}</annotation></semantics></math>,
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>R</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">r \in \{1, \ldots, R_i\}</annotation></semantics></math>,
+is denoted by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\hat{\beta}_i(t_{ir})</annotation></semantics></math>.</p>
+<p>Given the true effect
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\beta_i(t_{ir})</annotation></semantics></math>,
+the observed estimate is assumed to follow
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>∣</mo><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mover><mo>∼</mo><mrow><mi>i</mi><mi>n</mi><mi>d</mi></mrow></mover><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><msubsup><mi>s</mi><mrow><mi>i</mi><mi>r</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+\hat{\beta}_i(t_{ir}) \mid \beta_i(t_{ir}) \overset{ind}{\sim} \mathcal{N}(\beta_i(t_{ir}), s_{ir}^2),
+</annotation></semantics></math> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><annotation encoding="application/x-tex">s_{ir}</annotation></semantics></math>
+denotes the standard error at time
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><annotation encoding="application/x-tex">t_{ir}</annotation></semantics></math>.</p>
+<p>Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>𝛃</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>…</mi><mo>,</mo><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><msub><mi>R</mi><mi>i</mi></msub></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow><mo>∈</mo><msup><mi>ℝ</mi><msub><mi>R</mi><mi>i</mi></msub></msup></mrow><annotation encoding="application/x-tex">\boldsymbol{\hat{\beta}}_i = [\hat{\beta}_i(t_{i1}), \ldots, \hat{\beta}_i(t_{iR_i})] \in \mathbb{R}^{R_i}</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝐬</mi><mi>i</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>s</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>s</mi><mrow><mi>i</mi><msub><mi>R</mi><mi>i</mi></msub></mrow></msub><mo stretchy="true" form="postfix">]</mo></mrow><mo>∈</mo><msup><mi>ℝ</mi><msub><mi>R</mi><mi>i</mi></msub></msup></mrow><annotation encoding="application/x-tex">\boldsymbol{s}_i = [s_{i1}, \ldots, s_{iR_i}] \in \mathbb{R}^{R_i}</annotation></semantics></math>
+denote the vectors of effect size estimates and standard errors for the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>th
+eQTL, respectively.</p>
+<p>The goal of is to perform functional adaptive shrinkage (FASH) for
+inferring the posterior distribution of the effect size function
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\beta_i(t)</annotation></semantics></math>,
+given the observed data
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>𝛃</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\boldsymbol{\hat{\beta}}_i</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝐬</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\boldsymbol{s}_i</annotation></semantics></math>.</p>
+<p>FASH assumes that all
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\beta_i(t)</annotation></semantics></math>
+are i.i.d. draws from a common prior
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>g</mi><mi>β</mi></msub><annotation encoding="application/x-tex">g_\beta</annotation></semantics></math>.
+The prior
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>g</mi><mi>β</mi></msub><annotation encoding="application/x-tex">g_\beta</annotation></semantics></math>
+has the form of a finite mixture of Gaussian processes (GPs):
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>g</mi><mi>β</mi></msub><mo>∣</mo><mi>𝛑</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mi>K</mi></munderover><msub><mi>π</mi><mi>k</mi></msub><mspace width="0.167em"></mspace><msub><mtext mathvariant="normal">GP</mtext><mi>k</mi></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">
+g_\beta \mid \boldsymbol{\pi} = \sum_{k=0}^{K} \pi_k \, \text{GP}_k,
+</annotation></semantics></math> where each GP component
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mtext mathvariant="normal">GP</mtext><mi>k</mi></msub><annotation encoding="application/x-tex">\text{GP}_k</annotation></semantics></math>
+is specified via the differential equation: if
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∼</mo><msub><mtext mathvariant="normal">GP</mtext><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">\beta(t) \sim \text{GP}_k</annotation></semantics></math>,
+then
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mi>β</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>σ</mi><mi>k</mi></msub><mi>W</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+L\beta(t) = \sigma_k W(t),
+</annotation></semantics></math> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">W(t)</annotation></semantics></math>
+is a Gaussian white noise process and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math>
+is a known
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>th-order
+linear differential operator. The standard deviation parameter
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>k</mi></msub><annotation encoding="application/x-tex">\sigma_k</annotation></semantics></math>
+determines how much
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\beta(t)</annotation></semantics></math>
+can deviate from the base model, defined as the null space
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub><mo>=</mo><mtext mathvariant="normal">Null</mtext><mo stretchy="false" form="prefix">{</mo><mi>L</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">S_0 = \text{Null}\{L\}</annotation></semantics></math>.</p>
+<p>FASH estimates the prior mixing weights
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>𝛑</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat{\boldsymbol{\pi}}</annotation></semantics></math>
+by maximizing the marginal likelihood of the observed effect size
+estimates:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>𝛑</mi><mo accent="true">̂</mo></mover><mo>=</mo><mo>arg</mo><munder><mo>max</mo><mi>𝛑</mi></munder><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></munderover><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mi>K</mi></munderover><msub><mi>π</mi><mi>k</mi></msub><msub><mi>𝐋</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+\hat{\boldsymbol{\pi}} = \arg\max_{\boldsymbol{\pi}} \sum_{i=1}^{N} \log\left(\sum_{k=0}^{K} \pi_k \mathbf{L}_{ik}\right),
+</annotation></semantics></math> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝐋</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><annotation encoding="application/x-tex">\mathbf{L}_{ik}</annotation></semantics></math>
+denotes the marginal likelihood of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>𝛃</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\boldsymbol{\hat{\beta}}_i</annotation></semantics></math>
+under the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>th
+GP component.</p>
+<p>Based on the estimated prior
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>g</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat{g}</annotation></semantics></math>,
+FASH then computes the posterior distribution for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\beta_i(t)</annotation></semantics></math>
+as:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∣</mo><msub><mover><mi>𝛃</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mo>,</mo><mover><mi>𝛑</mi><mo accent="true">̂</mo></mover><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mi>K</mi></munderover><msub><mover><mi>π</mi><mo accent="true">̃</mo></mover><mi>k</mi></msub><mspace width="0.167em"></mspace><msub><mi>p</mi><mi>k</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∣</mo><msub><mover><mi>𝛃</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+p(\beta_i(t) \mid \boldsymbol{\hat{\beta}}_i, \hat{\boldsymbol{\pi}}) = \sum_{k=0}^{K} \tilde{\pi}_k \, p_k(\beta_i(t) \mid \boldsymbol{\hat{\beta}}_i),
+</annotation></semantics></math> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>k</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∣</mo><msub><mover><mi>𝛃</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">p_k(\beta_i(t) \mid \boldsymbol{\hat{\beta}}_i)</annotation></semantics></math>
+is the posterior distribution under the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>th
+GP component.</p>
+<p>In the following section, we illustrate this with simulated data.</p>
+</div>
+<div class="section level2">
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
-<p>We consider the effect size estimate of
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>100</mn><annotation encoding="application/x-tex">100</annotation></semantics></math>
-eQTLs measured in day
+<p>We consider effect size estimates for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">N = 100</annotation></semantics></math>
+eQTLs measured from day
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t = 1</annotation></semantics></math>
 to day
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">t = 16</annotation></semantics></math>:</p>
 <ul>
-<li>there are
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>50</mn><annotation encoding="application/x-tex">50</annotation></semantics></math>
-eQTLs that are not dynamic, i.e., the effect size is constant over time
-(Category A).</li>
-<li>there are
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>30</mn><annotation encoding="application/x-tex">30</annotation></semantics></math>
-eQTLs that are linear dynamic, i.e., the effect size is changing
-linearly over time (Category B).</li>
-<li>there are
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>20</mn><annotation encoding="application/x-tex">20</annotation></semantics></math>
-eQTLs that are non-linear dynamic, i.e., the effect size is changing
-non-linearly over time (Category C).</li>
+<li>There are 50 eQTLs that are non-dynamic, that is, their effect sizes
+remain constant over time (Category A).</li>
+<li>There are 30 eQTLs with linear dynamics, that is, their effect sizes
+change linearly over time (Category B).</li>
+<li>There are 20 eQTLs with nonlinear dynamics, that is, their effect
+sizes change nonlinearly over time (Category C).</li>
 </ul>
+<p>For each eQTL at each time point, the standard error
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><annotation encoding="application/x-tex">s_{ir}</annotation></semantics></math>
+is randomly drawn from
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mn>0.05</mn><mo>,</mo><mn>0.1</mn><mo>,</mo><mn>0.2</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{0.05, 0.1, 0.2\}</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
@@ -155,6 +244,13 @@ non-linearly over time (Category C).</li>
 <span><span class="va">indices_A</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">sizeA</span></span>
 <span><span class="va">indices_B</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">sizeA</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="op">(</span><span class="va">sizeA</span> <span class="op">+</span> <span class="va">sizeB</span><span class="op">)</span></span>
 <span><span class="va">indices_C</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">sizeA</span> <span class="op">+</span> <span class="va">sizeB</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="op">(</span><span class="va">sizeA</span> <span class="op">+</span> <span class="va">sizeB</span> <span class="op">+</span> <span class="va">sizeC</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dataset_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>,<span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">dataset_labels</span><span class="op">[</span><span class="va">indices_A</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">indices_A</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">dataset_labels</span><span class="op">[</span><span class="va">indices_B</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"B"</span>,<span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">indices_B</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">dataset_labels</span><span class="op">[</span><span class="va">indices_C</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"C"</span>,<span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">indices_C</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">datasets</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">dataset_labels</span></span>
+<span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="va">indices_A</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">{</span></span>
@@ -203,10 +299,22 @@ size (<code>Y</code>), the standard deviation of the effect size
 (<code>num_cores</code>). Reducing the number of basis functions
 (<code>num_basis</code>) can also greatly speed up the computation.</p>
 <div class="section level3">
-<h3 id="testing-non-linearity">Testing non-linearity<a class="anchor" aria-label="anchor" href="#testing-non-linearity"></a>
+<h3 id="testing-nonlinear-dynamic">Testing Nonlinear Dynamic<a class="anchor" aria-label="anchor" href="#testing-nonlinear-dynamic"></a>
 </h3>
-<p>Let’s first use the IWP2 model (<code>order = 2</code>), and try to
-detect the dynamic eQTLs with non-linear dynamics (Category C).</p>
+<p>We first aim to detect dynamic eQTLs with nonlinear dynamics
+(Category C).</p>
+<p>In this case, we specify the base model
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub><mo>=</mo><mrow><mi>β</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>c</mi><mo>+</mo><mi>b</mi><mi>t</mi><mo>∣</mo><mi>c</mi><mo>,</mo><mi>b</mi><mo>∈</mo><mi>ℝ</mi></mrow></mrow><annotation encoding="application/x-tex">S_0 = {\beta(t) = c + bt \mid c, b \in \mathbb{R}}</annotation></semantics></math>
+as the space of linear functions. Therefore, we choose
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>=</mo><mfrac><msup><mi>d</mi><mn>2</mn></msup><mrow><mi>d</mi><msup><mi>t</mi><mn>2</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">L = \frac{d^2}{dt^2}</annotation></semantics></math>,
+which is a second-order differential operator. This choice corresponds
+to the second Integrated Wiener Process (IWP2) model
+(<code>order = 2</code>).</p>
+<p>We aim to obtain the posterior for each
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\beta_i(t)</annotation></semantics></math>
+and test the null hypothesis
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∈</mo><msub><mi>S</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">H_0: \beta_i(t) \in S_0</annotation></semantics></math>
+at a given FDR level.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fash_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fash.html">fash</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="st">"y"</span>, smooth_var <span class="op">=</span> <span class="st">"x"</span>, S <span class="op">=</span> <span class="st">"sd"</span>, data_list <span class="op">=</span> <span class="va">datasets</span>, </span>
 <span>                  likelihood <span class="op">=</span> <span class="st">"gaussian"</span>, order <span class="op">=</span> <span class="fl">2</span>, pred_step <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -215,7 +323,7 @@ detect the dynamic eQTLs with non-linear dynamics (Category C).</p>
 <pre><code><span><span class="co">## Starting data setup...</span></span>
 <span><span class="co">## Completed data setup in 0.01 seconds.</span></span>
 <span><span class="co">## Starting likelihood computation...</span></span>
-<span><span class="co">## Completed likelihood computation in 12.05 seconds.</span></span>
+<span><span class="co">## Completed likelihood computation in 12.25 seconds.</span></span>
 <span><span class="co">## Starting empirical Bayes estimation...</span></span>
 <span><span class="co">## Completed empirical Bayes estimation in 0.01 seconds.</span></span>
 <span><span class="co">## fash object created successfully.</span></span></code></pre>
@@ -227,7 +335,30 @@ detect the dynamic eQTLs with non-linear dynamics (Category C).</p>
 <span><span class="co">## Likelihood: gaussian</span></span>
 <span><span class="co">## Number of PSD grid values: 41 (initial), 6 (non-trivial)</span></span>
 <span><span class="co">## Order of Integrated Wiener Process (IWP): 2</span></span></code></pre>
-<p>Let’s take a look at the estimated prior:</p>
+<p>Here, the grid of values
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>σ</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>σ</mi><mi>K</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\sigma_1, \ldots, \sigma_K\}</annotation></semantics></math>
+is specified using the <code>grid</code> argument. Rather than being
+defined on the original scale, the <code>grid</code> is specified on a
+slightly transformed scale for easier interpretation.</p>
+<p>Specifically, given a prediction step size
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math>
+(<code>pred_step</code>), each grid point is defined as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>h</mi></msub><msub><mi>σ</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">c_h \sigma_k</annotation></semantics></math>,
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>c</mi><mi>h</mi></msub><annotation encoding="application/x-tex">c_h</annotation></semantics></math>
+is a positive scaling constant that depends only on
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math>.
+This scaling ensures that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>h</mi></msub><msub><mi>σ</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">c_h \sigma_k</annotation></semantics></math>
+can be interpreted as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">SD</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>β</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo>+</mo><mi>h</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∣</mo><mi>β</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>s</mi><mo>&lt;</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\text{SD}(\beta(t+h) \mid \beta(s), s &lt; t)</annotation></semantics></math>,
+representing the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math>-step
+predictive standard deviation (PSD).</p>
+<p>Let’s take a look at the estimated prior
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>g</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat{g}</annotation></semantics></math>:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fash_fit</span><span class="op">$</span><span class="va">prior_weights</span></span></code></pre></div>
 <pre><code><span><span class="co">##     psd prior_weight</span></span>
@@ -240,27 +371,14 @@ detect the dynamic eQTLs with non-linear dynamics (Category C).</p>
 <p>We can take a look at their posterior weights in each GP
 component:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fash_fit</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fash_fit</span>, plot_type <span class="op">=</span> <span class="st">"heatmap"</span>, selected_indices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">55</span><span class="op">:</span><span class="fl">60</span>, <span class="fl">95</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Basics_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
-<p>The <code>plot</code> function automatically plots the posterior
-weights of the GP components, with darker colors indicating larger PSD
-(e.g. larger
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>k</mi></msub><annotation encoding="application/x-tex">\sigma_k</annotation></semantics></math>).
-The observations are ordered based on posterior mean of the PSD
-(i.e. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>k</mi></msub><annotation encoding="application/x-tex">\sigma_k</annotation></semantics></math>)
-in descending order from top to bottom. We could also customize the plot
-in various different ways:</p>
+<p>Besides the heatmap plot, we could also visualize the result using a
+structure plot:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fash_fit</span>, discrete <span class="op">=</span> <span class="cn">TRUE</span>, ordering <span class="op">=</span> <span class="st">"lfdr"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fash_fit</span>, plot_type <span class="op">=</span> <span class="st">"structure"</span>, </span>
+<span>     discrete <span class="op">=</span> <span class="cn">TRUE</span>, selected_indices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">55</span><span class="op">:</span><span class="fl">60</span>, <span class="fl">95</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Basics_files/figure-html/unnamed-chunk-8-1.png" width="768"></p>
-<p>The above structure plot ignores the continuous structure of the PSD
-(<code>discrete = TRUE</code>) and orders the observations based on the
-local false discovery rate (LFDR) of
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∈</mo><msub><mi>S</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">|</mo><mi>𝐘</mi><mo>,</mo><mover><mi>g</mi><mo accent="true">̂</mo></mover><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">p(\beta_i(t)\in S_0|\boldsymbol{Y}, \hat{g})</annotation></semantics></math>.
-In this case, since the order of IWP is <code>p = 2</code>, the base
-model
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mn>0</mn></msub><annotation encoding="application/x-tex">S_0</annotation></semantics></math>
-denotes the space of linear function.</p>
 <p>We can then use <code>fdr_control</code> to test the null hypothesis
 that
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∈</mo><msub><mi>S</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">H_0: \beta_i(t) \in S_0</annotation></semantics></math>
@@ -325,14 +443,17 @@ posterior summary:</p>
 <p><img src="Basics_files/figure-html/unnamed-chunk-16-1.png" width="768"></p>
 </div>
 <div class="section level3">
-<h3 id="testing-dynamic-eqtls">Testing dynamic eQTLs<a class="anchor" aria-label="anchor" href="#testing-dynamic-eqtls"></a>
+<h3 id="testing-dynamic-eqtls">Testing Dynamic eQTLs<a class="anchor" aria-label="anchor" href="#testing-dynamic-eqtls"></a>
 </h3>
-<p>What if we are interested in detecting any dynamic eQTLs, not just
-the non-linear ones? (i.e., Categories B and C)</p>
-<p>We can specify the order of the IWP model to be 1, which will setup a
-base model
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mn>0</mn></msub><annotation encoding="application/x-tex">S_0</annotation></semantics></math>
-as the space of constant functions.</p>
+<p>We may also be interested in detecting any dynamic eQTLs, including
+both linear and nonlinear cases (Categories B and C).</p>
+<p>In this case, the base model
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mi>β</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>c</mi><mo>∣</mo><mi>c</mi><mo>∈</mo><mi>ℝ</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">S_0 = \{\beta(t) = c \mid c \in \mathbb{R}\}</annotation></semantics></math>
+represents the space of constant functions. We specify
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>=</mo><mfrac><mi>d</mi><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">L = \frac{d}{dt}</annotation></semantics></math>,
+which is a first-order differential operator. This choice corresponds to
+the first Integrated Wiener Process (IWP1) model
+(<code>order = 1</code>).</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fash_fit_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fash.html">fash</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="st">"y"</span>, smooth_var <span class="op">=</span> <span class="st">"x"</span>, S <span class="op">=</span> <span class="st">"sd"</span>, data_list <span class="op">=</span> <span class="va">datasets</span>, </span>
 <span>                  likelihood <span class="op">=</span> <span class="st">"gaussian"</span>, order <span class="op">=</span> <span class="fl">1</span>, pred_step <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -341,7 +462,7 @@ as the space of constant functions.</p>
 <pre><code><span><span class="co">## Starting data setup...</span></span>
 <span><span class="co">## Completed data setup in 0.01 seconds.</span></span>
 <span><span class="co">## Starting likelihood computation...</span></span>
-<span><span class="co">## Completed likelihood computation in 10.11 seconds.</span></span>
+<span><span class="co">## Completed likelihood computation in 9.99 seconds.</span></span>
 <span><span class="co">## Starting empirical Bayes estimation...</span></span>
 <span><span class="co">## Completed empirical Bayes estimation in 0.01 seconds.</span></span>
 <span><span class="co">## fash object created successfully.</span></span></code></pre>
@@ -359,7 +480,7 @@ as the space of constant functions.</p>
 <p><img src="Basics_files/figure-html/unnamed-chunk-18-1.png" width="768"></p>
 <p>Let’s test the null hypothesis that
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∈</mo><msub><mi>S</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">H_0: \beta_i(t) \in S_0</annotation></semantics></math>
-at a given FDR level:</p>
+at a given FDR level (specifying <code>alpha = 0.1</code>):</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fdr_result_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fdr_control.html">fdr_control</a></span><span class="op">(</span><span class="va">fash_fit_2</span>, alpha <span class="op">=</span> <span class="fl">0.1</span>, plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 48 datasets are significant at alpha level 0.10. Total datasets tested: 100.</span></span></code></pre>

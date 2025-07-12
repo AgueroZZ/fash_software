@@ -71,120 +71,6 @@ fash_eb_est <- function(L_matrix, penalty = 1, grid) {
   ))
 }
 
-#' Structure Plot for Posterior Weights
-#'
-#' This function takes the output of \code{fash_eb_est} and generates a structure plot
-#' visualizing the posterior weights for all datasets. It can display PSD values
-#' as either continuous or discrete variables and optionally reorder datasets.
-#'
-#' @param eb_output A list output from \code{fash_eb_est}, containing:
-#'   \describe{
-#'     \item{posterior_weight}{A numeric matrix of posterior weights (datasets as rows, PSD as columns).}
-#'     \item{prior_weight}{A data frame of prior weights (not used in this plot).}
-#'   }
-#' @param discrete A logical value. If \code{TRUE}, treats PSD values as discrete categories with distinct colors.
-#'                 If \code{FALSE}, treats PSD values as a continuous variable with a gradient.
-#' @param ordering A character string specifying the method for reordering datasets. Options are:
-#'   \describe{
-#'     \item{NULL}{No reordering (default).}
-#'     \item{`mean`}{Reorder by the mean of the posterior PSD.}
-#'     \item{`median`}{Reorder by the median of the posterior PSD.}
-#'     \item{`lfdr`}{Reorder by the local false discovery rate (posterior probability of PSD = 0).}
-#'   }
-#' @param selected_indices A numeric vector specifying the indices of datasets to display. If \code{NULL}, displays all datasets.
-#' @return A ggplot object representing the structure plot.
-#'
-#' @examples
-#' # Example usage
-#' set.seed(1)
-#' grid <- seq(0.1, 2, length.out = 5)
-#' L_matrix <- matrix(rnorm(20), nrow = 4, ncol = 5)
-#' eb_output <- fash_eb_est(L_matrix, penalty = 2, grid = grid)
-#' plot_cont <- fash_structure_plot(eb_output, discrete = FALSE, ordering = "mean")
-#' plot_disc <- fash_structure_plot(eb_output, discrete = TRUE, ordering = "median")
-#' print(plot_cont)
-#' print(plot_disc)
-#'
-#' @importFrom ggplot2 ggplot aes geom_bar labs scale_fill_brewer
-#' @importFrom ggplot2 scale_fill_gradient coord_flip theme_minimal
-#' @importFrom ggplot2 theme element_blank element_rect
-#' @importFrom reshape2 melt
-#' @importFrom rlang .data
-#'
-#' @export
-#' 
-fash_structure_plot <- function (eb_output, discrete = FALSE, 
-                                 ordering = NULL, 
-                                 selected_indices = NULL) {
-
-  # Select indices if specified
-  if (!is.null(selected_indices)) {
-    eb_output_selected <- eb_output
-    eb_output_selected$posterior_weight <- eb_output$posterior_weight[selected_indices, , drop = FALSE]
-  } else {
-    eb_output_selected <- eb_output
-  }
-
-  # Extract posterior weights matrix
-  posterior_weights_matrix <- eb_output$posterior_weight
-
-  # Reorder datasets if ordering is specified
-  if (!is.null(ordering)) {
-    order_result <- fash_post_ordering(eb_output_selected, ordering = ordering)
-    posterior_weights_matrix <- order_result$ordered_matrix
-    ordered_indices <- order_result$ordered_indices
-  } else {
-    ordered_indices <- seq_len(nrow(posterior_weights_matrix))
-  }
-
-  # Extract PSD values
-  psd_values <- as.numeric(colnames(posterior_weights_matrix))
-
-  # Convert the posterior matrix to a data frame for ggplot
-  posterior_weights_df <- as.data.frame(posterior_weights_matrix)
-  posterior_weights_df$id <- ordered_indices
-
-  # Melt the data frame for ggplot
-  melted_data <- reshape2::melt(posterior_weights_df, id.vars = "id")
-  melted_data$variable <- as.numeric(as.character(melted_data$variable))
-
-  # Adjust the PSD variable for discrete or continuous plotting
-  if (discrete) {
-    # Round PSD values and convert to factor
-    melted_data$variable <- factor(round(melted_data$variable, 3), levels = round(psd_values, 3))
-    fill_scale <- ggplot2::scale_fill_brewer(palette = "Set3", name = "PSD (Rounded)")
-  } else {
-    fill_scale <- ggplot2::scale_fill_gradient(low = "white", high = "blue", name = "PSD")
-  }
-
-  # Create the structure plot
-  melted_data$id <- factor(melted_data$id,levels = posterior_weights_df$id)
-  return(ggplot2::ggplot(melted_data,
-                         ggplot2::aes(x = .data$id, y = .data$value,
-                                      fill = .data$variable)) +
-    ggplot2::geom_bar(stat = "identity", position = "stack") +
-    ggplot2::labs(
-      x = "Datasets",
-      y = "Posterior Weight",
-      title = "Structure Plot of Posterior Weights"
-    ) +
-    fill_scale +
-    ggplot2::coord_flip() +
-    ggplot2::theme_minimal() +
-    ggplot2::theme(
-      axis.text.y = ggplot2::element_blank(),
-      axis.ticks.y = ggplot2::element_blank(),
-      panel.grid = ggplot2::element_blank(),
-      panel.background = ggplot2::element_rect(fill = "white"),
-      plot.background = ggplot2::element_rect(fill = "white")
-    ))
-}
-
-
-
-
-
-
 
 #' Order Posterior Weight Matrix
 #'
@@ -221,7 +107,7 @@ fash_structure_plot <- function (eb_output, discrete = FALSE,
 #' print(result$ordered_metrics)
 #'
 #' @export
-#' 
+#'
 fash_post_ordering <- function(eb_output, ordering = "mean") {
   # Extract posterior weight matrix and PSD values
   posterior_weight <- eb_output$posterior_weight

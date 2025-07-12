@@ -4,27 +4,34 @@
 \alias{plot.fash}
 \title{Plot Method for fash Objects}
 \usage{
-\method{plot}{fash}(x, ordering = NULL, discrete = FALSE, ...)
+\method{plot}{fash}(x, plot_type = "structure", ordering = NULL, discrete = FALSE, ...)
 }
 \arguments{
 \item{x}{A \code{fash} object containing the results of the FASH pipeline.}
 
-\item{ordering}{A character string specifying the method for reordering datasets (e.g., "mean" or "lfdr").
+\item{plot_type}{A character string specifying the type of plot to generate.
+One of:
+- \code{"heatmap"}: Bubble/heatmap plot of posterior weights (default).
+- \code{"structure"}: Structure plot of mixture components.}
+
+\item{ordering}{A character string specifying the method for reordering datasets in the structure plot.
+  Only used if \code{plot_type = "structure"}.
 
   - \code{"mean"}: Reorder by the mean of the posterior PSD.
-
   - \code{"lfdr"}: Reorder by the local false discovery rate.
-
   - \code{NULL}: No reordering (default).}
 
-\item{discrete}{A logical value. If \code{TRUE}, treats PSD values as discrete categories with distinct colors.
-If \code{FALSE}, treats PSD values as a continuous variable with a gradient.}
+\item{discrete}{A logical value. If \code{TRUE}, treats PSD values as discrete categories with distinct colors
+in the structure plot. Ignored if \code{plot_type = "heatmap"}.}
 
-\item{...}{Additional arguments passed to \code{fash_structure_plot}.}
+\item{...}{Additional arguments passed to \code{plot_heatmap} or \code{fash_structure_plot}.}
+}
+\value{
+A plot object (typically a \code{ggplot}).
 }
 \description{
-Generates a structure plot of the posterior weights stored in the \code{fash} object,
-visualizing the distribution of posterior weights across datasets and PSD values.
+Generates a plot for a \code{fash} object, providing either a heatmap of posterior weights
+or a structure plot summarizing component contributions across datasets.
 }
 \examples{
 set.seed(1)
@@ -32,10 +39,13 @@ data_list <- list(
   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0),
   data.frame(y = rpois(5, lambda = 5), x = 1:5, offset = 0)
 )
-S <- NULL
-Omega <- NULL
 grid <- seq(0, 2, length.out = 10)
-fash_obj <- fash(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", S = S, Omega = Omega, grid = grid, likelihood = "poisson", verbose = TRUE)
-plot(fash_obj, ordering = "mean", discrete = TRUE)
+fash_obj <- fash(data_list = data_list, Y = "y", smooth_var = "x", offset = "offset", grid = grid, likelihood = "poisson", verbose = TRUE)
+
+# Heatmap plot
+plot(fash_obj)
+
+# Structure plot
+plot(fash_obj, plot_type = "structure", ordering = "mean", discrete = TRUE)
 
 }

@@ -43,13 +43,57 @@ calibration_fdr <- function(fdr_result, true_indices, fdr_vec = seq(0.01,0.99,by
 }
 ```
 
+## Overview
+
+Suppose we have $N$ sets of eQTLs. The effect size estimate for the $i$th eQTL at time $t_{ir}$, where $r \in \{1, \ldots, R_i\}$, is denoted by $\hat{\beta}_i(t_{ir})$.
+
+Given the true effect $\beta_i(t_{ir})$, the observed estimate is assumed to follow
+\[
+\hat{\beta}_i(t_{ir}) \mid \beta_i(t_{ir}) \overset{ind}{\sim} \mathcal{N}(\beta_i(t_{ir}), s_{ir}^2),
+\]
+where $s_{ir}$ denotes the standard error at time $t_{ir}$.
+
+Let $\boldsymbol{\hat{\beta}}_i = [\hat{\beta}_i(t_{i1}), \ldots, \hat{\beta}_i(t_{iR_i})] \in \mathbb{R}^{R_i}$ and $\boldsymbol{s}_i = [s_{i1}, \ldots, s_{iR_i}] \in \mathbb{R}^{R_i}$ denote the vectors of effect size estimates and standard errors for the $i$th eQTL, respectively. 
+
+The goal of \code{fashr} is to perform functional adaptive shrinkage (FASH) for inferring the posterior distribution of the effect size function $\beta_i(t)$, given the observed data $\boldsymbol{\hat{\beta}}_i$ and $\boldsymbol{s}_i$.
+
+
+FASH assumes that all $\beta_i(t)$ are i.i.d. draws from a common prior $g_\beta$. The prior $g_\beta$ has the form of a finite mixture of Gaussian processes (GPs):
+\[
+g_\beta \mid \boldsymbol{\pi} = \sum_{k=0}^{K} \pi_k \, \text{GP}_k,
+\]
+where each GP component $\text{GP}_k$ is specified via the differential equation: if $\beta(t) \sim \text{GP}_k$, then
+\[
+L\beta(t) = \sigma_k W(t),
+\]
+where $W(t)$ is a Gaussian white noise process and $L$ is a known $p$th-order linear differential operator. The standard deviation parameter $\sigma_k$ determines how much $\beta(t)$ can deviate from the base model, defined as the null space $S_0 = \text{Null}\{L\}$.
+
+FASH estimates the prior mixing weights $\hat{\boldsymbol{\pi}}$ by maximizing the marginal likelihood of the observed effect size estimates:
+\[
+\hat{\boldsymbol{\pi}} = \arg\max_{\boldsymbol{\pi}} \sum_{i=1}^{N} \log\left(\sum_{k=0}^{K} \pi_k \mathbf{L}_{ik}\right),
+\]
+where $\mathbf{L}_{ik}$ denotes the marginal likelihood of $\boldsymbol{\hat{\beta}}_i$ under the $k$th GP component.
+
+Based on the estimated prior $\hat{g}$, FASH then computes the posterior distribution for $\beta_i(t)$ as:
+\[
+p(\beta_i(t) \mid \boldsymbol{\hat{\beta}}_i, \hat{\boldsymbol{\pi}}) = \sum_{k=0}^{K} \tilde{\pi}_k \, p_k(\beta_i(t) \mid \boldsymbol{\hat{\beta}}_i),
+\]
+where $p_k(\beta_i(t) \mid \boldsymbol{\hat{\beta}}_i)$ is the posterior distribution under the $k$th GP component.
+
+In the following section, we illustrate this with simulated data.
+
+
+
 ## Setup
 
-We consider the effect size estimate of $100$ eQTLs measured in day $t = 1$ to day $t = 16$:
+We consider effect size estimates for $N = 100$ eQTLs measured from day $t = 1$ to day $t = 16$:
 
-- there are $50$ eQTLs that are not dynamic, i.e., the effect size is constant over time (Category A).
-- there are $30$ eQTLs that are linear dynamic, i.e., the effect size is changing linearly over time (Category B).
-- there are $20$ eQTLs that are non-linear dynamic, i.e., the effect size is changing non-linearly over time (Category C).
+- There are 50 eQTLs that are non-dynamic, that is, their effect sizes remain constant over time (Category A).
+- There are 30 eQTLs with linear dynamics, that is, their effect sizes change linearly over time (Category B).
+- There are 20 eQTLs with nonlinear dynamics, that is, their effect sizes change nonlinearly over time (Category C).
+
+For each eQTL at each time point, the standard error $s_{ir}$ is randomly drawn from $\{0.05, 0.1, 0.2\}$.
+
 
 ```{r}
 set.seed(1)
@@ -76,6 +120,13 @@ labels <- c(rep("A", sizeA), rep("B", sizeB), rep("C", sizeC))
 indices_A <- 1:sizeA
 indices_B <- (sizeA + 1):(sizeA + sizeB)
 indices_C <- (sizeA + sizeB + 1):(sizeA + sizeB + sizeC)
+
+dataset_labels <- rep(as.character(NA),100)
+dataset_labels[indices_A] <- paste0("A",seq(1,length(indices_A)))
+dataset_labels[indices_B] <- paste0("B",seq(1,length(indices_B)))
+dataset_labels[indices_C] <- paste0("C",seq(1,length(indices_C)))
+names(datasets) <- dataset_labels
+
 
 par(mfrow = c(3, 3))
 for(i in indices_A[1:3]){
@@ -120,10 +171,13 @@ The computation could be paralleled by specifying the number of cores
 (`num_cores`). Reducing the number of basis functions (`num_basis`)
 can also greatly speed up the computation.
 
-### Testing non-linearity
+### Testing Nonlinear Dynamic
 
-Let's first use the IWP2 model (`order = 2`), and try to detect the
-dynamic eQTLs with non-linear dynamics (Category C).
+We first aim to detect dynamic eQTLs with nonlinear dynamics (Category C).
+
+In this case, we specify the base model $S_0 = {\beta(t) = c + bt \mid c, b \in \mathbb{R}}$ as the space of linear functions. Therefore, we choose $L = \frac{d^2}{dt^2}$, which is a second-order differential operator. This choice corresponds to the second Integrated Wiener Process (IWP2) model (`order = 2`).
+
+We aim to obtain the posterior for each $\beta_i(t)$ and test the null hypothesis $H_0: \beta_i(t) \in S_0$ at a given FDR level.
 
 ```{r}
 fash_fit <- fash(Y = "y", smooth_var = "x", S = "sd", data_list = datasets, 
@@ -132,7 +186,12 @@ fash_fit <- fash(Y = "y", smooth_var = "x", S = "sd", data_list = datasets,
 fash_fit
 ```
 
-Let's take a look at the estimated prior:
+Here, the grid of values $\{\sigma_1, \ldots, \sigma_K\}$ is specified using the `grid` argument. Rather than being defined on the original scale, the `grid` is specified on a slightly transformed scale for easier interpretation.
+
+Specifically, given a prediction step size $h$ (`pred_step`), each grid point is defined as $c_h \sigma_k$, where $c_h$ is a positive scaling constant that depends only on $h$ and $L$. This scaling ensures that $c_h \sigma_k$ can be interpreted as $\text{SD}(\beta(t+h) \mid \beta(s), s < t)$, representing the $h$-step predictive standard deviation (PSD).
+
+
+Let's take a look at the estimated prior $\hat{g}$:
 
 ```{r}
 fash_fit$prior_weights
@@ -141,19 +200,15 @@ fash_fit$prior_weights
 We can take a look at their posterior weights in each GP component:
 
 ```{r}
-plot(fash_fit)
+plot(fash_fit, plot_type = "heatmap", selected_indices = c(1:5, 55:60, 95:100))
 ```
 
-The `plot` function automatically plots the posterior weights of the GP components, with darker colors indicating larger PSD (e.g. larger $\sigma_k$). 
-The observations are ordered based on posterior mean of the PSD (i.e. $\sigma_k$) in descending order from top to bottom. 
-We could also customize the plot in various different ways:
+Besides the heatmap plot, we could also visualize the result using a structure plot:
 
 ```{r}
-plot(fash_fit, discrete = TRUE, ordering = "lfdr")
+plot(fash_fit, plot_type = "structure", 
+     discrete = TRUE, selected_indices = c(1:5, 55:60, 95:100))
 ```
-
-The above structure plot ignores the continuous structure of the PSD (`discrete = TRUE`) and orders the observations based on the local false discovery rate (LFDR) of $p(\beta_i(t)\in S_0|\boldsymbol{Y}, \hat{g})$.
-In this case, since the order of IWP is `p = 2`, the base model $S_0$ denotes the space of linear function.
 
 
 We can then use `fdr_control` to test the null hypothesis that $H_0: \beta_i(t) \in S_0$ at a given FDR level:
@@ -214,13 +269,12 @@ lines(datasets[[detected_indices[1]]]$x, datasets[[detected_indices[1]]]$truef, 
 polygon(c(fitted_beta_new$x, rev(fitted_beta_new$x)), c(fitted_beta_new$lower, rev(fitted_beta_new$upper)), col = rgb(1, 0, 0, 0.2), border = NA)
 ```
 
-### Testing dynamic eQTLs
+### Testing Dynamic eQTLs
 
-What if we are interested in detecting any dynamic eQTLs, not just the
-non-linear ones? (i.e., Categories B and C)
+We may also be interested in detecting any dynamic eQTLs, including both linear and nonlinear cases (Categories B and C).
 
-We can specify the order of the IWP model to be 1, which will setup a
-base model $S_0$ as the space of constant functions.
+In this case, the base model $S_0 = \{\beta(t) = c \mid c \in \mathbb{R}\}$ represents the space of constant functions. We specify $L = \frac{d}{dt}$, which is a first-order differential operator. 
+This choice corresponds to the first Integrated Wiener Process (IWP1) model (`order = 1`).
 
 ```{r}
 fash_fit_2 <- fash(Y = "y", smooth_var = "x", S = "sd", data_list = datasets, 
@@ -237,7 +291,7 @@ plot(fash_fit_2, discrete = TRUE, ordering = "mean")
 ```
 
 Let's test the null hypothesis that $H_0: \beta_i(t) \in S_0$ at a
-given FDR level:
+given FDR level (specifying `alpha = 0.1`):
 
 ```{r}
 fdr_result_2 <- fdr_control(fash_fit_2, alpha = 0.1, plot = TRUE)

@@ -19,7 +19,7 @@ with heteroscedastic standard deviation sampled from a provided vector or scalar
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fashr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.21</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.22</span>
       </span>
     </div>
 
@@ -46,7 +46,7 @@ with heteroscedastic standard deviation sampled from a provided vector or scalar
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Simulate Observed Data from a Specified True Function</h1>
-    <small class="dont-index">Source: <a href="https://github.com/AgueroZZ/fashr/blob/HEAD/R/06_simulate.R" class="external-link"><code>R/06_simulate.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/AgueroZZ/fashr/blob/HEAD/R/07_simulate.R" class="external-link"><code>R/07_simulate.R</code></a></small>
     <div class="hidden name"><code>simulate_data.Rd</code></div>
     </div>
 
@@ -98,8 +98,24 @@ sampled with replacement for each <code>x</code>.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">x</span> <span class="op">/</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">simulate_data</span><span class="op">(</span><span class="va">g</span>, sd <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in simulate_data(g, sd = 0.2):</span> could not find function "simulate_data"</span>
+<span class="r-in"><span><span class="fu">fashr</span><span class="fu">:::</span><span class="fu">simulate_data</span><span class="op">(</span><span class="va">g</span>, sd <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x          y       truef  sd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   1 -0.2442706  0.19866933 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   2  0.6144045  0.38941834 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   3  0.5556558  0.56464247 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   4  0.7141180  0.71735609 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   5  1.0302382  0.84147098 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   6  1.0962833  0.93203909 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   7  1.1042300  0.98544973 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   8  1.1833691  0.99957360 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   9  1.1302749  0.97384763 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 10  0.9242104  0.90929743 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 11  0.4106261  0.80849640 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 12  0.7994283  0.67546318 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 13  0.5042756  0.51550137 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 14  0.3038290  0.33498815 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 15 -0.1530305  0.14112001 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 16 -0.1540042 -0.05837414 0.2</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
