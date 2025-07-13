@@ -119,8 +119,8 @@ eQTL at time
 where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>R</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">r \in \{1, \ldots, R_i\}</annotation></semantics></math>,
 is denoted by
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\hat{\beta}_i(t_{ir})</annotation></semantics></math>.</p>
-<p>Given the true effect
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\hat{\beta}_i(t_{ir})</annotation></semantics></math>.
+Given the true effect
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\beta_i(t_{ir})</annotation></semantics></math>,
 the observed estimate is assumed to follow
 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>∣</mo><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mover><mo>∼</mo><mrow><mi>i</mi><mi>n</mi><mi>d</mi></mrow></mover><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><msubsup><mi>s</mi><mrow><mi>i</mi><mi>r</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
@@ -128,16 +128,17 @@ the observed estimate is assumed to follow
 </annotation></semantics></math> where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><annotation encoding="application/x-tex">s_{ir}</annotation></semantics></math>
 denotes the standard error at time
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><annotation encoding="application/x-tex">t_{ir}</annotation></semantics></math>.</p>
-<p>Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mrow><mi>i</mi><mi>r</mi></mrow></msub><annotation encoding="application/x-tex">t_{ir}</annotation></semantics></math>.
+Let
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>𝛃</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>…</mi><mo>,</mo><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><msub><mi>R</mi><mi>i</mi></msub></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow><mo>∈</mo><msup><mi>ℝ</mi><msub><mi>R</mi><mi>i</mi></msub></msup></mrow><annotation encoding="application/x-tex">\boldsymbol{\hat{\beta}}_i = [\hat{\beta}_i(t_{i1}), \ldots, \hat{\beta}_i(t_{iR_i})] \in \mathbb{R}^{R_i}</annotation></semantics></math>
 and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝐬</mi><mi>i</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>s</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>s</mi><mrow><mi>i</mi><msub><mi>R</mi><mi>i</mi></msub></mrow></msub><mo stretchy="true" form="postfix">]</mo></mrow><mo>∈</mo><msup><mi>ℝ</mi><msub><mi>R</mi><mi>i</mi></msub></msup></mrow><annotation encoding="application/x-tex">\boldsymbol{s}_i = [s_{i1}, \ldots, s_{iR_i}] \in \mathbb{R}^{R_i}</annotation></semantics></math>
 denote the vectors of effect size estimates and standard errors for the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>th
 eQTL, respectively.</p>
-<p>The goal of is to perform functional adaptive shrinkage (FASH) for
-inferring the posterior distribution of the effect size function
+<p>The goal of <code>fashr</code> is to perform functional adaptive
+shrinkage (FASH) for inferring the posterior distribution of the effect
+size function
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\beta_i(t)</annotation></semantics></math>,
 given the observed data
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>𝛃</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\boldsymbol{\hat{\beta}}_i</annotation></semantics></math>
@@ -150,9 +151,9 @@ are i.i.d. draws from a common prior
 The prior
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>g</mi><mi>β</mi></msub><annotation encoding="application/x-tex">g_\beta</annotation></semantics></math>
 has the form of a finite mixture of Gaussian processes (GPs):
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>g</mi><mi>β</mi></msub><mo>∣</mo><mi>𝛑</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mi>K</mi></munderover><msub><mi>π</mi><mi>k</mi></msub><mspace width="0.167em"></mspace><msub><mtext mathvariant="normal">GP</mtext><mi>k</mi></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">
-g_\beta \mid \boldsymbol{\pi} = \sum_{k=0}^{K} \pi_k \, \text{GP}_k,
-</annotation></semantics></math> where each GP component
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>g</mi><mi>β</mi></msub><mo>∣</mo><mi>𝛑</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mi>K</mi></munderover><msub><mi>π</mi><mi>k</mi></msub><mspace width="0.167em"></mspace><msub><mtext mathvariant="normal">GP</mtext><mi>k</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
+g_\beta \mid \boldsymbol{\pi} = \sum_{k=0}^{K} \pi_k \, \text{GP}_k.
+</annotation></semantics></math> Each GP component
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mtext mathvariant="normal">GP</mtext><mi>k</mi></msub><annotation encoding="application/x-tex">\text{GP}_k</annotation></semantics></math>
 is specified via the differential equation: if
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∼</mo><msub><mtext mathvariant="normal">GP</mtext><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">\beta(t) \sim \text{GP}_k</annotation></semantics></math>,
@@ -171,21 +172,22 @@ determines how much
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\beta(t)</annotation></semantics></math>
 can deviate from the base model, defined as the null space
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub><mo>=</mo><mtext mathvariant="normal">Null</mtext><mo stretchy="false" form="prefix">{</mo><mi>L</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">S_0 = \text{Null}\{L\}</annotation></semantics></math>.</p>
-<p>FASH estimates the prior mixing weights
+<p>Given a grid of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>σ</mi><mn>1</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>σ</mi><mi>K</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\sigma_1, ..., \sigma_K\}</annotation></semantics></math>,
+FASH estimates the prior mixing weights
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>𝛑</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat{\boldsymbol{\pi}}</annotation></semantics></math>
 by maximizing the marginal likelihood of the observed effect size
 estimates:
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>𝛑</mi><mo accent="true">̂</mo></mover><mo>=</mo><mo>arg</mo><munder><mo>max</mo><mi>𝛑</mi></munder><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></munderover><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mi>K</mi></munderover><msub><mi>π</mi><mi>k</mi></msub><msub><mi>𝐋</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
-\hat{\boldsymbol{\pi}} = \arg\max_{\boldsymbol{\pi}} \sum_{i=1}^{N} \log\left(\sum_{k=0}^{K} \pi_k \mathbf{L}_{ik}\right),
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>𝛑</mi><mo accent="true">̂</mo></mover><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>π</mi><mo accent="true">̂</mo></mover><mn>1</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mover><mi>π</mi><mo accent="true">̂</mo></mover><mi>K</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mo>arg</mo><munder><mo>max</mo><mi>𝛑</mi></munder><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></munderover><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mi>K</mi></munderover><msub><mi>π</mi><mi>k</mi></msub><msub><mi>𝐋</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+\hat{\boldsymbol{\pi}} = (\hat{\pi}_1, ..., \hat{\pi}_K) = \arg\max_{\boldsymbol{\pi}} \sum_{i=1}^{N} \log\left(\sum_{k=0}^{K} \pi_k \mathbf{L}_{ik}\right),
 </annotation></semantics></math> where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝐋</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><annotation encoding="application/x-tex">\mathbf{L}_{ik}</annotation></semantics></math>
 denotes the marginal likelihood of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>𝛃</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\boldsymbol{\hat{\beta}}_i</annotation></semantics></math>
 under the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>th
-GP component.</p>
-<p>Based on the estimated prior
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>g</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat{g}</annotation></semantics></math>,
+GP component. Based on the estimated prior
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>g</mi><mo accent="true">̂</mo></mover><mi>β</mi></msub><annotation encoding="application/x-tex">\hat{g}_\beta</annotation></semantics></math>,
 FASH then computes the posterior distribution for
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\beta_i(t)</annotation></semantics></math>
 as:
@@ -319,9 +321,9 @@ at a given FDR level.</p>
 <span>                  num_cores <span class="op">=</span> <span class="fl">2</span>, num_basis <span class="op">=</span> <span class="fl">20</span>, grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, by <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span>,</span>
 <span>                  verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Starting data setup...</span></span>
-<span><span class="co">## Completed data setup in 0.01 seconds.</span></span>
+<span><span class="co">## Completed data setup in 0.02 seconds.</span></span>
 <span><span class="co">## Starting likelihood computation...</span></span>
-<span><span class="co">## Completed likelihood computation in 12.09 seconds.</span></span>
+<span><span class="co">## Completed likelihood computation in 12.11 seconds.</span></span>
 <span><span class="co">## Starting empirical Bayes estimation...</span></span>
 <span><span class="co">## Completed empirical Bayes estimation in 0.01 seconds.</span></span>
 <span><span class="co">## fash object created successfully.</span></span></code></pre>
@@ -460,7 +462,7 @@ the first Integrated Wiener Process (IWP1) model
 <pre><code><span><span class="co">## Starting data setup...</span></span>
 <span><span class="co">## Completed data setup in 0.01 seconds.</span></span>
 <span><span class="co">## Starting likelihood computation...</span></span>
-<span><span class="co">## Completed likelihood computation in 9.79 seconds.</span></span>
+<span><span class="co">## Completed likelihood computation in 9.83 seconds.</span></span>
 <span><span class="co">## Starting empirical Bayes estimation...</span></span>
 <span><span class="co">## Completed empirical Bayes estimation in 0.01 seconds.</span></span>
 <span><span class="co">## fash object created successfully.</span></span></code></pre>

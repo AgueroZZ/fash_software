@@ -46,35 +46,32 @@ calibration_fdr <- function(fdr_result, true_indices, fdr_vec = seq(0.01,0.99,by
 ## Overview
 
 Suppose we have $N$ sets of eQTLs. The effect size estimate for the $i$th eQTL at time $t_{ir}$, where $r \in \{1, \ldots, R_i\}$, is denoted by $\hat{\beta}_i(t_{ir})$.
-
 Given the true effect $\beta_i(t_{ir})$, the observed estimate is assumed to follow
 \[
 \hat{\beta}_i(t_{ir}) \mid \beta_i(t_{ir}) \overset{ind}{\sim} \mathcal{N}(\beta_i(t_{ir}), s_{ir}^2),
 \]
 where $s_{ir}$ denotes the standard error at time $t_{ir}$.
-
 Let $\boldsymbol{\hat{\beta}}_i = [\hat{\beta}_i(t_{i1}), \ldots, \hat{\beta}_i(t_{iR_i})] \in \mathbb{R}^{R_i}$ and $\boldsymbol{s}_i = [s_{i1}, \ldots, s_{iR_i}] \in \mathbb{R}^{R_i}$ denote the vectors of effect size estimates and standard errors for the $i$th eQTL, respectively. 
 
-The goal of \code{fashr} is to perform functional adaptive shrinkage (FASH) for inferring the posterior distribution of the effect size function $\beta_i(t)$, given the observed data $\boldsymbol{\hat{\beta}}_i$ and $\boldsymbol{s}_i$.
+The goal of `fashr` is to perform functional adaptive shrinkage (FASH) for inferring the posterior distribution of the effect size function $\beta_i(t)$, given the observed data $\boldsymbol{\hat{\beta}}_i$ and $\boldsymbol{s}_i$.
 
 
 FASH assumes that all $\beta_i(t)$ are i.i.d. draws from a common prior $g_\beta$. The prior $g_\beta$ has the form of a finite mixture of Gaussian processes (GPs):
 \[
-g_\beta \mid \boldsymbol{\pi} = \sum_{k=0}^{K} \pi_k \, \text{GP}_k,
+g_\beta \mid \boldsymbol{\pi} = \sum_{k=0}^{K} \pi_k \, \text{GP}_k.
 \]
-where each GP component $\text{GP}_k$ is specified via the differential equation: if $\beta(t) \sim \text{GP}_k$, then
+Each GP component $\text{GP}_k$ is specified via the differential equation: if $\beta(t) \sim \text{GP}_k$, then
 \[
 L\beta(t) = \sigma_k W(t),
 \]
 where $W(t)$ is a Gaussian white noise process and $L$ is a known $p$th-order linear differential operator. The standard deviation parameter $\sigma_k$ determines how much $\beta(t)$ can deviate from the base model, defined as the null space $S_0 = \text{Null}\{L\}$.
 
-FASH estimates the prior mixing weights $\hat{\boldsymbol{\pi}}$ by maximizing the marginal likelihood of the observed effect size estimates:
+Given a grid of $\{\sigma_1, ..., \sigma_K\}$, FASH estimates the prior mixing weights $\hat{\boldsymbol{\pi}}$ by maximizing the marginal likelihood of the observed effect size estimates:
 \[
-\hat{\boldsymbol{\pi}} = \arg\max_{\boldsymbol{\pi}} \sum_{i=1}^{N} \log\left(\sum_{k=0}^{K} \pi_k \mathbf{L}_{ik}\right),
+\hat{\boldsymbol{\pi}} = (\hat{\pi}_1, ..., \hat{\pi}_K) = \arg\max_{\boldsymbol{\pi}} \sum_{i=1}^{N} \log\left(\sum_{k=0}^{K} \pi_k \mathbf{L}_{ik}\right),
 \]
 where $\mathbf{L}_{ik}$ denotes the marginal likelihood of $\boldsymbol{\hat{\beta}}_i$ under the $k$th GP component.
-
-Based on the estimated prior $\hat{g}$, FASH then computes the posterior distribution for $\beta_i(t)$ as:
+Based on the estimated prior $\hat{g}_\beta$, FASH then computes the posterior distribution for $\beta_i(t)$ as:
 \[
 p(\beta_i(t) \mid \boldsymbol{\hat{\beta}}_i, \hat{\boldsymbol{\pi}}) = \sum_{k=0}^{K} \tilde{\pi}_k \, p_k(\beta_i(t) \mid \boldsymbol{\hat{\beta}}_i),
 \]
