@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fashr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.22</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.24</span>
       </span>
     </div>
 
@@ -251,7 +251,6 @@ is randomly drawn from
 <span><span class="va">dataset_labels</span><span class="op">[</span><span class="va">indices_C</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"C"</span>,<span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">indices_C</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">datasets</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">dataset_labels</span></span>
 <span></span>
-<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="va">indices_A</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">datasets</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">x</span>, <span class="va">datasets</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">y</span>, type <span class="op">=</span> <span class="st">"p"</span>, col <span class="op">=</span> <span class="st">"black"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, xlab <span class="op">=</span> <span class="st">"Time"</span>, ylab <span class="op">=</span> <span class="st">"Effect Size"</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span><span class="op">)</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Category A: "</span>, <span class="va">i</span><span class="op">)</span><span class="op">)</span></span>
@@ -317,13 +316,12 @@ and test the null hypothesis
 at a given FDR level.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fash_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fash.html">fash</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="st">"y"</span>, smooth_var <span class="op">=</span> <span class="st">"x"</span>, S <span class="op">=</span> <span class="st">"sd"</span>, data_list <span class="op">=</span> <span class="va">datasets</span>, </span>
-<span>                  likelihood <span class="op">=</span> <span class="st">"gaussian"</span>, order <span class="op">=</span> <span class="fl">2</span>, pred_step <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>                  num_cores <span class="op">=</span> <span class="fl">2</span>, num_basis <span class="op">=</span> <span class="fl">20</span>, grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, by <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span>,</span>
 <span>                  verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Starting data setup...</span></span>
 <span><span class="co">## Completed data setup in 0.01 seconds.</span></span>
 <span><span class="co">## Starting likelihood computation...</span></span>
-<span><span class="co">## Completed likelihood computation in 12.25 seconds.</span></span>
+<span><span class="co">## Completed likelihood computation in 12.09 seconds.</span></span>
 <span><span class="co">## Starting empirical Bayes estimation...</span></span>
 <span><span class="co">## Completed empirical Bayes estimation in 0.01 seconds.</span></span>
 <span><span class="co">## fash object created successfully.</span></span></code></pre>
@@ -462,7 +460,7 @@ the first Integrated Wiener Process (IWP1) model
 <pre><code><span><span class="co">## Starting data setup...</span></span>
 <span><span class="co">## Completed data setup in 0.01 seconds.</span></span>
 <span><span class="co">## Starting likelihood computation...</span></span>
-<span><span class="co">## Completed likelihood computation in 9.99 seconds.</span></span>
+<span><span class="co">## Completed likelihood computation in 9.79 seconds.</span></span>
 <span><span class="co">## Starting empirical Bayes estimation...</span></span>
 <span><span class="co">## Completed empirical Bayes estimation in 0.01 seconds.</span></span>
 <span><span class="co">## fash object created successfully.</span></span></code></pre>

@@ -45,17 +45,27 @@
 #' @importFrom graphics legend
 #'
 #' @export
-fash <- function(Y = NULL, smooth_var = NULL, offset = 0, S = NULL, 
-                 Omega = NULL, data_list = NULL, 
+fash <- function(Y, smooth_var, offset = 0, S = NULL,
+                 Omega = NULL, data_list = NULL,
                  grid = seq(0, 2, length.out = 10),
-                 likelihood = "gaussian", num_basis = 30, 
-                 betaprec = 1e-6, order = 2, pred_step = 1, 
+                 likelihood = "gaussian", num_basis = 30,
+                 betaprec = 1e-6, order = 2, pred_step = 1,
                  penalty = 1, num_cores = 1, verbose = FALSE) {
 
   # Check if 0 is included in the grid, if not add it and produce a warning
   if (!0 %in% grid) {
     warning("0 is not included in the grid, adding it to the grid.")
     grid <- c(0, grid)
+  }
+
+  # If likelihood is "gaussian", ensure either S or Omega is provided
+  if (likelihood == "gaussian") {
+    if (is.null(S) && is.null(Omega)) {
+      stop("For Gaussian likelihood, either S or Omega must be provided.")
+    }
+    if (!is.null(S) && !is.null(Omega)) {
+      warning("Both S and Omega are provided. Using S for standard errors.")
+    }
   }
 
   # Helper function for timing and verbose output
@@ -94,6 +104,14 @@ fash <- function(Y = NULL, smooth_var = NULL, offset = 0, S = NULL,
   eb_result <- timing_message("empirical Bayes estimation", function() {
     fash_eb_est(L_matrix, grid = grid, penalty = penalty)
   })
+  # Defining rownames of posterior weights
+  rownames(eb_result$posterior_weight) <- names(fash_data$data_list)  # Ensure dataset names are set
+
+  # Add dataset names if missing
+  if (is.null(rownames(eb_result$posterior_weight))) {
+    rownames(eb_result$posterior_weight) <- paste0("Dataset_", seq_len(nrow(eb_result$posterior_weight)))
+  }
+
 
   # Step 4: Compute additional metrics
   # if psd_value zero is included:
@@ -705,12 +723,6 @@ plot_heatmap <- function(object,
   if (!inherits(object, "fash")) stop("Input must be a fash object.")
 
   posterior_weights <- object$posterior_weights
-  rownames(posterior_weights) <- names(object$fash_data$data_list)  # Ensure dataset names are set
-
-  # Add dataset names if missing
-  if (is.null(rownames(posterior_weights))) {
-    rownames(posterior_weights) <- paste0("Dataset_", seq_len(nrow(posterior_weights)))
-  }
 
   # Optionally subset rows
   if (!is.null(selected_indices)) {

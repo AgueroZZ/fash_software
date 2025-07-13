@@ -62,6 +62,8 @@ fash_eb_est <- function(L_matrix, penalty = 1, grid) {
     normalized_values <- exp_values[non_trivial] / sum(exp_values[non_trivial])
     posterior_weight[i, ] <- normalized_values
   }
+
+  # Define column names for the posterior weight matrix
   colnames(posterior_weight) <- as.character(grid[non_trivial])
 
   # Return results

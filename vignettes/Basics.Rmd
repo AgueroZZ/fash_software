@@ -127,7 +127,6 @@ dataset_labels[indices_B] <- paste0("B",seq(1,length(indices_B)))
 dataset_labels[indices_C] <- paste0("C",seq(1,length(indices_C)))
 names(datasets) <- dataset_labels
 
-
 par(mfrow = c(3, 3))
 for(i in indices_A[1:3]){
   plot(datasets[[i]]$x, datasets[[i]]$y, type = "p", col = "black", lwd = 2, xlab = "Time", ylab = "Effect Size", ylim = c(-1.5, 1.5), main = paste("Category A: ", i))
