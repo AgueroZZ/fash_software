@@ -92,7 +92,7 @@ We consider effect size estimates for $N = 100$ eQTLs measured from day $t = 1$ 
 For each eQTL at each time point, the standard error $s_{ir}$ is randomly drawn from $\{0.05, 0.1, 0.2\}$.
 
 
-```{r}
+```{r, fig.height=8, fig.width=7}
 set.seed(1)
 N <- 100
 propA <- 0.5; propB <- 0.3; propC <- 0.2
@@ -195,13 +195,14 @@ fash_fit$prior_weights
 
 We can take a look at their posterior weights in each GP component:
 
-```{r}
+```{r, fig.height=4.5, fig.width=3.5}
 plot(fash_fit, plot_type = "heatmap", selected_indices = c(1:5, 55:60, 95:100))
 ```
 
-Besides the heatmap plot, we could also visualize the result using a structure plot:
+Besides the heatmap plot, we could also visualize the result using a
+structure plot:
 
-```{r}
+```{r, fig.height=4, fig.width=5}
 plot(fash_fit, plot_type = "structure", 
      discrete = TRUE, selected_indices = c(1:5, 55:60, 95:100))
 ```
@@ -209,7 +210,7 @@ plot(fash_fit, plot_type = "structure",
 
 We can then use `fdr_control` to test the null hypothesis that $H_0: \beta_i(t) \in S_0$ at a given FDR level:
 
-```{r}
+```{r, fig.height=4, fig.width=4}
 fdr_result <- fdr_control(fash_fit, alpha = 0.1, plot = TRUE)
 ```
 
@@ -258,7 +259,7 @@ str(fitted_beta_samples)
 
 Let's plot the inferred effect size for the first detected eQTL:
 
-```{r}
+```{r, fig.height=4, fig.width=4}
 plot(datasets[[detected_indices[1]]]$x, datasets[[detected_indices[1]]]$y, type = "p", col = "black", lwd = 2, xlab = "Time", ylab = "Effect Size")
 lines(fitted_beta_new$x, fitted_beta_new$mean, col = "red", lwd = 2)
 lines(datasets[[detected_indices[1]]]$x, datasets[[detected_indices[1]]]$truef, col = "black", lwd = 1, lty = 2)
@@ -282,14 +283,14 @@ fash_fit_2
 
 Take a look at the structure plot:
 
-```{r}
+```{r, fig.height=4, fig.width=4}
 plot(fash_fit_2, discrete = TRUE, ordering = "mean")
 ```
 
 Let's test the null hypothesis that $H_0: \beta_i(t) \in S_0$ at a
 given FDR level (specifying `alpha = 0.1`):
 
-```{r}
+```{r, fig.height=4, fig.width=4}
 fdr_result_2 <- fdr_control(fash_fit_2, alpha = 0.1, plot = TRUE)
 detected_indices_2 <- fdr_result_2$fdr_results$index[fdr_result_2$fdr_results$FDR < 0.1]
 ```
