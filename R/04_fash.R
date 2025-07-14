@@ -753,8 +753,8 @@ plot_heatmap <- function(object,
                     each = nrow(posterior_weights)),
     "weight"  = as.vector(posterior_weights)
   )
-  pdat$dataset <- factor(pdat$dataset, levels = rev(unique(dataset)))
-  pdat$psd     <- factor(pdat$psd, levels = unique(psd))
+  pdat$dataset <- factor(pdat$dataset, levels = rev(unique(pdat$dataset)))
+  pdat$psd     <- factor(pdat$psd, levels = unique(pdat$psd))
 
   # Make plot
   p <- ggplot2::ggplot(pdat, ggplot2::aes(x = .data$psd, 
