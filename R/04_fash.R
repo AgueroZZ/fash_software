@@ -712,6 +712,7 @@ fash_structure_plot <- function (eb_output, discrete = FALSE,
 #'
 #' @importFrom ggplot2 ggplot aes geom_point scale_size theme element_text
 #' @importFrom cowplot theme_cowplot
+#' @importFrom rlang .data
 #'
 #' @export
 plot_heatmap <- function(object,
@@ -756,7 +757,9 @@ plot_heatmap <- function(object,
   )
 
   # Make plot
-  p <- ggplot2::ggplot(pdat, ggplot2::aes(x = psd, y = dataset, size = weight)) +
+  p <- ggplot2::ggplot(pdat, ggplot2::aes(x = .data$psd, 
+                                          y = .data$dataset, 
+                                          size = .data$weight)) +
     ggplot2::geom_point(shape = 21, fill = "black", color = "white", ...) +
     ggplot2::scale_size(range = size_range, breaks = size_breaks) +
     cowplot::theme_cowplot(font_size = font_size) +

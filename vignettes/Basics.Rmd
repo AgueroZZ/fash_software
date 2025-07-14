@@ -177,8 +177,8 @@ We aim to obtain the posterior for each $\beta_i(t)$ and test the null hypothesi
 
 ```{r}
 fash_fit <- fash(Y = "y", smooth_var = "x", S = "sd", data_list = datasets, 
-                  num_cores = 2, num_basis = 20, grid = seq(0, 1, by = 0.025),
-                  verbose = TRUE)
+                 order = 2, num_cores = 2, num_basis = 20,
+				 grid = seq(0, 1, by = 0.025), verbose = TRUE)
 fash_fit
 ```
 
