@@ -5,8 +5,8 @@
 \title{Perform Full FASH Analysis}
 \usage{
 fash(
-  Y = NULL,
-  smooth_var = NULL,
+  Y,
+  smooth_var,
   offset = 0,
   S = NULL,
   Omega = NULL,
