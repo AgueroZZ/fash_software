@@ -48,8 +48,8 @@
 fash <- function(Y, smooth_var, offset = 0, S = NULL,
                  Omega = NULL, data_list = NULL,
                  grid = seq(0, 2, length.out = 10),
-                 likelihood = "gaussian", num_basis = 30,
-                 betaprec = 1e-6, order = 2, pred_step = 1,
+                 likelihood = c("gaussian","poisson"), 
+                 num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1,
                  penalty = 1, num_cores = 1, verbose = FALSE) {
 
   # Check if 0 is included in the grid, if not add it and produce a warning
@@ -59,6 +59,7 @@ fash <- function(Y, smooth_var, offset = 0, S = NULL,
   }
 
   # If likelihood is "gaussian", ensure either S or Omega is provided
+  likelihood <- match.arg(likelihood)
   if (likelihood == "gaussian") {
     if (is.null(S) && is.null(Omega)) {
       stop("For Gaussian likelihood, either S or Omega must be provided.")
@@ -746,15 +747,14 @@ plot_heatmap <- function(object,
 
   # Reshape for ggplot
   pdat <- data.frame(
-    dataset = rep(rownames(posterior_weights), times = ncol(posterior_weights)),
-    psd     = rep(colnames(posterior_weights), each = nrow(posterior_weights)),
-    weight  = as.vector(posterior_weights)
+    "dataset" = rep(rownames(posterior_weights), 
+                    times = ncol(posterior_weights)),
+    "psd"     = rep(colnames(posterior_weights), 
+                    each = nrow(posterior_weights)),
+    "weight"  = as.vector(posterior_weights)
   )
-  pdat <- transform(
-    pdat,
-    dataset = factor(dataset, levels = rev(unique(dataset))),
-    psd = factor(psd, levels = unique(psd))
-  )
+  pdat$dataset <- factor(pdat$dataset, levels = rev(unique(dataset)))
+  pdat$psd     <- factor(pdat$psd, levels = unique(psd))
 
   # Make plot
   p <- ggplot2::ggplot(pdat, ggplot2::aes(x = .data$psd, 

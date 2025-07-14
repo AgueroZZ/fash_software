@@ -12,7 +12,7 @@ fash(
   Omega = NULL,
   data_list = NULL,
   grid = seq(0, 2, length.out = 10),
-  likelihood = "gaussian",
+  likelihood = c("gaussian", "poisson"),
   num_basis = 30,
   betaprec = 1e-06,
   order = 2,
