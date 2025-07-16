@@ -56,7 +56,8 @@ Let $\boldsymbol{\hat{\beta}}_i = [\hat{\beta}_i(t_{i1}), \ldots, \hat{\beta}_i(
 The goal of `fashr` is to perform functional adaptive shrinkage (FASH) for inferring the posterior distribution of the effect size function $\beta_i(t)$, given the observed data $\boldsymbol{\hat{\beta}}_i$ and $\boldsymbol{s}_i$.
 
 
-FASH assumes that all $\beta_i(t)$ are i.i.d. draws from a common prior $g_\beta$. The prior $g_\beta$ has the form of a finite mixture of Gaussian processes (GPs):
+FASH assumes that all $\beta_i(t)$ are i.i.d. draws from a common prior $g_\beta$. 
+The prior $g_\beta$ has the form of a finite mixture of Gaussian processes (GPs):
 \[
 g_\beta \mid \boldsymbol{\pi} = \sum_{k=0}^{K} \pi_k \, \text{GP}_k.
 \]
@@ -66,12 +67,12 @@ L\beta(t) = \sigma_k W(t),
 \]
 where $W(t)$ is a Gaussian white noise process and $L$ is a known $p$th-order linear differential operator. The standard deviation parameter $\sigma_k$ determines how much $\beta(t)$ can deviate from the base model, defined as the null space $S_0 = \text{Null}\{L\}$.
 
-Given a grid of $\{\sigma_1, ..., \sigma_K\}$, FASH estimates the prior mixing weights $\hat{\boldsymbol{\pi}}$ by maximizing the marginal likelihood of the observed effect size estimates:
+Given a grid of $\{\sigma_1, ..., \sigma_K\}$, the prior mixing weights $\hat{\boldsymbol{\pi}}$ are estimated by maximizing the marginal likelihood of the observed effect size estimates:
 \[
 \hat{\boldsymbol{\pi}} = (\hat{\pi}_1, ..., \hat{\pi}_K) = \arg\max_{\boldsymbol{\pi}} \sum_{i=1}^{N} \log\left(\sum_{k=0}^{K} \pi_k \mathbf{L}_{ik}\right),
 \]
 where $\mathbf{L}_{ik}$ denotes the marginal likelihood of $\boldsymbol{\hat{\beta}}_i$ under the $k$th GP component.
-Based on the estimated prior $\hat{g}_\beta$, FASH then computes the posterior distribution for $\beta_i(t)$ as:
+Based on the estimated prior $\hat{g}_\beta$, the posterior distribution for $\beta_i(t)$ can be computed as:
 \[
 p(\beta_i(t) \mid \boldsymbol{\hat{\beta}}_i, \hat{\boldsymbol{\pi}}) = \sum_{k=0}^{K} \tilde{\pi}_k \, p_k(\beta_i(t) \mid \boldsymbol{\hat{\beta}}_i),
 \]
@@ -158,14 +159,37 @@ table(labels)
 
 ## Fitting FASH
 
-The default way of fitting FASH is to input the list of datasets
-(`data_list`), and specify the column names for the effect size (`Y`),
-the standard deviation of the effect size (`S`), and the time points
-(`smooth_var`).
+The main function for fitting FASH is `fash()`.  
+By default, users should provide a list of datasets (`data_list`), and specify the column names for the effect size (`Y`), its standard deviation (`S`), and the time variable (`smooth_var`).
 
-The computation could be paralleled by specifying the number of cores
-(`num_cores`). Reducing the number of basis functions (`num_basis`)
-can also greatly speed up the computation.
+Computation can be parallelized by specifying the number of cores (`num_cores`).  
+Reducing the number of basis functions (`num_basis`) can also improve computational speed.
+
+The function `fash()` sequentially performs the following key steps:
+
+1. Compute the likelihood matrix
+
+   \[
+   \mathbf{L}_{ik} = p(\hat{\boldsymbol{\beta}}_i \mid \text{GP}_k),
+   \]
+
+   for each eQTL $i$ and each GP component $k$.
+
+2. Estimate the prior mixing weights $\hat{\boldsymbol{\pi}}$ by maximizing the marginal likelihood:
+
+   \[
+   \hat{\boldsymbol{\pi}} = \arg\max_{\boldsymbol{\pi}} \sum_{i=1}^{N} \log\left(\sum_{k=0}^{K} \pi_k \mathbf{L}_{ik}\right).
+   \]
+
+3. Compute the posterior weights for each eQTL $i$ and GP component $k$:
+
+   \[
+   \tilde{\pi}_{ik} = \frac{\pi_k \mathbf{L}_{ik}}{\sum_{j=0}^{K} \pi_j \mathbf{L}_{ij}},
+   \]
+
+   where $\tilde{\pi}_{i0}$ is the local false discovery rate (LFDR) under the null hypothesis $\beta_i(t) \in S_0$.
+
+
 
 ### Testing Nonlinear Dynamic
 
@@ -176,9 +200,7 @@ In this case, we specify the base model $S_0 = {\beta(t) = c + bt \mid c, b \in 
 We aim to obtain the posterior for each $\beta_i(t)$ and test the null hypothesis $H_0: \beta_i(t) \in S_0$ at a given FDR level.
 
 ```{r}
-fash_fit <- fash(Y = "y", smooth_var = "x", S = "sd", data_list = datasets, 
-                 order = 2, num_cores = 2, num_basis = 20,
-				 grid = seq(0, 1, by = 0.025), verbose = TRUE)
+fash_fit <- fash(Y = "y", smooth_var = "x", S = "sd", data_list = datasets, order = 2)
 fash_fit
 ```
 
@@ -186,6 +208,7 @@ Here, the grid of values $\{\sigma_1, \ldots, \sigma_K\}$ is specified using the
 
 Specifically, given a prediction step size $h$ (`pred_step`), each grid point is defined as $c_h \sigma_k$, where $c_h$ is a positive scaling constant that depends only on $h$ and $L$. This scaling ensures that $c_h \sigma_k$ can be interpreted as $\text{SD}(\beta(t+h) \mid \beta(s), s < t)$, representing the $h$-step predictive standard deviation (PSD).
 
+In the above example, we started with a default grid of 25 equally spaced PSD values from 0 to 2. After empirical Bayes estimation, the prior weights are nonzero only for 5 of these values. Grid values with zero prior weight are considered trivial and are removed automatically.
 
 Let's take a look at the estimated prior $\hat{g}$:
 
@@ -203,12 +226,12 @@ Besides the heatmap plot, we could also visualize the result using a
 structure plot:
 
 ```{r, fig.height=4, fig.width=5}
-plot(fash_fit, plot_type = "structure", 
-     discrete = TRUE, selected_indices = c(1:5, 55:60, 95:100))
+plot(fash_fit, plot_type = "structure", discrete = TRUE)
 ```
 
 
-We can then use `fdr_control` to test the null hypothesis that $H_0: \beta_i(t) \in S_0$ at a given FDR level:
+We can then use `fdr_control` to test the null hypothesis that $H_0: \beta_i(t) \in S_0$ at a given FDR level.
+Specifically, the function takes the local false discovery rate (LFDR) stored in the `fash` object and computes the cumulative false discovery rate (FDR).
 
 ```{r, fig.height=4, fig.width=4}
 fdr_result <- fdr_control(fash_fit, alpha = 0.1, plot = TRUE)
@@ -233,14 +256,14 @@ sum(labels[detected_indices] != "C")/length(detected_indices)
 ```
 
 Let's take a look at the inferred eQTL effect $\beta_i(t)$ for the detected eQTLs. 
+The function `predict` computes the posterior distribution of the effect size $\beta_i(t)$ for a given eQTL $i$, and then either returns the posterior summary or posterior samples, depending on the arguments specified.
 
 ```{r}
 fitted_beta <- predict(fash_fit, index = detected_indices[1])
 str(fitted_beta)
 ```
 
-The `predict` function returns the posterior information of the effect size $\beta_i(t)$ for the eQTL specified by `index`.
-By default, it returns the posterior of the effect size at each observed time point.
+By default, `predict` returns the posterior information of the effect size $\beta_i(t)$ for the eQTL specified by `index`, at each observed time point.
 We can also specify the time points to predict the effect size at:
 
 ```{r}
@@ -274,17 +297,14 @@ In this case, the base model $S_0 = \{\beta(t) = c \mid c \in \mathbb{R}\}$ repr
 This choice corresponds to the first Integrated Wiener Process (IWP1) model (`order = 1`).
 
 ```{r}
-fash_fit_2 <- fash(Y = "y", smooth_var = "x", S = "sd", data_list = datasets, 
-                  likelihood = "gaussian", order = 1, pred_step = 1,
-                  num_cores = 2, num_basis = 20, grid = seq(0, 1, by = 0.025),
-                  verbose = TRUE)
+fash_fit_2 <- fash(Y = "y", smooth_var = "x", S = "sd", data_list = datasets, order = 1)
 fash_fit_2
 ```
 
 Take a look at the structure plot:
 
 ```{r, fig.height=4, fig.width=4}
-plot(fash_fit_2, discrete = TRUE, ordering = "mean")
+plot(fash_fit_2, discrete = TRUE)
 ```
 
 Let's test the null hypothesis that $H_0: \beta_i(t) \in S_0$ at a

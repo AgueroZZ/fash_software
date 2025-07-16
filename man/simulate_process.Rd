@@ -10,7 +10,7 @@ simulate_process(
   sd_fun = 1,
   sd = 0.1,
   sd_poly = 0.1,
-  type = "nonlinear",
+  type = c("linear", "nonlinear", "quadratic", "nondynamic"),
   p = 1,
   pred_step = 16,
   normalize = FALSE

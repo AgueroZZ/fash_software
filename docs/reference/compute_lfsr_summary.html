@@ -19,7 +19,7 @@ instead of sampling-based methods."><!-- mathjax --><script src="https://cdnjs.c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fashr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.24</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.30</span>
       </span>
     </div>
 
@@ -113,7 +113,7 @@ If <code>NULL</code>, defaults to the dataset's original x values.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Completed data setup in 0.00 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Starting likelihood computation...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================================================| 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Completed likelihood computation in 0.14 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Completed likelihood computation in 0.11 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Starting empirical Bayes estimation...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Completed empirical Bayes estimation in 0.00 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fash object created successfully.</span>
@@ -121,12 +121,12 @@ If <code>NULL</code>, defaults to the dataset's original x values.</p></dd>
 <span class="r-in"><span><span class="co"># Compute LFSR summary for dataset 1</span></span></span>
 <span class="r-in"><span><span class="va">lfsr_summary_df</span> <span class="op">&lt;-</span> <span class="fu">compute_lfsr_summary</span><span class="op">(</span><span class="va">fash_obj</span>, index <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">lfsr_summary_df</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   x pos_prob neg_prob lfsr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1        1        1    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2        1        1    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 3        1        1    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 4        1        1    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 5        1        1    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   x  pos_prob  neg_prob      lfsr</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1 1.0000000 1.0000000 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2 0.5520281 0.4479719 0.4479719</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 3 0.6211076 0.3788924 0.3788924</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 4 0.6647579 0.3352421 0.3352421</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 5 0.5560608 0.4439392 0.4439392</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

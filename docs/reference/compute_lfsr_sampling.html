@@ -19,7 +19,7 @@ at each grid point and returns the full probability vectors."><!-- mathjax --><s
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fashr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.24</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.30</span>
       </span>
     </div>
 
@@ -113,7 +113,7 @@ If <code>NULL</code>, defaults to the dataset's original x values.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Completed data setup in 0.00 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Starting likelihood computation...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================================================| 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Completed likelihood computation in 0.14 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Completed likelihood computation in 0.12 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Starting empirical Bayes estimation...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Completed empirical Bayes estimation in 0.00 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fash object created successfully.</span>
@@ -121,32 +121,32 @@ If <code>NULL</code>, defaults to the dataset's original x values.</p></dd>
 <span class="r-in"><span><span class="co"># Compute LFSR for a single dataset</span></span></span>
 <span class="r-in"><span><span class="va">lfsr_result</span> <span class="op">&lt;-</span> <span class="fu">compute_lfsr_sampling</span><span class="op">(</span><span class="va">fash_obj</span>, index <span class="op">=</span> <span class="fl">1</span>, smooth_var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>, M <span class="op">=</span> <span class="fl">3000</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">lfsr_result</span><span class="op">$</span><span class="va">lfsr</span><span class="op">)</span>  <span class="co"># Print the LFSR values</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1.0000000 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [29] 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [36] 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [43] 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [50] 0.3983333 0.3983333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 1.0000000 1.0000000 1.0000000 1.0000000 0.4806667 0.4760000 0.4763333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] 0.4816667 0.4640000 0.4700000 0.4686667 0.4623333 0.4493333 0.4393333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] 0.4443333 0.4333333 0.4256667 0.4170000 0.4036667 0.4000000 0.3906667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [29] 0.3940000 0.3816667 0.3683333 0.3650000 0.3710000 0.3633333 0.3610000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [36] 0.3603333 0.3623333 0.3596667 0.3490000 0.3476667 0.3486667 0.3563333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [43] 0.3683333 0.3760000 0.3913333 0.3983333 0.4126667 0.4250000 0.4363333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [50] 0.4463333 0.4606667</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">lfsr_result</span><span class="op">$</span><span class="va">pos_prob</span><span class="op">)</span>  <span class="co"># Print the positive probability</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1.0000000 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [29] 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [36] 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [43] 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667 0.6016667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [50] 0.6016667 0.6016667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 1.0000000 1.0000000 1.0000000 1.0000000 0.5193333 0.5240000 0.5236667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] 0.5183333 0.5360000 0.5300000 0.5313333 0.5376667 0.5506667 0.5606667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] 0.5556667 0.5666667 0.5743333 0.5830000 0.5963333 0.6000000 0.6093333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [29] 0.6060000 0.6183333 0.6316667 0.6350000 0.6290000 0.6366667 0.6390000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [36] 0.6396667 0.6376667 0.6403333 0.6510000 0.6523333 0.6513333 0.6436667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [43] 0.6316667 0.6240000 0.6086667 0.6016667 0.5873333 0.5750000 0.5636667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [50] 0.5536667 0.5393333</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">lfsr_result</span><span class="op">$</span><span class="va">neg_prob</span><span class="op">)</span>  <span class="co"># Print the negative probability</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1.0000000 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [29] 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [36] 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [43] 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333 0.3983333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [50] 0.3983333 0.3983333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 1.0000000 1.0000000 1.0000000 1.0000000 0.4806667 0.4760000 0.4763333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] 0.4816667 0.4640000 0.4700000 0.4686667 0.4623333 0.4493333 0.4393333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] 0.4443333 0.4333333 0.4256667 0.4170000 0.4036667 0.4000000 0.3906667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [29] 0.3940000 0.3816667 0.3683333 0.3650000 0.3710000 0.3633333 0.3610000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [36] 0.3603333 0.3623333 0.3596667 0.3490000 0.3476667 0.3486667 0.3563333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [43] 0.3683333 0.3760000 0.3913333 0.3983333 0.4126667 0.4250000 0.4363333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [50] 0.4463333 0.4606667</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

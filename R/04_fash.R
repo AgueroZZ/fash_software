@@ -47,10 +47,24 @@
 #' @export
 fash <- function(Y, smooth_var, offset = 0, S = NULL,
                  Omega = NULL, data_list = NULL,
-                 grid = seq(0, 2, length.out = 10),
-                 likelihood = c("gaussian","poisson"), 
-                 num_basis = 30, betaprec = 1e-6, order = 2, pred_step = 1,
-                 penalty = 1, num_cores = 1, verbose = FALSE) {
+                 grid = seq(0, 1, length.out = 25),
+                 likelihood = c("gaussian","poisson"),
+                 num_basis = 30, betaprec = 1e-6, order = 1, pred_step = 1,
+                 penalty = 1, num_cores = 1, verbose = TRUE) {
+
+  # Check if order is a positive integer
+  if (!is.numeric(order) || length(order) != 1 || order <= 0 || order != floor(order)) {
+    stop("Order must be a positive integer.")
+  }
+
+  # If order is larger than 4, give a warning about slower computation
+  if (order > 4) {
+    # print a message
+    if (verbose) {
+      cat(sprintf("Note: Order = %d. Large choice of order may lead to slower computation times.\n", order))
+    }
+  }
+
 
   # Check if 0 is included in the grid, if not add it and produce a warning
   if (!0 %in% grid) {
@@ -62,7 +76,8 @@ fash <- function(Y, smooth_var, offset = 0, S = NULL,
   likelihood <- match.arg(likelihood)
   if (likelihood == "gaussian") {
     if (is.null(S) && is.null(Omega)) {
-      stop("For Gaussian likelihood, either S or Omega must be provided.")
+      warning("For Gaussian likelihood, either S or Omega must be provided. Defaulting to S = 1 for all datasets.")
+      S <- 1
     }
     if (!is.null(S) && !is.null(Omega)) {
       warning("Both S and Omega are provided. Using S for standard errors.")
@@ -273,10 +288,13 @@ fdr_control <- function(fash_obj, alpha = 0.05, plot = FALSE) {
 #'
 #' @export
 plot.fash <- function(x,
-                      plot_type = "structure",
+                      plot_type = c("structure", "heatmap"),
                       ordering = NULL,
                       discrete = FALSE,
                       ...) {
+  # Match the plot type
+  plot_type <- match.arg(plot_type)
+
   # Validate input
   if (!inherits(x, "fash")) {
     stop("Input must be a `fash` object.")
@@ -630,6 +648,9 @@ fash_structure_plot <- function (eb_output, discrete = FALSE,
 
   # Reorder datasets if ordering is specified
   if (!is.null(ordering)) {
+    # Validate ordering argument
+    ordering <- match.arg(ordering, c("median", "mean", "lfdr"))
+
     order_result <- fash_post_ordering(eb_output_selected, ordering = ordering)
     posterior_weights_matrix <- order_result$ordered_matrix
     ordered_indices <- order_result$ordered_indices
@@ -745,11 +766,14 @@ plot_heatmap <- function(object,
     size_breaks <- sort(unique(size_breaks))  # Ensure unique and sorted breaks
   }
 
+  # Round the colname
+  colnames(posterior_weights) <- round(as.numeric(colnames(posterior_weights)), 3)
+
   # Reshape for ggplot
   pdat <- data.frame(
-    "dataset" = rep(rownames(posterior_weights), 
+    "dataset" = rep(rownames(posterior_weights),
                     times = ncol(posterior_weights)),
-    "psd"     = rep(colnames(posterior_weights), 
+    "psd"     = rep(colnames(posterior_weights),
                     each = nrow(posterior_weights)),
     "weight"  = as.vector(posterior_weights)
   )
@@ -757,8 +781,8 @@ plot_heatmap <- function(object,
   pdat$psd     <- factor(pdat$psd, levels = unique(pdat$psd))
 
   # Make plot
-  p <- ggplot2::ggplot(pdat, ggplot2::aes(x = .data$psd, 
-                                          y = .data$dataset, 
+  p <- ggplot2::ggplot(pdat, ggplot2::aes(x = .data$psd,
+                                          y = .data$dataset,
                                           size = .data$weight)) +
     ggplot2::geom_point(shape = 21, fill = "black", color = "white", ...) +
     ggplot2::scale_size(range = size_range, breaks = size_breaks) +

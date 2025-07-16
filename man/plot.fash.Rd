@@ -4,7 +4,13 @@
 \alias{plot.fash}
 \title{Plot Method for fash Objects}
 \usage{
-\method{plot}{fash}(x, plot_type = "structure", ordering = NULL, discrete = FALSE, ...)
+\method{plot}{fash}(
+  x,
+  plot_type = c("structure", "heatmap"),
+  ordering = NULL,
+  discrete = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{A \code{fash} object containing the results of the FASH pipeline.}

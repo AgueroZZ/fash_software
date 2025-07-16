@@ -11,15 +11,15 @@ fash(
   S = NULL,
   Omega = NULL,
   data_list = NULL,
-  grid = seq(0, 2, length.out = 10),
+  grid = seq(0, 1, length.out = 25),
   likelihood = c("gaussian", "poisson"),
   num_basis = 30,
   betaprec = 1e-06,
-  order = 2,
+  order = 1,
   pred_step = 1,
   penalty = 1,
   num_cores = 1,
-  verbose = FALSE
+  verbose = TRUE
 )
 }
 \arguments{

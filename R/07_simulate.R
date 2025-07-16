@@ -199,7 +199,8 @@ simulate_nondynamic_function <- function(sd_poly = 1){
 #' plot(dat$x, dat$y)
 #'
 #' @export
-simulate_process <- function(x = NULL, n_basis = 50, sd_fun = 1, sd = 0.1, sd_poly = 0.1, type = "nonlinear", p = 1, pred_step = 16, normalize = FALSE){
+simulate_process <- function(x = NULL, n_basis = 50, sd_fun = 1, sd = 0.1, sd_poly = 0.1, type = c("linear", "nonlinear", "quadratic", "nondynamic"), p = 1, pred_step = 16, normalize = FALSE){
+  type <- match.arg(type)
   if(type == "linear"){
     g <- simulate_linear_function(sd_poly = sd_poly)
   }
